@@ -9,5 +9,4 @@ public interface IUserService
     Task<LoginResultDto> LoginUserAsync(LoginDto login);
     Task<IEnumerable<UserDto>> GetUsersAsync(UserQueryParameters userQueryParameters);
     Task<UserDto> GetUserByIdAsync(Guid userId);
-    Task<UserDto> SetUserStatusByIdAsync(Guid userId, string status);
 }
