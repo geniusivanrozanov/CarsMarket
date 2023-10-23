@@ -4,5 +4,5 @@ namespace IdentityService.Application.Interfaces;
 
 public interface ITokenService
 {
-    Task<string> GenerateAccessTokenAsync(User user);
+    Task<string> GenerateAccessTokenAsync(UserEntity userEntity);
 }
