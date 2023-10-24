@@ -6,12 +6,12 @@ using IdentityService.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using TokenOptions = IdentityService.Application.Options.TokenOptions;
+using IdentityService.Application.Options;
 
 namespace IdentityService.Application.Services;
 
 public class TokenService(
-    IOptions<TokenOptions> tokenOptions,
+    IOptions<JwtOptions> tokenOptions,
     UserManager<UserEntity> userManager)
     : ITokenService
 {
