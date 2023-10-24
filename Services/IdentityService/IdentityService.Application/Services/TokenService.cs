@@ -32,7 +32,9 @@ public class TokenService(
                 new Claim(ClaimTypes.Email, userEntity.Email!)
             }),
             SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature),
-            Expires = DateTime.Now.AddMinutes(tokenOptions.Value.ExpirationMinutes)
+            Expires = DateTime.UtcNow.AddMinutes(tokenOptions.Value.ExpirationMinutes),
+            Issuer = tokenOptions.Value.Issuer,
+            Audience = tokenOptions.Value.Audience
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
