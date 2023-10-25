@@ -42,14 +42,14 @@ public class UserService(
 
     public async Task<IEnumerable<UserDto>> GetUsersAsync(UserQueryParameters userQueryParameters)
     {
-        var users = await userRepository.GetUsersAsync(userQueryParameters, mapper.ToUserDto);
+        var users = await userRepository.GetUsersAsync(userQueryParameters, mapper.ProjectToUserDto);
 
         return users;
     }
 
     public async Task<UserDto> GetUserByIdAsync(Guid userId)
     {
-        var user = await userRepository.GetUserByIdAsync(userId, mapper.ToUserDto);
+        var user = await userRepository.GetUserByIdAsync(userId, mapper.ProjectToUserDto);
         if (user is null)
         {
             logger.LogInformation("Failed to find user with '{UserId}'", userId);
@@ -62,12 +62,12 @@ public class UserService(
     private async Task<UserDto> RegisterUserAsync(RegisterDto register, string role)
     {
         var userEntity = mapper.ToUserEntity(register);
-        var registrationResult = await userManager.CreateAsync(userEntity);
+        var registrationResult = await userManager.CreateAsync(userEntity, register.Password);
         if (!registrationResult.Succeeded)
         {
-            logger.LogInformation("User with email {Email} failed to register with errors: {@Errors}", register.Email,
-                registrationResult.Errors);
-            throw new RegistrationFailedException(registrationResult.ToString());
+            var errors = string.Join("\n", registrationResult.Errors.Select(e => e.Description));
+            logger.LogInformation("User with email {Email} failed to register with errors: {@Errors}", register.Email, errors);
+            throw new RegistrationFailedException(errors);
         }
 
         await userManager.AddToRoleAsync(userEntity, role);

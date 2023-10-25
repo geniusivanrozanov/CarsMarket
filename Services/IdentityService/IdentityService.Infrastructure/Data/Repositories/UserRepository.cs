@@ -2,26 +2,28 @@
 using IdentityService.Application.QueryParameters;
 using IdentityService.Domain.Entities;
 using IdentityService.Infrastructure.Data.Contexts;
+using IdentityService.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityService.Infrastructure.Data.Repositories;
 
 public class UserRepository(IdentityContext context) : IUserRepository
 {
-    public async Task<TProjection?> GetUserByIdAsync<TProjection>(Guid userId, Func<UserEntity, TProjection> map)
+    public async Task<TProjection?> GetUserByIdAsync<TProjection>(Guid userId,
+        Func<IQueryable<UserEntity>, IQueryable<TProjection>> projector)
     {
         var users = context.Users;
 
         var userEntity = await users
             .Where(u => u.Id == userId)
-            .Select(u => map(u))
+            .ApplyProjector(projector)
             .FirstOrDefaultAsync();
 
         return userEntity;
     }
 
     public async Task<IEnumerable<TProjection>> GetUsersAsync<TProjection>(UserQueryParameters userQueryParameters,
-        Func<UserEntity, TProjection> map)
+        Func<IQueryable<UserEntity>, IQueryable<TProjection>> projector)
     {
         var query = context.Users.AsQueryable();
 
@@ -43,7 +45,7 @@ public class UserRepository(IdentityContext context) : IUserRepository
             query = query.Where(u => u.Email!.Contains(userQueryParameters.Email));
 
         return await query
-            .Select(u => map(u))
+            .ApplyProjector(projector)
             .ToListAsync();
     }
 }
