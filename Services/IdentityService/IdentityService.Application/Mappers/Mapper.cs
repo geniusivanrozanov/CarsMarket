@@ -7,7 +7,7 @@ namespace IdentityService.Application.Mappers;
 
 [Mapper]
 public partial class Mapper : IMapper
-{   
+{
     public partial UserEntity ToUserEntity(RegisterDto registerDto);
 
     public partial UserDto ToUserDto(UserEntity userEntity);

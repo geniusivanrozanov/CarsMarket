@@ -20,7 +20,8 @@ public class UserRepository(IdentityContext context) : IUserRepository
         return userEntity;
     }
 
-    public async Task<IEnumerable<TProjection>> GetUsersAsync<TProjection>(UserQueryParameters userQueryParameters, Func<UserEntity, TProjection> map)
+    public async Task<IEnumerable<TProjection>> GetUsersAsync<TProjection>(UserQueryParameters userQueryParameters,
+        Func<UserEntity, TProjection> map)
     {
         var query = context.Users.AsQueryable();
 
@@ -29,25 +30,17 @@ public class UserRepository(IdentityContext context) : IUserRepository
             query = query.Take(userQueryParameters.PageSize.Value);
 
             if (userQueryParameters.Page is not null)
-            {
                 query = query.Skip((userQueryParameters.Page * userQueryParameters.PageSize).Value);
-            }
         }
 
         if (userQueryParameters.FirstName is not null)
-        {
             query = query.Where(u => u.FirstName.Contains(userQueryParameters.FirstName));
-        }
-        
+
         if (userQueryParameters.LastName is not null)
-        {
             query = query.Where(u => u.LastName.Contains(userQueryParameters.LastName));
-        }
-        
+
         if (userQueryParameters.Email is not null)
-        {
             query = query.Where(u => u.Email!.Contains(userQueryParameters.Email));
-        }
 
         return await query
             .Select(u => map(u))

@@ -7,11 +7,11 @@ public class UserEntityConfiguration : EntityConfigurationBase<UserEntity>
 {
     private const int FirstNameMaxLength = 64;
     private const int LastNameMaxLength = 64;
-    
+
     public override void Configure(EntityTypeBuilder<UserEntity> builder)
     {
         base.Configure(builder);
-        
+
         builder.Property(u => u.FirstName)
             .HasMaxLength(FirstNameMaxLength);
 

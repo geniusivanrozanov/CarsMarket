@@ -10,28 +10,13 @@ using Microsoft.Extensions.Logging;
 namespace IdentityService.Application.Services;
 
 public class UserService(
-    ILogger<UserService> logger,
-    ITokenService tokenService,
-    IUserRepository userRepository,
-    IMapper mapper,
-    UserManager<UserEntity> userManager)
+        ILogger<UserService> logger,
+        ITokenService tokenService,
+        IUserRepository userRepository,
+        IMapper mapper,
+        UserManager<UserEntity> userManager)
     : IUserService
 {
-    private async Task<UserDto> RegisterUserAsync(RegisterDto register, string role)
-    {
-        var userEntity = mapper.ToUserEntity(register);
-        var registrationResult = await userManager.CreateAsync(userEntity);
-        if (!registrationResult.Succeeded)
-        {
-            logger.LogInformation("User with email {Email} failed to register with errors: {@Errors}", register.Email, registrationResult.Errors);
-            throw new RegistrationFailedException(registrationResult.ToString());
-        }
-
-        await userManager.AddToRoleAsync(userEntity, role);
-
-        return mapper.ToUserDto(userEntity);
-    }
-    
     public Task<UserDto> RegisterUserAsync(RegisterDto register)
     {
         return RegisterUserAsync(register, Roles.User);
@@ -68,9 +53,25 @@ public class UserService(
         if (user is null)
         {
             logger.LogInformation("Failed to find user with '{UserId}'", userId);
-            throw new NotExistsException($"User doesn't exist");
+            throw new NotExistsException("User doesn't exist");
         }
-        
+
         return user;
+    }
+
+    private async Task<UserDto> RegisterUserAsync(RegisterDto register, string role)
+    {
+        var userEntity = mapper.ToUserEntity(register);
+        var registrationResult = await userManager.CreateAsync(userEntity);
+        if (!registrationResult.Succeeded)
+        {
+            logger.LogInformation("User with email {Email} failed to register with errors: {@Errors}", register.Email,
+                registrationResult.Errors);
+            throw new RegistrationFailedException(registrationResult.ToString());
+        }
+
+        await userManager.AddToRoleAsync(userEntity, role);
+
+        return mapper.ToUserDto(userEntity);
     }
 }

@@ -2,17 +2,17 @@
 using System.Security.Claims;
 using System.Text;
 using IdentityService.Application.Interfaces;
+using IdentityService.Application.Options;
 using IdentityService.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using IdentityService.Application.Options;
 
 namespace IdentityService.Application.Services;
 
 public class TokenService(
-    IOptions<JwtOptions> tokenOptions,
-    UserManager<UserEntity> userManager)
+        IOptions<JwtOptions> tokenOptions,
+        UserManager<UserEntity> userManager)
     : ITokenService
 {
     public async Task<string> GenerateAccessTokenAsync(UserEntity userEntity)
@@ -22,10 +22,10 @@ public class TokenService(
 
         var rolesList = await userManager.GetRolesAsync(userEntity);
         var roles = string.Join(", ", rolesList);
-        
+
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new []
+            Subject = new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userEntity.Id.ToString()),
                 new Claim(ClaimTypes.Role, roles),
