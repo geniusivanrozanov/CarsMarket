@@ -1,7 +1,15 @@
-var builder = WebApplication.CreateBuilder(args);
+using IdentityService.Application.Extensions;
+using IdentityService.Infrastructure.Extensions;
 
+var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddInfrastructureLayer(configuration);
+builder.Services.AddApplicationLayer(configuration);
 
 var app = builder.Build();
 
@@ -12,5 +20,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapControllers();
 
 app.Run();
