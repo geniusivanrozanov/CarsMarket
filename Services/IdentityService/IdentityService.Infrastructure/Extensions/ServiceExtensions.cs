@@ -2,6 +2,7 @@
 using IdentityService.Domain.Entities;
 using IdentityService.Infrastructure.Data.Contexts;
 using IdentityService.Infrastructure.Data.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,6 +45,7 @@ public static class ServiceExtensions
     {
         services
             .AddIdentityCore<UserEntity>()
+            .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<IdentityContext>();
 
         return services;
