@@ -6,9 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityService.Infrastructure.Data.Contexts;
 
-public class IdentityContext
-    (DbContextOptions options) : IdentityDbContext<UserEntity, IdentityRole<Guid>, Guid>(options)
+public class IdentityContext : IdentityDbContext<UserEntity, IdentityRole<Guid>, Guid>
 {
+    public IdentityContext(DbContextOptions options) : base(options)
+    {
+    }
+    
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
