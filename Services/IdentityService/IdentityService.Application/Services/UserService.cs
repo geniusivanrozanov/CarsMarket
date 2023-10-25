@@ -21,7 +21,6 @@ public class UserService(
     {
         var userEntity = mapper.ToUserEntity(register);
         var registrationResult = await userManager.CreateAsync(userEntity);
-        
         if (!registrationResult.Succeeded)
         {
             logger.LogInformation("User with email {Email} failed to register with errors: {@Errors}", register.Email, registrationResult.Errors);
@@ -41,7 +40,6 @@ public class UserService(
     public async Task<LoginResultDto> LoginUserAsync(LoginDto login)
     {
         var userEntity = await userManager.FindByEmailAsync(login.Email);
-
         if (userEntity is null || !await userManager.CheckPasswordAsync(userEntity, login.Password))
         {
             logger.LogInformation("User with email {Email} failed to login", login.Email);
@@ -67,7 +65,12 @@ public class UserService(
     public async Task<UserDto> GetUserByIdAsync(Guid userId)
     {
         var user = await userRepository.GetUserByIdAsync(userId, mapper.ToUserDto);
-
+        if (user is null)
+        {
+            logger.LogInformation("Failed to find user with '{UserId}'", userId);
+            throw new NotExistsException($"User doesn't exist");
+        }
+        
         return user;
     }
 }
