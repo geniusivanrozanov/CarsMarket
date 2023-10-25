@@ -1,16 +1,17 @@
 ﻿using IdentityService.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace IdentityService.Infrastructure.Data.Configurations;
 
-public class UserEntityConfiguration : IEntityTypeConfiguration<UserEntity>
+public class UserEntityConfiguration : EntityConfigurationBase<UserEntity>
 {
     private const int FirstNameMaxLength = 64;
     private const int LastNameMaxLength = 64;
     
-    public void Configure(EntityTypeBuilder<UserEntity> builder)
+    public override void Configure(EntityTypeBuilder<UserEntity> builder)
     {
+        base.Configure(builder);
+        
         builder.Property(u => u.FirstName)
             .HasMaxLength(FirstNameMaxLength);
 
