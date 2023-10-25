@@ -1,4 +1,5 @@
 ﻿using IdentityService.Application.Interfaces;
+using IdentityService.Domain.Entities;
 using IdentityService.Infrastructure.Data.Contexts;
 using IdentityService.Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ public static class ServiceExtensions
         return services
             .AddDbContexts(configuration)
             .AddRepositories()
+            .AddIdentity()
             .MigrateDatabase<IdentityContext>();
     }
 
@@ -38,6 +40,15 @@ public static class ServiceExtensions
         return services;
     }
 
+    private static IServiceCollection AddIdentity(this IServiceCollection services)
+    {
+        services
+            .AddIdentityCore<UserEntity>()
+            .AddEntityFrameworkStores<IdentityContext>();
+
+        return services;
+    }
+    
     private static IServiceCollection MigrateDatabase<TContext>(this IServiceCollection services)
         where TContext : DbContext
     {
