@@ -31,18 +31,25 @@ public class AuditableEntityInterceptor(TimeProvider timeProvider) : SaveChanges
         var dateTime = timeProvider.GetUtcNow();
         var entries = context.ChangeTracker
             .Entries()
-            .Where(e => e.Entity is IAuditable);
+            .Where(e => e.Entity is ICreatedAtAuditable or IUpdatedAtAuditable);
         foreach (var entry in entries)
         {
-            if (entry.Entity is not IAuditable auditable) continue;
-            if (entry.State is EntityState.Added)
+            if (entry is
+                {
+                    Entity: ICreatedAtAuditable createdAtAuditable,
+                    State: EntityState.Added
+                })
             {
-                auditable.CreatedAt = dateTime;
+                createdAtAuditable.CreatedAt = dateTime;
             }
             
-            if (entry.State is EntityState.Added or EntityState.Modified)
+            if (entry is
+                {
+                    Entity: IUpdatedAtAuditable updatedAtAuditable,
+                    State: EntityState.Added or EntityState.Modified
+                })
             {
-                auditable.LastModifiedAt = dateTime;
+                updatedAtAuditable.UpdatedAt = dateTime;
             }
         }
     }

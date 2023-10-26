@@ -9,10 +9,5 @@ public abstract class EntityConfigurationBase<TEntity> : IEntityTypeConfiguratio
 {
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
-        if (typeof(IAuditable).IsAssignableFrom(typeof(TEntity))) ConfigureAuditableEntity(builder);
-    }
-
-    protected virtual void ConfigureAuditableEntity(EntityTypeBuilder<TEntity> builder)
-    {
     }
 }
