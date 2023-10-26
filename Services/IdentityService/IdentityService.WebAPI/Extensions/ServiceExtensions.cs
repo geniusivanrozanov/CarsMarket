@@ -1,5 +1,10 @@
-﻿using FluentValidation.AspNetCore;
+﻿using System.Text;
+using FluentValidation.AspNetCore;
+using IdentityService.Application.Options;
 using IdentityService.WebAPI.Middlewares;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace IdentityService.WebAPI.Extensions;
@@ -15,6 +20,8 @@ public static class ServiceExtensions
                 options.LowercaseUrls = true;
                 options.LowercaseQueryStrings = true;
             })
+            .AddAuthorization()
+            .ConfigureAuthentication()
             .AddEndpointsApiExplorer()
             .AddValidators()
             .AddMiddlewares()
@@ -31,6 +38,33 @@ public static class ServiceExtensions
     private static IServiceCollection AddMiddlewares(this IServiceCollection services)
     {
         services.AddSingleton<ExceptionHandlerMiddleware>();
+        
+        return services;
+    }
+
+    private static IServiceCollection ConfigureAuthentication(this IServiceCollection services)
+    {
+        var jwtOptions = services
+            .BuildServiceProvider()
+            .GetRequiredService<IOptions<JwtOptions>>();
+        
+        services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    RequireExpirationTime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtOptions.Value.Issuer,
+                    ValidAudience = jwtOptions.Value.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Value.Key)),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         
         return services;
     }
@@ -60,7 +94,7 @@ public static class ServiceExtensions
                             Id = "Bearer"
                         }
                     },
-                    new string[] {}
+                    Array.Empty<string>()
                 }
             });
         });

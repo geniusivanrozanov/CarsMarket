@@ -1,6 +1,8 @@
 using IdentityService.Application.DTOs;
 using IdentityService.Application.Interfaces;
 using IdentityService.Application.QueryParameters;
+using IdentityService.Domain.Constants;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityService.WebAPI.Controllers;
@@ -10,6 +12,7 @@ namespace IdentityService.WebAPI.Controllers;
 public class UsersController(IUserService userService) : ControllerBase
 {
     [HttpGet]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> GetUsers([FromQuery]UserQueryParameters queryParameters)
     {
         var users = await userService.GetUsersAsync(queryParameters);
@@ -18,6 +21,7 @@ public class UsersController(IUserService userService) : ControllerBase
     }
     
     [HttpGet("{id}")]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> GetUserById(Guid id)
     {
         var user = await userService.GetUserByIdAsync(id);
