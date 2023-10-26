@@ -7,15 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityService.Infrastructure.Data.Repositories;
 
-public class UserRepository(IdentityContext context) : IUserRepository
+public class UserRepository(IdentityContext context) : GenericRepository<UserEntity>(context), IUserRepository
 {
     public async Task<TProjection?> GetUserByIdAsync<TProjection>(Guid userId,
         Func<IQueryable<UserEntity>, IQueryable<TProjection>> projector)
     {
-        var users = context.Users;
-
-        var userEntity = await users
-            .Where(u => u.Id == userId)
+        var userEntity = await Get(u => u.Id == userId)
             .ApplyProjector(projector)
             .FirstOrDefaultAsync();
 
@@ -25,24 +22,7 @@ public class UserRepository(IdentityContext context) : IUserRepository
     public async Task<IEnumerable<TProjection>> GetUsersAsync<TProjection>(UserQueryParameters userQueryParameters,
         Func<IQueryable<UserEntity>, IQueryable<TProjection>> projector)
     {
-        var query = context.Users.AsQueryable();
-
-        if (userQueryParameters.PageSize is not null and not 0)
-        {
-            query = query.Take(userQueryParameters.PageSize.Value);
-
-            if (userQueryParameters.Page is not null)
-                query = query.Skip((userQueryParameters.Page * userQueryParameters.PageSize).Value);
-        }
-
-        if (userQueryParameters.FirstName is not null)
-            query = query.Where(u => u.FirstName.Contains(userQueryParameters.FirstName));
-
-        if (userQueryParameters.LastName is not null)
-            query = query.Where(u => u.LastName.Contains(userQueryParameters.LastName));
-
-        if (userQueryParameters.Email is not null)
-            query = query.Where(u => u.Email!.Contains(userQueryParameters.Email));
+        var query = Get(userQueryParameters);
 
         return await query
             .ApplyProjector(projector)

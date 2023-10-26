@@ -1,9 +1,15 @@
-﻿namespace IdentityService.Application.QueryParameters;
+﻿using System.Linq.Expressions;
 
-public abstract record QueryParametersBase
+namespace IdentityService.Application.QueryParameters;
+
+public abstract record QueryParametersBase<T>
+    where T : class
 {
     public int? Page { get; set; }
     public int? PageSize { get; set; }
     public string? OrderBy { get; set; }
-    public string? OrderDirection { get; set; }
+    public bool? Desc { get; set; }
+
+    public abstract Expression<Func<T, object>> GetOrderByExpression();
+    public abstract IEnumerable<Expression<Func<T, bool>>> GetFilterExpressions();
 }
