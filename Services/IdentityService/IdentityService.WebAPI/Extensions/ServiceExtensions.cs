@@ -1,5 +1,6 @@
 ﻿using FluentValidation.AspNetCore;
 using IdentityService.WebAPI.Middlewares;
+using Microsoft.OpenApi.Models;
 
 namespace IdentityService.WebAPI.Extensions;
 
@@ -38,7 +39,30 @@ public static class ServiceExtensions
     {
         services.AddSwaggerGen(options =>
         {
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization header using the Bearer scheme.",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer",
+                BearerFormat = "JWT"
+            });
             
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] {}
+                }
+            });
         });
         
         return services;
