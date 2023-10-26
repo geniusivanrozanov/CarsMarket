@@ -1,4 +1,6 @@
-﻿using IdentityService.Application.Interfaces;
+﻿using System.Reflection;
+using FluentValidation;
+using IdentityService.Application.Interfaces;
 using IdentityService.Application.Mappers;
 using IdentityService.Application.Options;
 using IdentityService.Application.Services;
@@ -14,6 +16,7 @@ public static class ServiceExtensions
         return services
             .AddServices()
             .AddMappers()
+            .AddValidators()
             .ConfigureOptions(configuration);
     }
 
@@ -28,6 +31,13 @@ public static class ServiceExtensions
     private static IServiceCollection AddMappers(this IServiceCollection services)
     {
         services.AddScoped<IMapper, Mapper>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddValidators(this IServiceCollection services)
+    {
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         return services;
     }

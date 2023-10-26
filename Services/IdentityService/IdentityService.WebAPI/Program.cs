@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using IdentityService.Application.Extensions;
 using IdentityService.Infrastructure.Extensions;
 using IdentityService.WebAPI.Middlewares;
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddRouting(options =>
 {
     options.LowercaseUrls = true;
