@@ -59,6 +59,28 @@ public class UserService(
         return user;
     }
 
+    internal async Task EnsureUserCreatedAsync(RegisterDto register, string role)
+    {
+        var user = await userManager.FindByEmailAsync(register.Email);
+        if (user is null)
+        {
+            await RegisterUserAsync(register, role);
+        }
+        else
+        {
+            if (!await userManager.IsInRoleAsync(user, role))
+            {
+                await userManager.AddToRoleAsync(user, role);
+            }
+
+            if (!await userManager.CheckPasswordAsync(user, register.Password))
+            {
+                var token = await userManager.GeneratePasswordResetTokenAsync(user);
+                await userManager.ResetPasswordAsync(user, token, register.Password);
+            }
+        }
+    }
+    
     private async Task<UserDto> RegisterUserAsync(RegisterDto register, string role)
     {
         var userEntity = mapper.ToUserEntity(register);
