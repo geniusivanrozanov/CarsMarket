@@ -22,6 +22,11 @@ public class UserService(
         return RegisterUserAsync(register, Roles.User);
     }
 
+    public Task<UserDto> RegisterModeratorAsync(RegisterDto register)
+    {
+        return RegisterUserAsync(register, Roles.Moderator);
+    }
+
     public async Task<LoginResultDto> LoginUserAsync(LoginDto login)
     {
         var userEntity = await userManager.FindByEmailAsync(login.Email);

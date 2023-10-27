@@ -30,9 +30,18 @@ public class UsersController(IUserService userService) : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> Register([FromBody]RegisterDto registerDto)
+    public async Task<IActionResult> RegisterUser([FromBody]RegisterDto registerDto)
     {
         var user = await userService.RegisterUserAsync(registerDto);
+
+        return CreatedAtAction(nameof(GetUserById), new { user.Id }, user);
+    }
+    
+    [Authorize(Roles = Roles.Admin)]
+    [HttpPost("moderators")]
+    public async Task<IActionResult> RegisterModerator([FromBody]RegisterDto registerDto)
+    {
+        var user = await userService.RegisterModeratorAsync(registerDto);
 
         return CreatedAtAction(nameof(GetUserById), new { user.Id }, user);
     }
