@@ -25,12 +25,12 @@ public record UserQueryParameters : QueryParametersBase<UserEntity>
     public override IEnumerable<Expression<Func<UserEntity, bool>>> GetFilterExpressions()
     {
         if (FirstName is not null)
-            yield return u => u.FirstName.Contains(FirstName);
+            yield return u => u.FirstName.ToLower().Contains(FirstName.ToLower());
 
         if (LastName is not null)
-            yield return u => u.LastName.Contains(LastName);
+            yield return u => u.LastName.ToLower().Contains(LastName.ToLower());
 
         if (Email is not null)
-            yield return u => u.Email!.Contains(Email);
+            yield return u => u.Email!.ToLower().Contains(Email.ToLower());
     }
 }
