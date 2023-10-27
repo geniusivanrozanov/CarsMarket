@@ -1,0 +1,13 @@
+﻿version: "3.9"
+
+services:
+  identity.api:
+    build:
+      context: .
+      dockerfile: Services/IdentityService/IdentityService.WebAPI/Dockerfile
+  
+  postgres:
+    image: postgres:latest
+    
+volumes:
+  postgres_data:
