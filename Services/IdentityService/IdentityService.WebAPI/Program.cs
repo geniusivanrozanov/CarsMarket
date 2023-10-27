@@ -1,4 +1,3 @@
-using FluentValidation.AspNetCore;
 using IdentityService.Application.Extensions;
 using IdentityService.Infrastructure.Extensions;
 using IdentityService.WebAPI.Extensions;

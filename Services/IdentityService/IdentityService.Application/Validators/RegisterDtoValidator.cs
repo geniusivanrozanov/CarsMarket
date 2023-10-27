@@ -1,11 +1,6 @@
-﻿using System.Text;
-using FluentValidation;
-using FluentValidation.Validators;
+﻿using FluentValidation;
 using IdentityService.Application.DTOs;
 using IdentityService.Application.Extensions;
-using IdentityService.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 
 namespace IdentityService.Application.Validators;
 
@@ -14,7 +9,7 @@ public class RegisterDtoValidator : AbstractValidator<RegisterDto>
     private const int FirstNameMaxLength = 64;
     private const int LastNameMaxLength = 64;
 
-    public RegisterDtoValidator(UserManager<UserEntity> userManager, ILogger<RegisterDtoValidator> logger)
+    public RegisterDtoValidator()
     {
         RuleFor(dto => dto.Email)
             .NotNull()

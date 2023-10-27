@@ -73,10 +73,7 @@ public class UserService(
         }
         else
         {
-            if (!await userManager.IsInRoleAsync(user, role))
-            {
-                await userManager.AddToRoleAsync(user, role);
-            }
+            if (!await userManager.IsInRoleAsync(user, role)) await userManager.AddToRoleAsync(user, role);
 
             if (!await userManager.CheckPasswordAsync(user, register.Password))
             {
@@ -85,7 +82,7 @@ public class UserService(
             }
         }
     }
-    
+
     private async Task<UserDto> RegisterUserAsync(RegisterDto register, string role)
     {
         var userEntity = mapper.ToUserEntity(register);
@@ -93,7 +90,8 @@ public class UserService(
         if (!registrationResult.Succeeded)
         {
             var errors = string.Join("\n", registrationResult.Errors.Select(e => e.Description));
-            logger.LogInformation("User with email {Email} failed to register with errors: {@Errors}", register.Email, errors);
+            logger.LogInformation("User with email {Email} failed to register with errors: {@Errors}", register.Email,
+                errors);
             throw new RegistrationFailedException(errors);
         }
 

@@ -46,7 +46,8 @@ public static class ServiceExtensions
         return services;
     }
 
-    private static async Task<IServiceCollection> AddDefaultUsers(this IServiceCollection services, IConfiguration configuration)
+    private static async Task<IServiceCollection> AddDefaultUsers(this IServiceCollection services,
+        IConfiguration configuration)
     {
         var defaultUsers = configuration
             .GetSection("DefaultUsers")
@@ -71,7 +72,7 @@ public static class ServiceExtensions
 
         return services;
     }
-    
+
     private static IServiceCollection ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));

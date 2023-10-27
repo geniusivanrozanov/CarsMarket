@@ -8,19 +8,16 @@ public record UserQueryParameters : QueryParametersBase<UserEntity>
     public string? Email { get; init; }
     public string? FirstName { get; init; }
     public string? LastName { get; init; }
-    
+
     public override Expression<Func<UserEntity, object>> GetOrderByExpression()
     {
-        if (OrderBy is null)
-        {
-            throw new ArgumentNullException();
-        }
-        
+        if (OrderBy is null) throw new ArgumentNullException();
+
         return OrderBy.ToLower() switch
         {
             "email" => entity => entity.Email!,
-            "firstname" => entity => entity.FirstName!,
-            "lastname" => entity => entity.LastName!,
+            "firstname" => entity => entity.FirstName,
+            "lastname" => entity => entity.LastName,
             _ => throw new ArgumentOutOfRangeException()
         };
     }

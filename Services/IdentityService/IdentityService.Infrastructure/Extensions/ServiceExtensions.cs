@@ -14,7 +14,8 @@ namespace IdentityService.Infrastructure.Extensions;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddInfrastructureLayer(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureLayer(this IServiceCollection services,
+        IConfiguration configuration)
     {
         return services
             .AddDbContexts(configuration)
@@ -28,7 +29,7 @@ public static class ServiceExtensions
     {
         var identityConnectionString = configuration.GetConnectionString("IdentityPostgres");
         ArgumentException.ThrowIfNullOrEmpty(identityConnectionString);
-        
+
         services.AddDbContext<IdentityContext>((serviceProvider, options) =>
         {
             options.UseNpgsql(identityConnectionString);
@@ -36,14 +37,14 @@ public static class ServiceExtensions
         });
 
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
-        
+
         return services;
     }
 
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
-        
+
         return services;
     }
 
@@ -56,14 +57,14 @@ public static class ServiceExtensions
 
         return services;
     }
-    
+
     private static IServiceCollection AddTimeProvider(this IServiceCollection services)
     {
         services.AddSingleton(TimeProvider.System);
 
         return services;
     }
-    
+
     private static IServiceCollection MigrateDatabase<TContext>(this IServiceCollection services)
         where TContext : DbContext
     {
@@ -80,7 +81,7 @@ public static class ServiceExtensions
             logger.LogError("Failed to apply {Context} migrations", typeof(TContext).Name);
             throw;
         }
-        
+
         return services;
     }
 }

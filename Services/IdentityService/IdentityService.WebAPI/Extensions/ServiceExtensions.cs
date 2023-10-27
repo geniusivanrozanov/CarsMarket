@@ -27,18 +27,18 @@ public static class ServiceExtensions
             .AddMiddlewares()
             .AddSwagger();
     }
-    
+
     private static IServiceCollection AddValidators(this IServiceCollection services)
     {
         services.AddFluentValidationAutoValidation();
-        
+
         return services;
     }
-    
+
     private static IServiceCollection AddMiddlewares(this IServiceCollection services)
     {
         services.AddSingleton<ExceptionHandlerMiddleware>();
-        
+
         return services;
     }
 
@@ -47,7 +47,7 @@ public static class ServiceExtensions
         var jwtOptions = services
             .BuildServiceProvider()
             .GetRequiredService<IOptions<JwtOptions>>();
-        
+
         services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
@@ -65,10 +65,10 @@ public static class ServiceExtensions
                     ClockSkew = TimeSpan.Zero
                 };
             });
-        
+
         return services;
     }
-    
+
     private static IServiceCollection AddSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen(options =>
@@ -82,7 +82,7 @@ public static class ServiceExtensions
                 Scheme = "Bearer",
                 BearerFormat = "JWT"
             });
-            
+
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
@@ -98,7 +98,7 @@ public static class ServiceExtensions
                 }
             });
         });
-        
+
         return services;
     }
 }

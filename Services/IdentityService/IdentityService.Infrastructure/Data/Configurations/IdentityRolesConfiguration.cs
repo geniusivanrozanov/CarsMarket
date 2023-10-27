@@ -17,7 +17,7 @@ public class IdentityRolesConfiguration : IEntityTypeConfiguration<IdentityRole<
                 Name = r,
                 NormalizedName = r.ToUpperInvariant()
             });
-        
+
         builder.HasData(roles);
     }
 }

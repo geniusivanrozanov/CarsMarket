@@ -20,12 +20,13 @@ public abstract class GenericRepository<TEntity>(DbContext context) : IGenericRe
     {
         return _set.Where(filter);
     }
-    
+
     public IQueryable<TEntity> Get(QueryParametersBase<TEntity> queryParameters)
     {
         var query = _set.AsQueryable();
 
-        query = queryParameters.GetFilterExpressions().Aggregate(query, (current, filterExpression) => current.Where(filterExpression));
+        query = queryParameters.GetFilterExpressions()
+            .Aggregate(query, (current, filterExpression) => current.Where(filterExpression));
 
         if (queryParameters.OrderBy is not null)
         {
@@ -36,14 +37,9 @@ public abstract class GenericRepository<TEntity>(DbContext context) : IGenericRe
         }
 
         if (queryParameters.Page is not null && queryParameters.PageSize is not null)
-        {
             query = query.Skip(queryParameters.Page.Value * queryParameters.PageSize.Value);
-        }
 
-        if (queryParameters.PageSize is not null)
-        {
-            query = query.Take(queryParameters.PageSize.Value);
-        }
+        if (queryParameters.PageSize is not null) query = query.Take(queryParameters.PageSize.Value);
 
         return query;
     }

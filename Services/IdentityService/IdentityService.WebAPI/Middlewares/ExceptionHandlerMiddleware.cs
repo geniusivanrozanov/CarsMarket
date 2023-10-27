@@ -21,7 +21,7 @@ public class ExceptionHandlerMiddleware(ILogger<ExceptionHandlerMiddleware> logg
         catch (Exception exception)
         {
             context.Response.ContentType = "application/json";
-            
+
             if (_statusCodes.TryGetValue(exception.GetType(), out var statusCode))
             {
                 context.Response.StatusCode = (int)statusCode;
@@ -37,7 +37,7 @@ public class ExceptionHandlerMiddleware(ILogger<ExceptionHandlerMiddleware> logg
                 {
                     Message = "Internal server error"
                 });
-                
+
                 logger.LogError(exception, "Message: {Message}", exception.Message);
             }
         }
