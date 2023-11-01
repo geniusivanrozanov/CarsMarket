@@ -1,7 +1,6 @@
 ﻿namespace IdentityService.Application.DTOs;
 
-public record LoginResultDto
+public record RefreshTokenDto
 {
-    public required string AccessToken { get; init; }
     public required string RefreshToken { get; init; }
 }

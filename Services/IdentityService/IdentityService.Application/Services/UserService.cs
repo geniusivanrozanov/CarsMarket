@@ -36,13 +36,22 @@ public class UserService(
             throw new LoginFailedException("Invalid username or password");
         }
 
-        var accessToken = await tokenService.GenerateAccessTokenAsync(userEntity);
-        var loginResultDto = new LoginResultDto
-        {
-            AccessToken = accessToken
-        };
+        return await LoginUserAsync(userEntity);
+    }
 
-        return loginResultDto;
+    public async Task<LoginResultDto> LoginUserByRefreshTokenAsync(RefreshTokenDto refreshToken)
+    {
+        var userId = await tokenService.GetUserIdByRefreshToken(refreshToken.RefreshToken);
+        
+        if (userId is null)
+        {
+            logger.LogInformation("User with refresh token {RefreshToken} failed to login", refreshToken.RefreshToken);
+            throw new LoginFailedException("Invalid refresh token");
+        }
+
+        var userEntity = await userManager.FindByIdAsync(userId.ToString()!);
+        
+        return await LoginUserAsync(userEntity!);
     }
 
     public async Task<IEnumerable<UserDto>> GetUsersAsync(UserQueryParameters userQueryParameters)
@@ -98,5 +107,18 @@ public class UserService(
         await userManager.AddToRoleAsync(userEntity, role);
 
         return mapper.ToUserDto(userEntity);
+    }
+    
+    private async Task<LoginResultDto> LoginUserAsync(UserEntity userEntity)
+    {
+        var accessTokenTask = tokenService.GenerateAccessTokenAsync(userEntity);
+        var refreshTokenTask = tokenService.GenerateAndSaveRefreshTokenAsync(userEntity.Id);
+        var loginResultDto = new LoginResultDto
+        {
+            AccessToken = await accessTokenTask,
+            RefreshToken = await refreshTokenTask
+        };
+
+        return loginResultDto;
     }
 }

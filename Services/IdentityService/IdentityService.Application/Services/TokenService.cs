@@ -12,7 +12,8 @@ namespace IdentityService.Application.Services;
 
 public class TokenService(
         IOptions<JwtOptions> tokenOptions,
-        UserManager<UserEntity> userManager)
+        UserManager<UserEntity> userManager,
+        IRefreshTokenRepository refreshTokenRepository)
     : ITokenService
 {
     public async Task<string> GenerateAccessTokenAsync(UserEntity userEntity)
@@ -41,5 +42,26 @@ public class TokenService(
         var token = tokenHandler.CreateToken(tokenDescriptor);
 
         return tokenHandler.WriteToken(token);
+    }
+
+    public async Task<string> GenerateAndSaveRefreshTokenAsync(Guid userId)
+    {
+        var token = GenerateRefreshToken();
+        await refreshTokenRepository.SetRefreshTokenAsync(token, userId);
+
+        return token;
+    }
+
+    public async Task<Guid?> GetUserIdByRefreshToken(string token)
+    {
+        var userId =  await refreshTokenRepository.GetUserIdByTokenAsync(token);
+         await refreshTokenRepository.DeleteTokenAsync(token);
+
+        return userId;
+    }
+
+    private static string GenerateRefreshToken()
+    {
+        return Guid.NewGuid().ToString("n");
     }
 }

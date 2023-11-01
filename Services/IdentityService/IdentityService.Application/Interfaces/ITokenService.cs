@@ -6,5 +6,5 @@ public interface ITokenService
 {
     Task<string> GenerateAccessTokenAsync(UserEntity userEntity);
     Task<string> GenerateAndSaveRefreshTokenAsync(Guid userId);
-    Task<Guid> GetUserIdByRefreshToken(string token);
+    Task<Guid?> GetUserIdByRefreshToken(string token);
 }
