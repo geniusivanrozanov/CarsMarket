@@ -9,5 +9,9 @@ services:
   postgres:
     image: postgres:latest
     
+  redis:
+    image: redis:latest
+    
 volumes:
   postgres_data:
+  redis_data:

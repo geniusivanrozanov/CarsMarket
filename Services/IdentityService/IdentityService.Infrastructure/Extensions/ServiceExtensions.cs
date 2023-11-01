@@ -1,4 +1,5 @@
-﻿using IdentityService.Application.Interfaces;
+﻿using System.Diagnostics;
+using IdentityService.Application.Interfaces;
 using IdentityService.Domain.Entities;
 using IdentityService.Infrastructure.Data.Contexts;
 using IdentityService.Infrastructure.Data.Interceptors;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using StackExchange.Redis;
 
 namespace IdentityService.Infrastructure.Extensions;
 
@@ -21,6 +23,7 @@ public static class ServiceExtensions
             .AddDbContexts(configuration)
             .AddRepositories()
             .AddIdentity()
+            .AddRedisConnectionMultiplexer(configuration)
             .AddTimeProvider()
             .MigrateDatabase<IdentityContext>();
     }
@@ -44,6 +47,7 @@ public static class ServiceExtensions
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRefreshTokenRepository,RefreshTokenRepository>();
 
         return services;
     }
@@ -61,6 +65,15 @@ public static class ServiceExtensions
     private static IServiceCollection AddTimeProvider(this IServiceCollection services)
     {
         services.AddSingleton(TimeProvider.System);
+
+        return services;
+    }
+    
+    private static IServiceCollection AddRedisConnectionMultiplexer(this IServiceCollection services, IConfiguration configuration)
+    {
+        var connectionString = configuration.GetConnectionString("Redis");
+        ArgumentException.ThrowIfNullOrEmpty(connectionString);
+        services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(connectionString));
 
         return services;
     }
