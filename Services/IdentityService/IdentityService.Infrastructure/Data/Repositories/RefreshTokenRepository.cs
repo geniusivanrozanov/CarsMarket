@@ -5,20 +5,19 @@ using StackExchange.Redis;
 
 namespace IdentityService.Infrastructure.Data.Repositories;
 
-public class RefreshTokenRepository : IRefreshTokenRepository
-{
-    private readonly IDatabase _database;
-    
-    public RefreshTokenRepository(
+public class RefreshTokenRepository(
         IConnectionMultiplexer connectionMultiplexer,
         IOptions<RefreshTokenOptions> refreshTokenOptions)
-    {
-        _database = connectionMultiplexer.GetDatabase(refreshTokenOptions.Value.RedisDatabaseNumber);
-    }
-    
+    : IRefreshTokenRepository
+{
+    private readonly IDatabase _database = connectionMultiplexer.GetDatabase(refreshTokenOptions.Value.RedisDatabaseNumber);
+
     public async Task SetRefreshTokenAsync(string token, Guid userId)
     {
-        await _database.StringSetAsync(token, userId.ToString());
+        await _database.StringSetAsync(
+            token, 
+            userId.ToString(), 
+            TimeSpan.FromHours(refreshTokenOptions.Value.ExpirationHours));
     }
 
     public async Task<Guid?> GetUserIdByTokenAsync(string token)
