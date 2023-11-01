@@ -76,6 +76,7 @@ public static class ServiceExtensions
     private static IServiceCollection ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
+        services.Configure<RefreshTokenOptions>(configuration.GetSection(nameof(RefreshTokenOptions)));
 
         return services;
     }
