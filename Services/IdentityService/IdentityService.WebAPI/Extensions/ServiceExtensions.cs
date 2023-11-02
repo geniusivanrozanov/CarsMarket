@@ -2,16 +2,18 @@
 using FluentValidation.AspNetCore;
 using IdentityService.Application.Options;
 using IdentityService.WebAPI.Middlewares;
+using IdentityService.WebAPI.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 
 namespace IdentityService.WebAPI.Extensions;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddApiLayer(this IServiceCollection services)
+    public static IServiceCollection AddApiLayer(this IServiceCollection services, IConfiguration configuration)
     {
         return services
             .AddControllers().Services
@@ -25,7 +27,9 @@ public static class ServiceExtensions
             .AddEndpointsApiExplorer()
             .AddValidators()
             .AddMiddlewares()
-            .AddSwagger();
+            .AddSwagger()
+            .AddDistributedCache(configuration)
+            .ConfigureOptions(configuration);
     }
 
     private static IServiceCollection AddValidators(this IServiceCollection services)
@@ -99,6 +103,33 @@ public static class ServiceExtensions
             });
         });
 
+        return services;
+    }
+
+    private static IServiceCollection AddDistributedCache(this IServiceCollection services, IConfiguration configuration)
+    {
+        var connectionString = configuration.GetConnectionString("Redis");
+        var databaseNumber = configuration["DistributedCacheOptions:RedisDatabaseNumber"];
+        ArgumentException.ThrowIfNullOrEmpty(connectionString);
+        ArgumentException.ThrowIfNullOrEmpty(databaseNumber);
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.ConfigurationOptions = new ConfigurationOptions
+            {
+                DefaultDatabase = int.Parse(databaseNumber),
+                EndPoints = {{connectionString}}
+            };
+        });
+        
+        return services;
+    }
+
+
+    private static IServiceCollection ConfigureOptions(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.Configure<DistributedCacheOptions>(configuration.GetSection(nameof(DistributedCacheOptions)));
+        
         return services;
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using IdentityService.Application.Interfaces;
+﻿using IdentityService.Application.Interfaces;
 using IdentityService.Domain.Entities;
 using IdentityService.Infrastructure.Data.Contexts;
 using IdentityService.Infrastructure.Data.Interceptors;
