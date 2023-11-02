@@ -23,8 +23,6 @@ public static class SeriLogger
             configuration
                 .Enrich.FromLogContext()
                 .Enrich.WithMachineName()
-                .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
-                .Enrich.WithProperty("Application", context.HostingEnvironment.ApplicationName)
                 .WriteTo.Debug()
                 .WriteTo.Console()
                 .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(elasticUri))
@@ -32,6 +30,8 @@ public static class SeriLogger
                     IndexFormat = $"{applicationName}-logs-{environmentName}-{DateTime.UtcNow:yyyy-MM}",
                     AutoRegisterTemplate = true
                 })
+                .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
+                .Enrich.WithProperty("Application", context.HostingEnvironment.ApplicationName)
                 .ReadFrom.Configuration(context.Configuration);
         };
 }
