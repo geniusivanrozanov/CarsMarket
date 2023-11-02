@@ -25,3 +25,37 @@ services:
       retries: 5
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    
+  elasticsearch:
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks: 
+      - elastic
+  
+  kibana:
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    networks: 
+      - elastic
+
+
+volumes:
+  postgres_data:
+  elasticsearch_data:
+    
+networks:
+  elastic:
+    driver: bridge
