@@ -17,10 +17,10 @@ public class DistributedCacheAttribute : Attribute, IAsyncResourceFilter
         if (context.HttpContext.Request.Method != "GET")
         {
             await next();
-            
+
             return;
         }
-        
+
         var httpContext = context.HttpContext;
         var cache = httpContext.RequestServices.GetRequiredService<IDistributedCache>();
         var cacheOptions = httpContext.RequestServices.GetRequiredService<IOptions<DistributedCacheOptions>>().Value;
@@ -30,7 +30,7 @@ public class DistributedCacheAttribute : Attribute, IAsyncResourceFilter
         if (cachedResponse is not null)
         {
             context.Result = JsonSerializer.Deserialize<OkObjectResult>(cachedResponse);
-            
+
             return;
         }
 
@@ -47,10 +47,8 @@ public class DistributedCacheAttribute : Attribute, IAsyncResourceFilter
     {
         var cacheKeyBuilder = new StringBuilder(request.Path.ToString().ToLower());
         foreach (var (key, value) in request.Query.OrderBy(x => x.Key))
-        {
             cacheKeyBuilder.Append($"&{key.ToLower()}={value.ToString().ToLower()}");
-        }
-        
+
         return cacheKeyBuilder.ToString();
     }
 }

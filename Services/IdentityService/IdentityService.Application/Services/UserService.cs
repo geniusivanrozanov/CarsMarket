@@ -42,7 +42,7 @@ public class UserService(
     public async Task<LoginResultDto> LoginUserByRefreshTokenAsync(RefreshTokenDto refreshToken)
     {
         var userId = await tokenService.GetUserIdByRefreshToken(refreshToken.RefreshToken);
-        
+
         if (userId is null)
         {
             logger.LogInformation("User with refresh token {RefreshToken} failed to login", refreshToken.RefreshToken);
@@ -50,7 +50,7 @@ public class UserService(
         }
 
         var userEntity = await userManager.FindByIdAsync(userId.ToString()!);
-        
+
         return await LoginUserAsync(userEntity!);
     }
 
@@ -108,7 +108,7 @@ public class UserService(
 
         return mapper.ToUserDto(userEntity);
     }
-    
+
     private async Task<LoginResultDto> LoginUserAsync(UserEntity userEntity)
     {
         var accessTokenTask = tokenService.GenerateAccessTokenAsync(userEntity);

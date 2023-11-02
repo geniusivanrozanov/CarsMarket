@@ -56,7 +56,7 @@ public class UsersController(IUserService userService) : ControllerBase
 
         return Ok(result);
     }
-    
+
     [HttpPost("login/refresh")]
     public async Task<IActionResult> LoginRefresh([FromBody] RefreshTokenDto refreshTokenDto)
     {

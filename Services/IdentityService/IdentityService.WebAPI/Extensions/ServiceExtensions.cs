@@ -106,7 +106,8 @@ public static class ServiceExtensions
         return services;
     }
 
-    private static IServiceCollection AddDistributedCache(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddDistributedCache(this IServiceCollection services,
+        IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("Redis");
         var databaseNumber = configuration["DistributedCacheOptions:RedisDatabaseNumber"];
@@ -117,10 +118,10 @@ public static class ServiceExtensions
             options.ConfigurationOptions = new ConfigurationOptions
             {
                 DefaultDatabase = int.Parse(databaseNumber),
-                EndPoints = {{connectionString}}
+                EndPoints = { { connectionString } }
             };
         });
-        
+
         return services;
     }
 
@@ -129,7 +130,7 @@ public static class ServiceExtensions
         IConfiguration configuration)
     {
         services.Configure<DistributedCacheOptions>(configuration.GetSection(nameof(DistributedCacheOptions)));
-        
+
         return services;
     }
 }

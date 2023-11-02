@@ -46,7 +46,7 @@ public static class ServiceExtensions
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IRefreshTokenRepository,RefreshTokenRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
         return services;
     }
@@ -67,8 +67,9 @@ public static class ServiceExtensions
 
         return services;
     }
-    
-    private static IServiceCollection AddRedisConnectionMultiplexer(this IServiceCollection services, IConfiguration configuration)
+
+    private static IServiceCollection AddRedisConnectionMultiplexer(this IServiceCollection services,
+        IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("Redis");
         ArgumentException.ThrowIfNullOrEmpty(connectionString);
