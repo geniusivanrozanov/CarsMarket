@@ -12,7 +12,7 @@ public static class SeriLogger
         {
             var elasticUri = context.Configuration.GetValue<string>("ElasticConfiguration:Uri");
             ArgumentException.ThrowIfNullOrEmpty(elasticUri);
-            
+
             var applicationName = context.HostingEnvironment.ApplicationName
                 .ToLower()
                 .Replace(".", "-");
