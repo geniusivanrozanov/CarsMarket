@@ -15,7 +15,7 @@ public class TokenService(
         UserManager<UserEntity> userManager)
     : ITokenService
 {
-    public async Task<string> GenerateAccessTokenAsync(UserEntity userEntity)
+    public async Task<string> GenerateAccessTokenAsync(UserEntity userEntity, CancellationToken cancellationToken)
     {
         var key = Encoding.UTF8.GetBytes(tokenOptions.Value.Key);
         var securityKey = new SymmetricSecurityKey(key);

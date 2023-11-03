@@ -17,17 +17,17 @@ public class UserService(
         UserManager<UserEntity> userManager)
     : IUserService
 {
-    public Task<UserDto> RegisterUserAsync(RegisterDto register)
+    public Task<UserDto> RegisterUserAsync(RegisterDto register, CancellationToken cancellationToken)
     {
-        return RegisterUserAsync(register, Roles.User);
+        return RegisterUserAsync(register, Roles.User, cancellationToken);
     }
 
-    public Task<UserDto> RegisterModeratorAsync(RegisterDto register)
+    public Task<UserDto> RegisterModeratorAsync(RegisterDto register, CancellationToken cancellationToken)
     {
-        return RegisterUserAsync(register, Roles.Moderator);
+        return RegisterUserAsync(register, Roles.Moderator, cancellationToken);
     }
 
-    public async Task<LoginResultDto> LoginUserAsync(LoginDto login)
+    public async Task<LoginResultDto> LoginUserAsync(LoginDto login, CancellationToken cancellationToken)
     {
         var userEntity = await userManager.FindByEmailAsync(login.Email);
         if (userEntity is null || !await userManager.CheckPasswordAsync(userEntity, login.Password))
@@ -36,7 +36,7 @@ public class UserService(
             throw new LoginFailedException("Invalid username or password");
         }
 
-        var accessToken = await tokenService.GenerateAccessTokenAsync(userEntity);
+        var accessToken = await tokenService.GenerateAccessTokenAsync(userEntity, cancellationToken);
         var loginResultDto = new LoginResultDto
         {
             AccessToken = accessToken
@@ -45,16 +45,16 @@ public class UserService(
         return loginResultDto;
     }
 
-    public async Task<IEnumerable<UserDto>> GetUsersAsync(UserQueryParameters userQueryParameters)
+    public async Task<IEnumerable<UserDto>> GetUsersAsync(UserQueryParameters userQueryParameters, CancellationToken cancellationToken)
     {
-        var users = await userRepository.GetUsersAsync(userQueryParameters, mapper.ProjectToUserDto);
+        var users = await userRepository.GetUsersAsync(userQueryParameters, mapper.ProjectToUserDto, cancellationToken);
 
         return users;
     }
 
-    public async Task<UserDto> GetUserByIdAsync(Guid userId)
+    public async Task<UserDto> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetUserByIdAsync(userId, mapper.ProjectToUserDto);
+        var user = await userRepository.GetUserByIdAsync(userId, mapper.ProjectToUserDto, cancellationToken);
         if (user is null)
         {
             logger.LogInformation("Failed to find user with '{UserId}'", userId);
@@ -69,7 +69,7 @@ public class UserService(
         var user = await userManager.FindByEmailAsync(register.Email);
         if (user is null)
         {
-            await RegisterUserAsync(register, role);
+            await RegisterUserAsync(register, role, new CancellationToken());
         }
         else
         {
@@ -83,7 +83,7 @@ public class UserService(
         }
     }
 
-    private async Task<UserDto> RegisterUserAsync(RegisterDto register, string role)
+    private async Task<UserDto> RegisterUserAsync(RegisterDto register, string role, CancellationToken cancellationToken)
     {
         var userEntity = mapper.ToUserEntity(register);
         var registrationResult = await userManager.CreateAsync(userEntity, register.Password);
