@@ -15,9 +15,9 @@ public class UsersController(IUserService userService) : ControllerBase
     [HttpGet]
     [Authorize(Roles = Roles.Admin)]
     [DistributedCache]
-    public async Task<IActionResult> GetUsers([FromQuery] UserQueryParameters queryParameters)
+    public async Task<IActionResult> GetUsers([FromQuery] UserQueryParameters queryParameters, CancellationToken cancellationToken)
     {
-        var users = await userService.GetUsersAsync(queryParameters);
+        var users = await userService.GetUsersAsync(queryParameters, cancellationToken);
 
         return Ok(users);
     }
@@ -25,42 +25,42 @@ public class UsersController(IUserService userService) : ControllerBase
     [HttpGet("{id}")]
     [Authorize(Roles = Roles.Admin)]
     [DistributedCache]
-    public async Task<IActionResult> GetUserById(Guid id)
+    public async Task<IActionResult> GetUserById(Guid id, CancellationToken cancellationToken)
     {
-        var user = await userService.GetUserByIdAsync(id);
+        var user = await userService.GetUserByIdAsync(id, cancellationToken);
 
         return Ok(user);
     }
 
     [HttpPost]
-    public async Task<IActionResult> RegisterUser([FromBody] RegisterDto registerDto)
+    public async Task<IActionResult> RegisterUser([FromBody] RegisterDto registerDto, CancellationToken cancellationToken)
     {
-        var user = await userService.RegisterUserAsync(registerDto);
+        var user = await userService.RegisterUserAsync(registerDto, cancellationToken);
 
         return CreatedAtAction(nameof(GetUserById), new { user.Id }, user);
     }
 
     [Authorize(Roles = Roles.Admin)]
     [HttpPost("moderators")]
-    public async Task<IActionResult> RegisterModerator([FromBody] RegisterDto registerDto)
+    public async Task<IActionResult> RegisterModerator([FromBody] RegisterDto registerDto, CancellationToken cancellationToken)
     {
-        var user = await userService.RegisterModeratorAsync(registerDto);
+        var user = await userService.RegisterModeratorAsync(registerDto, cancellationToken);
 
         return CreatedAtAction(nameof(GetUserById), new { user.Id }, user);
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+    public async Task<IActionResult> Login([FromBody] LoginDto loginDto, CancellationToken cancellationToken)
     {
-        var result = await userService.LoginUserAsync(loginDto);
+        var result = await userService.LoginUserAsync(loginDto, cancellationToken);
 
         return Ok(result);
     }
 
     [HttpPost("login/refresh")]
-    public async Task<IActionResult> LoginRefresh([FromBody] RefreshTokenDto refreshTokenDto)
+    public async Task<IActionResult> LoginRefresh([FromBody] RefreshTokenDto refreshTokenDto, CancellationToken cancellationToken)
     {
-        var result = await userService.LoginUserByRefreshTokenAsync(refreshTokenDto);
+        var result = await userService.LoginUserByRefreshTokenAsync(refreshTokenDto, cancellationToken);
 
         return Ok(result);
     }

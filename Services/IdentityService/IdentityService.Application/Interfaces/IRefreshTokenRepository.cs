@@ -2,6 +2,6 @@
 
 public interface IRefreshTokenRepository
 {
-    Task SetRefreshTokenAsync(string token, Guid userId);
-    Task<Guid?> GetUserIdByTokenAsync(string token);
+    Task SetRefreshTokenAsync(string token, Guid userId, CancellationToken cancellationToken);
+    Task<Guid?> GetUserIdByTokenAsync(string token, CancellationToken cancellationToken);
 }

@@ -13,7 +13,7 @@ public class RefreshTokenRepository(
     private readonly IDatabase _database =
         connectionMultiplexer.GetDatabase(refreshTokenOptions.Value.RedisDatabaseNumber);
 
-    public async Task SetRefreshTokenAsync(string token, Guid userId)
+    public async Task SetRefreshTokenAsync(string token, Guid userId, CancellationToken cancellationToken)
     {
         await _database.StringSetAsync(
             token,
@@ -21,7 +21,7 @@ public class RefreshTokenRepository(
             TimeSpan.FromHours(refreshTokenOptions.Value.ExpirationHours));
     }
 
-    public async Task<Guid?> GetUserIdByTokenAsync(string token)
+    public async Task<Guid?> GetUserIdByTokenAsync(string token, CancellationToken cancellationToken)
     {
         var userId = await _database.StringGetAsync(token);
         if (userId.IsNull) return null;

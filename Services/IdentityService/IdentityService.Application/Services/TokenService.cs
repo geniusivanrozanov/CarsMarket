@@ -16,7 +16,7 @@ public class TokenService(
         IRefreshTokenRepository refreshTokenRepository)
     : ITokenService
 {
-    public async Task<string> GenerateAccessTokenAsync(UserEntity userEntity)
+    public async Task<string> GenerateAccessTokenAsync(UserEntity userEntity, CancellationToken cancellationToken)
     {
         var key = Encoding.UTF8.GetBytes(tokenOptions.Value.Key);
         var securityKey = new SymmetricSecurityKey(key);
@@ -44,17 +44,17 @@ public class TokenService(
         return tokenHandler.WriteToken(token);
     }
 
-    public async Task<string> GenerateAndSaveRefreshTokenAsync(Guid userId)
+    public async Task<string> GenerateAndSaveRefreshTokenAsync(Guid userId, CancellationToken cancellationToken)
     {
         var token = GenerateRefreshToken();
-        await refreshTokenRepository.SetRefreshTokenAsync(token, userId);
+        await refreshTokenRepository.SetRefreshTokenAsync(token, userId, cancellationToken);
 
         return token;
     }
 
-    public async Task<Guid?> GetUserIdByRefreshToken(string token)
+    public async Task<Guid?> GetUserIdByRefreshToken(string token, CancellationToken cancellationToken)
     {
-        var userId = await refreshTokenRepository.GetUserIdByTokenAsync(token);
+        var userId = await refreshTokenRepository.GetUserIdByTokenAsync(token, cancellationToken);
 
         return userId;
     }
