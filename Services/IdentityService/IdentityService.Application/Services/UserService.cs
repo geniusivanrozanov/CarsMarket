@@ -30,6 +30,7 @@ public class UserService(
     public async Task<LoginResultDto> LoginUserAsync(LoginDto login, CancellationToken cancellationToken)
     {
         var userEntity = await userManager.FindByEmailAsync(login.Email);
+        
         if (userEntity is null || !await userManager.CheckPasswordAsync(userEntity, login.Password))
         {
             logger.LogInformation("User with email {Email} failed to login", login.Email);
@@ -55,6 +56,7 @@ public class UserService(
     public async Task<UserDto> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetUserByIdAsync(userId, mapper.ProjectToUserDto, cancellationToken);
+        
         if (user is null)
         {
             logger.LogInformation("Failed to find user with '{UserId}'", userId);
@@ -67,6 +69,7 @@ public class UserService(
     internal async Task EnsureUserCreatedAsync(RegisterDto register, string role)
     {
         var user = await userManager.FindByEmailAsync(register.Email);
+        
         if (user is null)
         {
             await RegisterUserAsync(register, role, new CancellationToken());
@@ -87,6 +90,7 @@ public class UserService(
     {
         var userEntity = mapper.ToUserEntity(register);
         var registrationResult = await userManager.CreateAsync(userEntity, register.Password);
+        
         if (!registrationResult.Succeeded)
         {
             var errors = string.Join("\n", registrationResult.Errors.Select(e => e.Description));
