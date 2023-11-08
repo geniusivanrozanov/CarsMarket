@@ -55,7 +55,6 @@ public class TokenService(
     public async Task<Guid?> GetUserIdByRefreshToken(string token)
     {
         var userId = await refreshTokenRepository.GetUserIdByTokenAsync(token);
-        await refreshTokenRepository.DeleteTokenAsync(token);
 
         return userId;
     }

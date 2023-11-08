@@ -28,9 +28,4 @@ public class RefreshTokenRepository(
 
         return Guid.Parse(userId.ToString());
     }
-
-    public async Task DeleteTokenAsync(string token)
-    {
-        await _database.KeyDeleteAsync(token);
-    }
 }
