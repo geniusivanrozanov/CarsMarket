@@ -111,12 +111,13 @@ public class UserService(
 
     private async Task<LoginResultDto> LoginUserAsync(UserEntity userEntity)
     {
-        var accessTokenTask = tokenService.GenerateAccessTokenAsync(userEntity);
-        var refreshTokenTask = tokenService.GenerateAndSaveRefreshTokenAsync(userEntity.Id);
+        var loginResults = await Task.WhenAll(
+            tokenService.GenerateAccessTokenAsync(userEntity),
+            tokenService.GenerateAndSaveRefreshTokenAsync(userEntity.Id));
         var loginResultDto = new LoginResultDto
         {
-            AccessToken = await accessTokenTask,
-            RefreshToken = await refreshTokenTask
+            AccessToken = loginResults[0],
+            RefreshToken = loginResults[1]
         };
 
         return loginResultDto;
