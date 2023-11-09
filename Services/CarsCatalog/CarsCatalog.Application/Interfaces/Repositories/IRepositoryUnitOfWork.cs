@@ -3,4 +3,6 @@
 public interface IRepositoryUnitOfWork
 {
     IBrandRepository Brands { get; }
+
+    Task SaveAsync(CancellationToken cancellationToken);
 }
