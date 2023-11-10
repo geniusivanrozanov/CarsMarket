@@ -1,4 +1,5 @@
 ﻿using CarsCatalog.Application.DTOs;
+using CarsCatalog.Application.Exceptions;
 using CarsCatalog.Application.Interfaces.Mappers;
 using CarsCatalog.Application.Interfaces.Repositories;
 using CarsCatalog.Domain.Entities;
@@ -21,7 +22,7 @@ public class GetBrandByIdQueryHandler(
         if (dto is null)
         {
             logger.LogInformation("Brand with id {Id} not exists", request.BrandId);
-            throw new Exception($"Brand with id '{request.BrandId}' not exists.");
+            throw new NotExistsException($"Brand with id '{request.BrandId}' not exists.");
         }
 
         return dto;
