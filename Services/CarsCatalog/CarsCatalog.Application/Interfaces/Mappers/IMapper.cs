@@ -1,7 +1,4 @@
-﻿using CarsCatalog.Application.DTOs;
-using CarsCatalog.Domain.Entities;
-
-namespace CarsCatalog.Application.Interfaces.Mappers;
+﻿namespace CarsCatalog.Application.Interfaces.Mappers;
 
 public interface IMapper
 {
