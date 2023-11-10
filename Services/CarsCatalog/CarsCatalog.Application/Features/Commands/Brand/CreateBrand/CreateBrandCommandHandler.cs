@@ -1,24 +1,23 @@
 ﻿using CarsCatalog.Application.DTOs;
-using CarsCatalog.Application.Interfaces.Mappers;
 using CarsCatalog.Application.Interfaces.Repositories;
-using CarsCatalog.Domain.Entities;
+using CarsCatalog.Application.Mappers;
 using MediatR;
 
 namespace CarsCatalog.Application.Features.Commands;
 
-public class CreateBrandCommandHandler(
-    IRepositoryUnitOfWork repositoryUnitOfWork,
-    IMapper mapper) :
+public class CreateBrandCommandHandler(IRepositoryUnitOfWork repositoryUnitOfWork) :
     IRequestHandler<CreateBrandCommand, GetBrandDto>
 {
+    private readonly IBrandRepository _brandRepository = repositoryUnitOfWork.Brands;
+    
     public async Task<GetBrandDto> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
     {
-        var entity = mapper.Map<BrandEntity, CreateBrandDto>(request.CreateBrandDto);
+        var entity = request.CreateBrandDto.ToBrandEntity();
         
-        repositoryUnitOfWork.Brands.CreateBrand(entity);
+        _brandRepository.CreateBrand(entity);
         await repositoryUnitOfWork.SaveAsync(cancellationToken);
 
-        var dto = mapper.Map<GetBrandDto, BrandEntity>(entity);
+        var dto = entity.ToGetBrandDto();
 
         return dto;
     }

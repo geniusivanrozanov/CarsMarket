@@ -1,6 +1,6 @@
 ﻿using CarsCatalog.Application.Exceptions;
-using CarsCatalog.Application.Interfaces.Mappers;
 using CarsCatalog.Application.Interfaces.Repositories;
+using CarsCatalog.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -11,10 +11,11 @@ public class DeleteBrandCommandHandler(
     ILogger<DeleteBrandCommandHandler> logger) :
     IRequestHandler<DeleteBrandCommand>
 {
+    private readonly IBrandRepository _brandRepository = repositoryUnitOfWork.Brands;
+
     public async Task Handle(DeleteBrandCommand request, CancellationToken cancellationToken)
     {
-        var entity = await repositoryUnitOfWork.Brands
-            .GetBrandByIdAsync(request.BrandId, entities => entities, cancellationToken);
+        var entity = await _brandRepository.GetBrandByIdAsync<BrandEntity>(request.BrandId, cancellationToken);
         
         if (entity is null)
         {
@@ -22,8 +23,7 @@ public class DeleteBrandCommandHandler(
             throw new NotExistsException($"Brand with id '{request.BrandId}' not exists.");
         }
         
-        repositoryUnitOfWork.Brands
-            .DeleteBrand(entity);
+        _brandRepository.DeleteBrand(entity);
         await repositoryUnitOfWork.SaveAsync(cancellationToken);
     }
 }
