@@ -6,6 +6,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CarsCatalog", "CarsCatalog"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarsCatalog.Application", "Services\CarsCatalog\CarsCatalog.Application\CarsCatalog.Application.csproj", "{9B0D3246-3674-4C43-89F3-F70FBDB08724}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarsCatalog.Infrastructure", "Services\CarsCatalog\CarsCatalog.Infrastructure\CarsCatalog.Infrastructure.csproj", "{9BB09FDF-EE2D-457A-9150-459EA2B7297A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,9 +22,14 @@ Global
 		{9B0D3246-3674-4C43-89F3-F70FBDB08724}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B0D3246-3674-4C43-89F3-F70FBDB08724}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B0D3246-3674-4C43-89F3-F70FBDB08724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BB09FDF-EE2D-457A-9150-459EA2B7297A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BB09FDF-EE2D-457A-9150-459EA2B7297A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BB09FDF-EE2D-457A-9150-459EA2B7297A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BB09FDF-EE2D-457A-9150-459EA2B7297A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D6B7F029-55B4-4E4B-9B89-B06E58320B4A} = {298B6A5A-B887-47EF-94DD-425407E8A98E}
 		{9B0D3246-3674-4C43-89F3-F70FBDB08724} = {298B6A5A-B887-47EF-94DD-425407E8A98E}
+		{9BB09FDF-EE2D-457A-9150-459EA2B7297A} = {298B6A5A-B887-47EF-94DD-425407E8A98E}
 	EndGlobalSection
 EndGlobal
