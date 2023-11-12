@@ -20,7 +20,7 @@ public static class ServiceExtensions
         return services
             .AddDbContexts(configuration)
             .AddRepositories()
-            .AddIdentity()
+            .AddIdentityEntityFrameworkStores()
             .AddTimeProvider()
             .MigrateDatabase<IdentityContext>();
     }
@@ -48,12 +48,11 @@ public static class ServiceExtensions
         return services;
     }
 
-    private static IServiceCollection AddIdentity(this IServiceCollection services)
+    private static IServiceCollection AddIdentityEntityFrameworkStores(this IServiceCollection services)
     {
-        services
-            .AddIdentityCore<UserEntity>()
-            .AddRoles<IdentityRole<Guid>>()
-            .AddEntityFrameworkStores<IdentityContext>();
+        var identityBuilder = new IdentityBuilder(typeof(UserEntity), typeof(IdentityRole<Guid>), services);
+        
+        identityBuilder.AddEntityFrameworkStores<IdentityContext>();
 
         return services;
     }
