@@ -5,6 +5,8 @@ using IdentityService.Application.Interfaces;
 using IdentityService.Application.Mappers;
 using IdentityService.Application.Options;
 using IdentityService.Application.Services;
+using IdentityService.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +18,7 @@ public static class ServiceExtensions
     {
         services
             .AddServices()
+            .AddIdentity()
             .AddMappers()
             .AddValidators()
             .ConfigureOptions(configuration)
@@ -32,6 +35,15 @@ public static class ServiceExtensions
         return services;
     }
 
+    private static IServiceCollection AddIdentity(this IServiceCollection services)
+    {
+        services
+            .AddIdentityCore<UserEntity>()
+            .AddRoles<IdentityRole<Guid>>();
+
+        return services;
+    }
+    
     private static IServiceCollection AddMappers(this IServiceCollection services)
     {
         services.AddScoped<IMapper, Mapper>();
