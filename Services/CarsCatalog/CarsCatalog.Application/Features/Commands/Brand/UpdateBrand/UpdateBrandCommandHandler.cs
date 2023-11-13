@@ -25,12 +25,13 @@ public class UpdateBrandCommandHandler(
             throw new NotExistsException($"Brand with id '{request.BrandId}' not exists.");
         }
 
-        var updatedEntity = request.UpdateBrandDto.ToBrandEntity();
+        request.UpdateBrandDto.ToBrandEntity(entity);
+        entity.Id = request.BrandId;
 
-        _brandRepository.UpdateBrand(updatedEntity);
+        _brandRepository.UpdateBrand(entity);
         await repositoryUnitOfWork.SaveAsync(cancellationToken);
 
-        var dto = updatedEntity.ToGetBrandDto();
+        var dto = entity.ToGetBrandDto();
 
         return dto;
     }
