@@ -7,6 +7,7 @@ namespace CarsCatalog.Infrastructure.Data.Contexts;
 public class CatalogContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<BrandEntity> Brands { get; set; } = default!;
+    public DbSet<ModelEntity> Models { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
