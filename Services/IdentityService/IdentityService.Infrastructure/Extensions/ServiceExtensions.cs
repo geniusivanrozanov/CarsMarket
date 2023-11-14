@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace IdentityService.Infrastructure.Extensions;
 
@@ -21,8 +20,7 @@ public static class ServiceExtensions
             .AddDbContexts(configuration)
             .AddRepositories()
             .AddIdentityEntityFrameworkStores()
-            .AddTimeProvider()
-            .MigrateDatabase<IdentityContext>();
+            .AddTimeProvider();
     }
 
     private static IServiceCollection AddDbContexts(this IServiceCollection services, IConfiguration configuration)
@@ -60,26 +58,6 @@ public static class ServiceExtensions
     private static IServiceCollection AddTimeProvider(this IServiceCollection services)
     {
         services.AddSingleton(TimeProvider.System);
-
-        return services;
-    }
-
-    private static IServiceCollection MigrateDatabase<TContext>(this IServiceCollection services)
-        where TContext : DbContext
-    {
-        var serviceProvider = services.BuildServiceProvider();
-        var context = serviceProvider.GetRequiredService<TContext>();
-
-        try
-        {
-            context.Database.Migrate();
-        }
-        catch (Exception)
-        {
-            var logger = serviceProvider.GetRequiredService<ILogger<TContext>>();
-            logger.LogError("Failed to apply {Context} migrations", typeof(TContext).Name);
-            throw;
-        }
 
         return services;
     }
