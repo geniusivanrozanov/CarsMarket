@@ -5,6 +5,8 @@ using IdentityService.WebAPI.Extensions;
 using IdentityService.WebAPI.Middlewares;
 using Serilog;
 
+Console.WriteLine("-- start --");
+
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
@@ -15,8 +17,10 @@ builder.Services
     .AddApplicationLayer(configuration)
     .AddApiLayer();
 
-
 var app = builder.Build();
+
+await app.Services.ApplyInfrastructureLayer();
+await app.Services.ApplyApplicationLayer();
 
 if (app.Environment.IsDevelopment())
 {
