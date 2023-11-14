@@ -25,6 +25,13 @@ public class UpdateBrandCommandHandler(
             throw new NotExistsException($"Brand with id '{request.BrandId}' not exists.");
         }
 
+        if (entity.Name != request.UpdateBrandDto.Name &&
+            await _brandRepository.ExistsWithNameAsync(request.UpdateBrandDto.Name, cancellationToken))
+        {
+            logger.LogInformation("Brand with name '{Name}' already exists", entity.Name);
+            throw new AlreadyExistsException($"Brand with name '{entity.Name}' already exists");
+        }
+        
         request.UpdateBrandDto.ToBrandEntity(entity);
         entity.Id = request.BrandId;
 

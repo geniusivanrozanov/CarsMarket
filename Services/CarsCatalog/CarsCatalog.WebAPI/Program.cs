@@ -7,7 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
-
 builder.Services
     .AddApplicationLayer()
     .AddInfrastructureLayer(configuration)

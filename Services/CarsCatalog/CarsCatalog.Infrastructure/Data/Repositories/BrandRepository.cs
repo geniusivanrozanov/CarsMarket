@@ -1,4 +1,5 @@
-﻿using CarsCatalog.Application.Interfaces.Repositories;
+﻿using System.Linq.Expressions;
+using CarsCatalog.Application.Interfaces.Repositories;
 using CarsCatalog.Application.Mappers;
 using CarsCatalog.Domain.Entities;
 using CarsCatalog.Infrastructure.Data.Contexts;
@@ -26,6 +27,16 @@ public class BrandRepository(CatalogContext context) : IBrandRepository
         return await query.ToArrayAsync(cancellationToken);
     }
 
+    public Task<bool> ExistsWithIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return Exists(x => x.Id == id);
+    }
+
+    public Task<bool> ExistsWithNameAsync(string name, CancellationToken cancellationToken = default)
+    {
+        return Exists(x => x.Name == name);
+    }
+
     public void CreateBrand(BrandEntity brand)
     {
         context.Brands
@@ -42,5 +53,11 @@ public class BrandRepository(CatalogContext context) : IBrandRepository
     {
         context.Brands
             .Remove(brand);
+    }
+
+    private async Task<bool> Exists(Expression<Func<BrandEntity, bool>> predicate)
+    {
+        return await context.Brands
+            .AnyAsync(predicate);
     }
 }
