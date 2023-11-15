@@ -18,6 +18,12 @@ public class CreateModelCommandHandler(
     {
         var entity = request.CreateModelDto.ToModelEntity();
 
+        if (!await repositoryUnitOfWork.Brands.ExistsWithIdAsync(request.CreateModelDto.BrandId, cancellationToken))
+        {
+            logger.LogInformation("Brand with id {Id} not exists", request.CreateModelDto.BrandId);
+            throw new NotExistsException($"Brand with id '{request.CreateModelDto.BrandId}' not exists.");
+        }
+
         if (await _modelRepository.ExistsWithNameAndBrandIdAsync(entity.Name, entity.BrandId, cancellationToken))
         {
             logger.LogInformation("Model with name '{Name}' already exists", entity.Name);
