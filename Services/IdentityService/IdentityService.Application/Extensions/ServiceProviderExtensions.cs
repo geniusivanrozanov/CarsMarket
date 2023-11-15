@@ -7,7 +7,7 @@ namespace IdentityService.Application.Extensions;
 
 public static class ServiceProviderExtensions
 {
-    public static async Task ApplyApplicationLayer(this IServiceProvider services)
+    public static async Task ApplyApplicationLayerAsync(this IServiceProvider services)
     {
         await services.SeedIdentityDataAsync();
     }

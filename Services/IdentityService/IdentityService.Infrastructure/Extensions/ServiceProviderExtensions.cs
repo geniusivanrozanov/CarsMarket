@@ -7,12 +7,12 @@ namespace IdentityService.Infrastructure.Extensions;
 
 public static class ServiceProviderExtensions
 {
-    public static async Task ApplyInfrastructureLayer(this IServiceProvider services)
+    public static async Task ApplyInfrastructureLayerAsync(this IServiceProvider services)
     {
-        await services.MigrateDatabase<IdentityContext>();
+        await services.MigrateDatabaseAsync<IdentityContext>();
     }
     
-    private static async Task MigrateDatabase<TContext>(this IServiceProvider services)
+    private static async Task MigrateDatabaseAsync<TContext>(this IServiceProvider services)
         where TContext : DbContext
     {
         using var scope = services.CreateScope();
