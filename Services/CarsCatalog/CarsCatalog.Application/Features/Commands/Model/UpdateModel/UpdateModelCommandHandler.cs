@@ -26,7 +26,7 @@ public class UpdateModelCommandHandler(
         }
 
         if (entity.Name != request.UpdateModelDto.Name &&
-            await _modelRepository.ExistsWithNameAsync(request.UpdateModelDto.Name, cancellationToken))
+            await _modelRepository.ExistsWithNameAndBrandIdAsync(request.UpdateModelDto.Name, entity.BrandId, cancellationToken))
         {
             logger.LogInformation("Model with name '{Name}' already exists", entity.Name);
             throw new AlreadyExistsException($"Model with name '{entity.Name}' already exists");

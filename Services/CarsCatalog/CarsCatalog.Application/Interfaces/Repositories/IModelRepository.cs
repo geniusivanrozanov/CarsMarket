@@ -7,7 +7,7 @@ public interface IModelRepository
     Task<TProjection?> GetModelByIdAsync<TProjection>(Guid modelId, CancellationToken cancellationToken = default);
     Task<IEnumerable<TProjection>> GetModelsAsync<TProjection>(CancellationToken cancellationToken = default);
     Task<bool> ExistsWithIdAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<bool> ExistsWithNameAsync(string name, CancellationToken cancellationToken = default);
+    Task<bool> ExistsWithNameAndBrandIdAsync(string name, Guid brandId, CancellationToken cancellationToken = default);
     void CreateModel(ModelEntity model);
     void UpdateModel(ModelEntity model);
     void DeleteModel(ModelEntity model);

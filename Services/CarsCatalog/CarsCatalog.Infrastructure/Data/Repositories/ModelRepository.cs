@@ -32,9 +32,9 @@ public class ModelRepository(CatalogContext context) : IModelRepository
         return Exists(x => x.Id == id);
     }
 
-    public Task<bool> ExistsWithNameAsync(string name, CancellationToken cancellationToken = default)
+    public Task<bool> ExistsWithNameAndBrandIdAsync(string name, Guid brandId, CancellationToken cancellationToken = default)
     {
-        return Exists(x => x.Name == name);
+        return Exists(x => x.Name == name && x.BrandId == brandId);
     }
 
     public void CreateModel(ModelEntity model)

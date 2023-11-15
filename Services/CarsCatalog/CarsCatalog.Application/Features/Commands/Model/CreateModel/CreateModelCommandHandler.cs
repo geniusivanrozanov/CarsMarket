@@ -18,7 +18,7 @@ public class CreateModelCommandHandler(
     {
         var entity = request.CreateModelDto.ToModelEntity();
 
-        if (await _modelRepository.ExistsWithNameAsync(entity.Name, cancellationToken))
+        if (await _modelRepository.ExistsWithNameAndBrandIdAsync(entity.Name, entity.BrandId, cancellationToken))
         {
             logger.LogInformation("Model with name '{Name}' already exists", entity.Name);
             throw new AlreadyExistsException($"Model with name '{entity.Name}' already exists");
