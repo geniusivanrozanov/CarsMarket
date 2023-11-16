@@ -18,7 +18,7 @@ public class UpdateModelCommandHandler(
     public async Task<GetModelDto> Handle(UpdateModelCommand request, CancellationToken cancellationToken)
     {
         var entity = await _modelRepository.GetModelByIdAsync<ModelEntity>(request.ModelId, cancellationToken);
-        
+
         if (entity is null)
         {
             logger.LogInformation("Model with id {Id} not exists", request.ModelId);
@@ -26,12 +26,13 @@ public class UpdateModelCommandHandler(
         }
 
         if (entity.Name != request.UpdateModelDto.Name &&
-            await _modelRepository.ExistsWithNameAndBrandIdAsync(request.UpdateModelDto.Name, entity.BrandId, cancellationToken))
+            await _modelRepository.ExistsWithNameAndBrandIdAsync(request.UpdateModelDto.Name, entity.BrandId,
+                cancellationToken))
         {
             logger.LogInformation("Model with name '{Name}' already exists", entity.Name);
             throw new AlreadyExistsException($"Model with name '{entity.Name}' already exists");
         }
-        
+
         request.UpdateModelDto.ToModelEntity(entity);
         entity.Id = request.ModelId;
 

@@ -11,7 +11,7 @@ public static class ServiceProviderExtensions
     {
         await services.MigrateDatabaseAsync<CatalogContext>();
     }
-    
+
     private static async Task MigrateDatabaseAsync<TContext>(this IServiceProvider services)
         where TContext : DbContext
     {

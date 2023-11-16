@@ -20,21 +20,21 @@ public static class ServiceCollectionExtensions
         {
             configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
-        
+
         return services;
     }
-    
+
     private static IServiceCollection AddValidators(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        
+
         return services;
     }
 
     private static IServiceCollection AddTimeProvider(this IServiceCollection services)
     {
         services.AddSingleton(TimeProvider.System);
-        
+
         return services;
     }
 }

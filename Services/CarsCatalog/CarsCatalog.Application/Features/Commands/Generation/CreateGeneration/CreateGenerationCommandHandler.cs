@@ -13,7 +13,7 @@ public class CreateGenerationCommandHandler(
     IRequestHandler<CreateGenerationCommand, GetGenerationDto>
 {
     private readonly IGenerationRepository _generationRepository = repositoryUnitOfWork.Generations;
-    
+
     public async Task<GetGenerationDto> Handle(CreateGenerationCommand request, CancellationToken cancellationToken)
     {
         var entity = request.CreateGenerationDto.ToGenerationEntity();
@@ -23,13 +23,13 @@ public class CreateGenerationCommandHandler(
             logger.LogInformation("Model with id {Id} not exists", entity.ModelId);
             throw new NotExistsException($"Model with id '{entity.ModelId}' not exists.");
         }
-        
+
         if (await _generationRepository.ExistsWithNameAndModelIdAsync(entity.Name, entity.ModelId, cancellationToken))
         {
             logger.LogInformation("Generation with name '{Name}' already exists", entity.Name);
             throw new AlreadyExistsException($"Generation with name '{entity.Name}' already exists");
         }
-        
+
         _generationRepository.CreateGeneration(entity);
         await repositoryUnitOfWork.SaveAsync(cancellationToken);
 

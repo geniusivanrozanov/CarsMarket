@@ -21,7 +21,7 @@ public class GenerationsController(IMediator mediator) : ControllerBase
     {
         var dto = await mediator.Send(new GetGenerationsListQuery
         {
-            BrandId =  brandId,
+            BrandId = brandId,
             BrandName = brandName,
             ModelId = modelId,
             ModelName = modelName,
@@ -30,7 +30,7 @@ public class GenerationsController(IMediator mediator) : ControllerBase
 
         return Ok(dto);
     }
-    
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetGenerationById(Guid id, CancellationToken cancellationToken)
     {
@@ -38,23 +38,25 @@ public class GenerationsController(IMediator mediator) : ControllerBase
 
         return Ok(dto);
     }
-    
+
     [HttpPost]
-    public async Task<IActionResult> CreateGeneration([FromBody]CreateGenerationDto createGenerationDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateGeneration([FromBody] CreateGenerationDto createGenerationDto,
+        CancellationToken cancellationToken)
     {
         var dto = await mediator.Send(new CreateGenerationCommand(createGenerationDto), cancellationToken);
 
-        return CreatedAtAction(nameof(GetGenerationById), new {dto.Id}, dto);
+        return CreatedAtAction(nameof(GetGenerationById), new { dto.Id }, dto);
     }
-    
+
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateGeneration(Guid id, [FromBody]UpdateGenerationDto updateGenerationDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateGeneration(Guid id, [FromBody] UpdateGenerationDto updateGenerationDto,
+        CancellationToken cancellationToken)
     {
         var dto = await mediator.Send(new UpdateGenerationCommand(id, updateGenerationDto), cancellationToken);
 
-        return CreatedAtAction(nameof(GetGenerationById), new {dto.Id}, dto);
+        return CreatedAtAction(nameof(GetGenerationById), new { dto.Id }, dto);
     }
-    
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteGeneration(Guid id, CancellationToken cancellationToken)
     {

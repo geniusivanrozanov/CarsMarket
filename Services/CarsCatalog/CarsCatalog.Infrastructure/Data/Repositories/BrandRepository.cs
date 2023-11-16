@@ -9,7 +9,8 @@ namespace CarsCatalog.Infrastructure.Data.Repositories;
 
 public class BrandRepository(CatalogContext context) : IBrandRepository
 {
-    public async Task<TProjection?> GetBrandByIdAsync<TProjection>(Guid brandId, CancellationToken cancellationToken = default)
+    public async Task<TProjection?> GetBrandByIdAsync<TProjection>(Guid brandId,
+        CancellationToken cancellationToken = default)
     {
         var query = context.Brands
             .Where(x => x.Id == brandId)
@@ -18,7 +19,8 @@ public class BrandRepository(CatalogContext context) : IBrandRepository
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<TProjection>> GetBrandsAsync<TProjection>(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TProjection>> GetBrandsAsync<TProjection>(
+        CancellationToken cancellationToken = default)
     {
         var query = context.Brands
             .AsNoTracking()

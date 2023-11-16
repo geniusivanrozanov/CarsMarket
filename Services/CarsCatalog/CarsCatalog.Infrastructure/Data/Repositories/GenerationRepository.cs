@@ -9,7 +9,8 @@ namespace CarsCatalog.Infrastructure.Data.Repositories;
 
 public class GenerationRepository(CatalogContext context) : IGenerationRepository
 {
-    public async Task<TProjection?> GetGenerationByIdAsync<TProjection>(Guid generationId, CancellationToken cancellationToken = default)
+    public async Task<TProjection?> GetGenerationByIdAsync<TProjection>(Guid generationId,
+        CancellationToken cancellationToken = default)
     {
         var query = context.Generations
             .Where(x => x.Id == generationId)
@@ -33,15 +34,16 @@ public class GenerationRepository(CatalogContext context) : IGenerationRepositor
             query = query.Where(x => x.ModelId == modelId);
         else if (modelName is not null)
             query = query.Where(x => EF.Functions.ILike(x.Model!.Name, $"%{modelName}%"));
-        
+
         if (brandId.HasValue)
             query = query.Where(x => x.Model!.BrandId == brandId);
         else if (brandName is not null)
             query = query.Where(x => EF.Functions.ILike(x.Model!.Brand!.Name, $"%{brandName}%"));
 
         if (productionYear.HasValue)
-            query = query.Where(x => productionYear >= x.StartYear && productionYear <= (x.EndYear ?? DateTimeOffset.UtcNow.Year));
-        
+            query = query.Where(x =>
+                productionYear >= x.StartYear && productionYear <= (x.EndYear ?? DateTimeOffset.UtcNow.Year));
+
         return await query
             .ProjectTo<TProjection>()
             .ToArrayAsync(cancellationToken);
@@ -52,7 +54,8 @@ public class GenerationRepository(CatalogContext context) : IGenerationRepositor
         return Exists(x => x.Id == id);
     }
 
-    public Task<bool> ExistsWithNameAndModelIdAsync(string name, Guid modelId, CancellationToken cancellationToken = default)
+    public Task<bool> ExistsWithNameAndModelIdAsync(string name, Guid modelId,
+        CancellationToken cancellationToken = default)
     {
         return Exists(x => x.Name == name && x.ModelId == modelId);
     }

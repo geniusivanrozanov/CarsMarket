@@ -16,13 +16,13 @@ public class DeleteModelCommandHandler(
     public async Task Handle(DeleteModelCommand request, CancellationToken cancellationToken)
     {
         var entity = await _modelRepository.GetModelByIdAsync<ModelEntity>(request.ModelId, cancellationToken);
-        
+
         if (entity is null)
         {
             logger.LogInformation("Model with id {Id} not exists", request.ModelId);
             throw new NotExistsException($"Model with id '{request.ModelId}' not exists.");
         }
-        
+
         _modelRepository.DeleteModel(entity);
         await repositoryUnitOfWork.SaveAsync(cancellationToken);
     }

@@ -13,7 +13,7 @@ public class CreateBrandCommandHandler(
     IRequestHandler<CreateBrandCommand, GetBrandDto>
 {
     private readonly IBrandRepository _brandRepository = repositoryUnitOfWork.Brands;
-    
+
     public async Task<GetBrandDto> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
     {
         var entity = request.CreateBrandDto.ToBrandEntity();
@@ -23,7 +23,7 @@ public class CreateBrandCommandHandler(
             logger.LogInformation("Brand with name '{Name}' already exists", entity.Name);
             throw new AlreadyExistsException($"Brand with name '{entity.Name}' already exists");
         }
-        
+
         _brandRepository.CreateBrand(entity);
         await repositoryUnitOfWork.SaveAsync(cancellationToken);
 

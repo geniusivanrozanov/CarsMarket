@@ -9,7 +9,8 @@ namespace CarsCatalog.Infrastructure.Data.Repositories;
 
 public class ModelRepository(CatalogContext context) : IModelRepository
 {
-    public async Task<TProjection?> GetModelByIdAsync<TProjection>(Guid modelId, CancellationToken cancellationToken = default)
+    public async Task<TProjection?> GetModelByIdAsync<TProjection>(Guid modelId,
+        CancellationToken cancellationToken = default)
     {
         var query = context.Models
             .Where(x => x.Id == modelId)
@@ -30,7 +31,7 @@ public class ModelRepository(CatalogContext context) : IModelRepository
             query = query.Where(x => x.BrandId == brandId);
         else if (brandName is not null)
             query = query.Where(x => EF.Functions.ILike(x.Brand!.Name, $"%{brandName}%"));
-        
+
         return await query
             .ProjectTo<TProjection>()
             .ToArrayAsync(cancellationToken);
@@ -41,7 +42,8 @@ public class ModelRepository(CatalogContext context) : IModelRepository
         return Exists(x => x.Id == id);
     }
 
-    public Task<bool> ExistsWithNameAndBrandIdAsync(string name, Guid brandId, CancellationToken cancellationToken = default)
+    public Task<bool> ExistsWithNameAndBrandIdAsync(string name, Guid brandId,
+        CancellationToken cancellationToken = default)
     {
         return Exists(x => x.Name == name && x.BrandId == brandId);
     }

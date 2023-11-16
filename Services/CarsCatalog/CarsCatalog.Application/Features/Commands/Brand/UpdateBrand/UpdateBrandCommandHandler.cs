@@ -18,7 +18,7 @@ public class UpdateBrandCommandHandler(
     public async Task<GetBrandDto> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
     {
         var entity = await _brandRepository.GetBrandByIdAsync<BrandEntity>(request.BrandId, cancellationToken);
-        
+
         if (entity is null)
         {
             logger.LogInformation("Brand with id {Id} not exists", request.BrandId);
@@ -31,7 +31,7 @@ public class UpdateBrandCommandHandler(
             logger.LogInformation("Brand with name '{Name}' already exists", entity.Name);
             throw new AlreadyExistsException($"Brand with name '{entity.Name}' already exists");
         }
-        
+
         request.UpdateBrandDto.ToBrandEntity(entity);
         entity.Id = request.BrandId;
 

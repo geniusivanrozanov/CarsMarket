@@ -15,14 +15,16 @@ public class DeleteGenerationCommandHandler(
 
     public async Task Handle(DeleteGenerationCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _generationRepository.GetGenerationByIdAsync<GenerationEntity>(request.GenerationId, cancellationToken);
-        
+        var entity =
+            await _generationRepository.GetGenerationByIdAsync<GenerationEntity>(request.GenerationId,
+                cancellationToken);
+
         if (entity is null)
         {
             logger.LogInformation("Generation with id {Id} not exists", request.GenerationId);
             throw new NotExistsException($"Generation with id '{request.GenerationId}' not exists.");
         }
-        
+
         _generationRepository.DeleteGeneration(entity);
         await repositoryUnitOfWork.SaveAsync(cancellationToken);
     }

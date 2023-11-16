@@ -3,6 +3,4 @@ using MediatR;
 
 namespace CarsCatalog.Application.Features.Queries;
 
-public class GetBrandsListQuery : IRequest<IEnumerable<GetBrandDto>>
-{
-}
+public class GetBrandsListQuery : IRequest<IEnumerable<GetBrandDto>>;

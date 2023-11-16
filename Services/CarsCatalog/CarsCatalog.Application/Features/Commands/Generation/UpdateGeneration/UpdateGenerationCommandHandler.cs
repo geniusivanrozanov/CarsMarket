@@ -17,8 +17,10 @@ public class UpdateGenerationCommandHandler(
 
     public async Task<GetGenerationDto> Handle(UpdateGenerationCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _generationRepository.GetGenerationByIdAsync<GenerationEntity>(request.GenerationId, cancellationToken);
-        
+        var entity =
+            await _generationRepository.GetGenerationByIdAsync<GenerationEntity>(request.GenerationId,
+                cancellationToken);
+
         if (entity is null)
         {
             logger.LogInformation("Generation with id {Id} not exists", request.GenerationId);
@@ -26,12 +28,13 @@ public class UpdateGenerationCommandHandler(
         }
 
         if (entity.Name != request.UpdateGenerationDto.Name &&
-            await _generationRepository.ExistsWithNameAndModelIdAsync(request.UpdateGenerationDto.Name, entity.ModelId, cancellationToken))
+            await _generationRepository.ExistsWithNameAndModelIdAsync(request.UpdateGenerationDto.Name, entity.ModelId,
+                cancellationToken))
         {
             logger.LogInformation("Generation with name '{Name}' already exists", entity.Name);
             throw new AlreadyExistsException($"Generation with name '{entity.Name}' already exists");
         }
-        
+
         request.UpdateGenerationDto.ToGenerationEntity(entity);
         entity.Id = request.GenerationId;
 

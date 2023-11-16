@@ -17,7 +17,7 @@ public class BrandsController(IMediator mediator) : ControllerBase
 
         return Ok(dto);
     }
-    
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetBrandById(Guid id, CancellationToken cancellationToken)
     {
@@ -25,23 +25,25 @@ public class BrandsController(IMediator mediator) : ControllerBase
 
         return Ok(dto);
     }
-    
+
     [HttpPost]
-    public async Task<IActionResult> CreateBrand([FromBody]CreateBrandDto createBrandDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateBrand([FromBody] CreateBrandDto createBrandDto,
+        CancellationToken cancellationToken)
     {
         var dto = await mediator.Send(new CreateBrandCommand(createBrandDto), cancellationToken);
 
-        return CreatedAtAction(nameof(GetBrandById), new {dto.Id}, dto);
+        return CreatedAtAction(nameof(GetBrandById), new { dto.Id }, dto);
     }
-    
+
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateBrand(Guid id, [FromBody]UpdateBrandDto updateBrandDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateBrand(Guid id, [FromBody] UpdateBrandDto updateBrandDto,
+        CancellationToken cancellationToken)
     {
         var dto = await mediator.Send(new UpdateBrandCommand(id, updateBrandDto), cancellationToken);
 
-        return CreatedAtAction(nameof(GetBrandById), new {dto.Id}, dto);
+        return CreatedAtAction(nameof(GetBrandById), new { dto.Id }, dto);
     }
-    
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteBrand(Guid id, CancellationToken cancellationToken)
     {

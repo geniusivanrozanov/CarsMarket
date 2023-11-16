@@ -3,6 +3,6 @@
 public class CreateModelDto
 {
     public required string Name { get; set; }
-    
+
     public Guid BrandId { get; set; }
 }

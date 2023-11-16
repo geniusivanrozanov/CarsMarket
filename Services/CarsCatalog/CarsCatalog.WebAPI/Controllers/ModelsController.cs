@@ -21,7 +21,7 @@ public class ModelsController(IMediator mediator) : ControllerBase
 
         return Ok(dto);
     }
-    
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetModelById(Guid id, CancellationToken cancellationToken)
     {
@@ -29,23 +29,25 @@ public class ModelsController(IMediator mediator) : ControllerBase
 
         return Ok(dto);
     }
-    
+
     [HttpPost]
-    public async Task<IActionResult> CreateModel([FromBody]CreateModelDto createModelDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateModel([FromBody] CreateModelDto createModelDto,
+        CancellationToken cancellationToken)
     {
         var dto = await mediator.Send(new CreateModelCommand(createModelDto), cancellationToken);
 
-        return CreatedAtAction(nameof(GetModelById), new {dto.Id}, dto);
+        return CreatedAtAction(nameof(GetModelById), new { dto.Id }, dto);
     }
-    
+
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateModel(Guid id, [FromBody]UpdateModelDto updateModelDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateModel(Guid id, [FromBody] UpdateModelDto updateModelDto,
+        CancellationToken cancellationToken)
     {
         var dto = await mediator.Send(new UpdateModelCommand(id, updateModelDto), cancellationToken);
 
-        return CreatedAtAction(nameof(GetModelById), new {dto.Id}, dto);
+        return CreatedAtAction(nameof(GetModelById), new { dto.Id }, dto);
     }
-    
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteModel(Guid id, CancellationToken cancellationToken)
     {

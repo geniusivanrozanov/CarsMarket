@@ -19,23 +19,23 @@ public static class ServiceCollectionExtensions
             .AddEndpointsApiExplorer()
             .AddValidators()
             .AddMiddlewares()
-            .AddSwagger();;
+            .AddSwagger();
     }
 
     private static IServiceCollection AddValidators(this IServiceCollection services)
     {
         services.AddFluentValidationAutoValidation();
-        
+
         return services;
     }
-    
+
     private static IServiceCollection AddMiddlewares(this IServiceCollection services)
     {
         services.AddSingleton<ExceptionHandlerMiddleware>();
 
         return services;
     }
-    
+
     private static IServiceCollection AddSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen(options =>

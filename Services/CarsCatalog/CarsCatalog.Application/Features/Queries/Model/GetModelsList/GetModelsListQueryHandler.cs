@@ -12,9 +12,9 @@ public class GetModelsListQueryHandler(IRepositoryUnitOfWork repositoryUnitOfWor
     public async Task<IEnumerable<GetModelDto>> Handle(GetModelsListQuery request, CancellationToken cancellationToken)
     {
         var dto = await _modelRepository.GetModelsAsync<GetModelDto>(
-            brandId: request.BrandId,
-            brandName: request.BrandName,
-            cancellationToken: cancellationToken);
+            request.BrandId,
+            request.BrandName,
+            cancellationToken);
 
         return dto;
     }

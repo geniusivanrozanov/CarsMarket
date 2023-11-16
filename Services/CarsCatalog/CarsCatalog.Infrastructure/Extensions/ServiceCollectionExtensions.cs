@@ -9,7 +9,8 @@ namespace CarsCatalog.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddInfrastructureLayer(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureLayer(this IServiceCollection services,
+        IConfiguration configuration)
     {
         return services
             .AddDbContexts(configuration)
@@ -21,18 +22,15 @@ public static class ServiceCollectionExtensions
         var catalogConnectionString = configuration.GetConnectionString("CatalogPostgres");
         ArgumentException.ThrowIfNullOrEmpty(catalogConnectionString);
 
-        services.AddDbContext<CatalogContext>((provider, builder) =>
-        {
-            builder.UseNpgsql(catalogConnectionString);
-        });
-        
+        services.AddDbContext<CatalogContext>(builder => { builder.UseNpgsql(catalogConnectionString); });
+
         return services;
     }
 
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IRepositoryUnitOfWork, RepositoryUnitOfWork>();
-        
+
         return services;
     }
 }

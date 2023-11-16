@@ -11,7 +11,10 @@ public interface IGenerationRepository
         string? modelName = default,
         int? productionYear = default,
         CancellationToken cancellationToken = default);
-    Task<TProjection?> GetGenerationByIdAsync<TProjection>(Guid generationId, CancellationToken cancellationToken = default);
+
+    Task<TProjection?> GetGenerationByIdAsync<TProjection>(Guid generationId,
+        CancellationToken cancellationToken = default);
+
     Task<bool> ExistsWithIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<bool> ExistsWithNameAndModelIdAsync(string name, Guid modelId, CancellationToken cancellationToken = default);
     void CreateGeneration(GenerationEntity generation);

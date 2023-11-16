@@ -13,7 +13,7 @@ public class CreateModelCommandHandler(
     IRequestHandler<CreateModelCommand, GetModelDto>
 {
     private readonly IModelRepository _modelRepository = repositoryUnitOfWork.Models;
-    
+
     public async Task<GetModelDto> Handle(CreateModelCommand request, CancellationToken cancellationToken)
     {
         var entity = request.CreateModelDto.ToModelEntity();
@@ -29,7 +29,7 @@ public class CreateModelCommandHandler(
             logger.LogInformation("Model with name '{Name}' already exists", entity.Name);
             throw new AlreadyExistsException($"Model with name '{entity.Name}' already exists");
         }
-        
+
         _modelRepository.CreateModel(entity);
         await repositoryUnitOfWork.SaveAsync(cancellationToken);
 

@@ -12,7 +12,7 @@ public static partial class StaticMapper
     public static partial BrandEntity ToBrandEntity(this UpdateBrandDto updateBrandDto);
     public static partial void ToBrandEntity(this UpdateBrandDto updateBrandDto, BrandEntity brandEntity);
     public static partial IQueryable<GetBrandDto> ProjectToGetBrandDto(this IQueryable<BrandEntity> queryable);
-    
+
     public static partial GetModelDto ToGetModelDto(this ModelEntity modelEntity);
     public static partial ModelEntity ToModelEntity(this CreateModelDto createModelDto);
     public static partial ModelEntity ToModelEntity(this UpdateModelDto updateModelDto);
@@ -22,17 +22,18 @@ public static partial class StaticMapper
     public static partial GetGenerationDto ToGetGenerationDto(this GenerationEntity generationEntity);
     public static partial GenerationEntity ToGenerationEntity(this CreateGenerationDto createGenerationDto);
     public static partial GenerationEntity ToGenerationEntity(this UpdateGenerationDto updateGenerationDto);
-    public static partial void ToGenerationEntity(this UpdateGenerationDto updateGenerationDto, GenerationEntity generationEntity);
-    public static partial IQueryable<GetGenerationDto> ProjectToGetGenerationDto(this IQueryable<GenerationEntity> queryable);
-    
+
+    public static partial void ToGenerationEntity(this UpdateGenerationDto updateGenerationDto,
+        GenerationEntity generationEntity);
+
+    public static partial IQueryable<GetGenerationDto> ProjectToGetGenerationDto(
+        this IQueryable<GenerationEntity> queryable);
+
     public static partial TResult MapTo<TResult>(this object source);
 
     public static IQueryable<TResult> ProjectTo<TResult>(this IQueryable<object> queryable)
     {
-        if (queryable is IQueryable<TResult> query)
-        {
-            return query;
-        }
+        if (queryable is IQueryable<TResult> query) return query;
 
         return queryable.MapTo<IQueryable<TResult>>();
     }
