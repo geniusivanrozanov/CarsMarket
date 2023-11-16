@@ -10,7 +10,8 @@ public static class ServiceCollectionExtensions
     {
         return services
             .AddMediator()
-            .AddValidators();
+            .AddValidators()
+            .AddTimeProvider();
     }
 
     private static IServiceCollection AddMediator(this IServiceCollection services)
@@ -26,6 +27,13 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddValidators(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        
+        return services;
+    }
+
+    private static IServiceCollection AddTimeProvider(this IServiceCollection services)
+    {
+        services.AddSingleton(TimeProvider.System);
         
         return services;
     }
