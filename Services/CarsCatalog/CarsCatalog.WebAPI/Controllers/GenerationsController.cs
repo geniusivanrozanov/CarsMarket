@@ -16,7 +16,8 @@ public class GenerationsController(IMediator mediator) : ControllerBase
         string? brandName,
         Guid? modelId,
         string? modelName,
-        int? productionYear)
+        int? productionYear,
+        CancellationToken cancellationToken)
     {
         var dto = await mediator.Send(new GetGenerationsListQuery
         {
@@ -25,39 +26,39 @@ public class GenerationsController(IMediator mediator) : ControllerBase
             ModelId = modelId,
             ModelName = modelName,
             ProductionYear = productionYear
-        });
+        }, cancellationToken);
 
         return Ok(dto);
     }
     
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetGenerationById(Guid id)
+    public async Task<IActionResult> GetGenerationById(Guid id, CancellationToken cancellationToken)
     {
-        var dto = await mediator.Send(new GetGenerationByIdQuery(id));
+        var dto = await mediator.Send(new GetGenerationByIdQuery(id), cancellationToken);
 
         return Ok(dto);
     }
     
     [HttpPost]
-    public async Task<IActionResult> CreateGeneration([FromBody]CreateGenerationDto createGenerationDto)
+    public async Task<IActionResult> CreateGeneration([FromBody]CreateGenerationDto createGenerationDto, CancellationToken cancellationToken)
     {
-        var dto = await mediator.Send(new CreateGenerationCommand(createGenerationDto));
+        var dto = await mediator.Send(new CreateGenerationCommand(createGenerationDto), cancellationToken);
 
         return CreatedAtAction(nameof(GetGenerationById), new {dto.Id}, dto);
     }
     
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateGeneration(Guid id, [FromBody]UpdateGenerationDto updateGenerationDto)
+    public async Task<IActionResult> UpdateGeneration(Guid id, [FromBody]UpdateGenerationDto updateGenerationDto, CancellationToken cancellationToken)
     {
-        var dto = await mediator.Send(new UpdateGenerationCommand(id, updateGenerationDto));
+        var dto = await mediator.Send(new UpdateGenerationCommand(id, updateGenerationDto), cancellationToken);
 
         return CreatedAtAction(nameof(GetGenerationById), new {dto.Id}, dto);
     }
     
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteGeneration(Guid id)
+    public async Task<IActionResult> DeleteGeneration(Guid id, CancellationToken cancellationToken)
     {
-        await mediator.Send(new DeleteGenerationCommand(id));
+        await mediator.Send(new DeleteGenerationCommand(id), cancellationToken);
 
         return NoContent();
     }
