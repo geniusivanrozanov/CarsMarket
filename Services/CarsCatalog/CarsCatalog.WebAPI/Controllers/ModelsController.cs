@@ -11,9 +11,13 @@ namespace CarsCatalog.WebAPI.Controllers;
 public class ModelsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetModels()
+    public async Task<IActionResult> GetModels(Guid? brandId, string? brandName)
     {
-        var dto = await mediator.Send(new GetModelsListQuery());
+        var dto = await mediator.Send(new GetModelsListQuery
+        {
+            BrandId = brandId,
+            BrandName = brandName
+        });
 
         return Ok(dto);
     }

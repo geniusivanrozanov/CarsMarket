@@ -18,13 +18,22 @@ public class ModelRepository(CatalogContext context) : IModelRepository
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<TProjection>> GetModelsAsync<TProjection>(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TProjection>> GetModelsAsync<TProjection>(
+        Guid? brandId = default,
+        string? brandName = default,
+        CancellationToken cancellationToken = default)
     {
         var query = context.Models
-            .AsNoTracking()
-            .ProjectTo<TProjection>();
+            .AsNoTracking();
 
-        return await query.ToArrayAsync(cancellationToken);
+        if (brandId.HasValue)
+            query = query.Where(x => x.BrandId == brandId);
+        else if (brandName is not null)
+            query = query.Where(x => EF.Functions.ILike(x.Brand!.Name, $"%{brandName}%"));
+        
+        return await query
+            .ProjectTo<TProjection>()
+            .ToArrayAsync(cancellationToken);
     }
 
     public Task<bool> ExistsWithIdAsync(Guid id, CancellationToken cancellationToken = default)
