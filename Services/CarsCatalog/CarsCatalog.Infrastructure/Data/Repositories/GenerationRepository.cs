@@ -18,13 +18,33 @@ public class GenerationRepository(CatalogContext context) : IGenerationRepositor
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<TProjection>> GetGenerationsAsync<TProjection>(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TProjection>> GetGenerationsAsync<TProjection>(
+        Guid? brandId = default,
+        string? brandName = default,
+        Guid? modelId = default,
+        string? modelName = default,
+        int? productionYear = default,
+        CancellationToken cancellationToken = default)
     {
         var query = context.Generations
-            .AsNoTracking()
-            .ProjectTo<TProjection>();
+            .AsNoTracking();
 
-        return await query.ToArrayAsync(cancellationToken);
+        if (modelId.HasValue)
+            query = query.Where(x => x.ModelId == modelId);
+        else if (modelName is not null)
+            query = query.Where(x => EF.Functions.ILike(x.Model!.Name, $"%{modelName}%"));
+        
+        if (brandId.HasValue)
+            query = query.Where(x => x.Model!.BrandId == brandId);
+        else if (brandName is not null)
+            query = query.Where(x => EF.Functions.ILike(x.Model!.Brand!.Name, $"%{brandName}%"));
+
+        if (productionYear.HasValue)
+            query = query.Where(x => productionYear >= x.StartYear && productionYear <= (x.EndYear ?? DateTimeOffset.UtcNow.Year));
+        
+        return await query
+            .ProjectTo<TProjection>()
+            .ToArrayAsync(cancellationToken);
     }
 
     public Task<bool> ExistsWithIdAsync(Guid id, CancellationToken cancellationToken = default)
