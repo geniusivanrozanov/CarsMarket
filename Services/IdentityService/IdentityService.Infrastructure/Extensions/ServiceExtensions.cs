@@ -1,4 +1,4 @@
-﻿using IdentityService.Application.Interfaces;
+using IdentityService.Application.Interfaces;
 using IdentityService.Domain.Entities;
 using IdentityService.Infrastructure.Data.Contexts;
 using IdentityService.Infrastructure.Data.Interceptors;
@@ -23,8 +23,8 @@ public static class ServiceExtensions
             .AddRepositories()
             .AddIdentity()
             .AddRedisConnectionMultiplexer(configuration)
-            .AddTimeProvider()
-            .MigrateDatabase<IdentityContext>();
+            .AddIdentityEntityFrameworkStores()
+            .AddTimeProvider();
     }
 
     private static IServiceCollection AddDbContexts(this IServiceCollection services, IConfiguration configuration)
@@ -51,12 +51,11 @@ public static class ServiceExtensions
         return services;
     }
 
-    private static IServiceCollection AddIdentity(this IServiceCollection services)
+    private static IServiceCollection AddIdentityEntityFrameworkStores(this IServiceCollection services)
     {
-        services
-            .AddIdentityCore<UserEntity>()
-            .AddRoles<IdentityRole<Guid>>()
-            .AddEntityFrameworkStores<IdentityContext>();
+        var identityBuilder = new IdentityBuilder(typeof(UserEntity), typeof(IdentityRole<Guid>), services);
+        
+        identityBuilder.AddEntityFrameworkStores<IdentityContext>();
 
         return services;
     }
@@ -74,26 +73,6 @@ public static class ServiceExtensions
         var connectionString = configuration.GetConnectionString("Redis");
         ArgumentException.ThrowIfNullOrEmpty(connectionString);
         services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(connectionString));
-
-        return services;
-    }
-
-    private static IServiceCollection MigrateDatabase<TContext>(this IServiceCollection services)
-        where TContext : DbContext
-    {
-        var serviceProvider = services.BuildServiceProvider();
-        var context = serviceProvider.GetRequiredService<TContext>();
-
-        try
-        {
-            context.Database.Migrate();
-        }
-        catch (Exception)
-        {
-            var logger = serviceProvider.GetRequiredService<ILogger<TContext>>();
-            logger.LogError("Failed to apply {Context} migrations", typeof(TContext).Name);
-            throw;
-        }
 
         return services;
     }

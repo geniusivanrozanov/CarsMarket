@@ -1,4 +1,4 @@
-﻿using IdentityService.Application.DTOs;
+using IdentityService.Application.DTOs;
 using IdentityService.Application.QueryParameters;
 
 namespace IdentityService.Application.Interfaces;
