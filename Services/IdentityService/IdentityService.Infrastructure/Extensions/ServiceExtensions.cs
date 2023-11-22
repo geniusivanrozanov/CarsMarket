@@ -1,4 +1,4 @@
-using IdentityService.Application.Interfaces;
+﻿using IdentityService.Application.Interfaces;
 using IdentityService.Domain.Entities;
 using IdentityService.Infrastructure.Data.Contexts;
 using IdentityService.Infrastructure.Data.Interceptors;
@@ -21,7 +21,6 @@ public static class ServiceExtensions
         return services
             .AddDbContexts(configuration)
             .AddRepositories()
-            .AddIdentity()
             .AddRedisConnectionMultiplexer(configuration)
             .AddIdentityEntityFrameworkStores()
             .AddTimeProvider();
