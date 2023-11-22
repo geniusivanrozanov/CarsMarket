@@ -1,8 +1,51 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService.Domain", "Services\IdentityService\IdentityService.Domain\IdentityService.Domain.csproj", "{87579E8E-B4AB-406B-84F8-2B9B9E542D67}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityService", "IdentityService", "{7095656B-7824-4E3B-A538-B6851874CBCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService.Application", "Services\IdentityService\IdentityService.Application\IdentityService.Application.csproj", "{F335822D-FB74-4403-B5C5-E954D95BECC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService.Infrastructure", "Services\IdentityService\IdentityService.Infrastructure\IdentityService.Infrastructure.csproj", "{288E30EF-0256-460C-82FE-95617DBE940E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService.WebAPI", "Services\IdentityService\IdentityService.WebAPI\IdentityService.WebAPI.csproj", "{0493D3CA-C664-4E31-B376-FB27C8B32283}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Logging", "Common\Common.Logging\Common.Logging.csproj", "{5544E718-FF17-4A13-8B95-B4C7880DC450}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{33ED6351-CF2A-41EC-BE66-12083B7507AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{87579E8E-B4AB-406B-84F8-2B9B9E542D67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87579E8E-B4AB-406B-84F8-2B9B9E542D67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87579E8E-B4AB-406B-84F8-2B9B9E542D67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87579E8E-B4AB-406B-84F8-2B9B9E542D67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F335822D-FB74-4403-B5C5-E954D95BECC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F335822D-FB74-4403-B5C5-E954D95BECC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F335822D-FB74-4403-B5C5-E954D95BECC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F335822D-FB74-4403-B5C5-E954D95BECC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{288E30EF-0256-460C-82FE-95617DBE940E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{288E30EF-0256-460C-82FE-95617DBE940E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{288E30EF-0256-460C-82FE-95617DBE940E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{288E30EF-0256-460C-82FE-95617DBE940E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0493D3CA-C664-4E31-B376-FB27C8B32283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0493D3CA-C664-4E31-B376-FB27C8B32283}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0493D3CA-C664-4E31-B376-FB27C8B32283}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0493D3CA-C664-4E31-B376-FB27C8B32283}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5544E718-FF17-4A13-8B95-B4C7880DC450}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5544E718-FF17-4A13-8B95-B4C7880DC450}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5544E718-FF17-4A13-8B95-B4C7880DC450}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5544E718-FF17-4A13-8B95-B4C7880DC450}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{87579E8E-B4AB-406B-84F8-2B9B9E542D67} = {7095656B-7824-4E3B-A538-B6851874CBCC}
+		{F335822D-FB74-4403-B5C5-E954D95BECC3} = {7095656B-7824-4E3B-A538-B6851874CBCC}
+		{288E30EF-0256-460C-82FE-95617DBE940E} = {7095656B-7824-4E3B-A538-B6851874CBCC}
+		{0493D3CA-C664-4E31-B376-FB27C8B32283} = {7095656B-7824-4E3B-A538-B6851874CBCC}
+		{5544E718-FF17-4A13-8B95-B4C7880DC450} = {33ED6351-CF2A-41EC-BE66-12083B7507AD}
 	EndGlobalSection
 EndGlobal
