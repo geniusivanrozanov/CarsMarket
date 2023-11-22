@@ -1,10 +1,11 @@
 ﻿using System.Reflection;
 using FluentValidation;
-using IdentityService.Application.DTOs;
 using IdentityService.Application.Interfaces;
 using IdentityService.Application.Mappers;
 using IdentityService.Application.Options;
 using IdentityService.Application.Services;
+using IdentityService.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,10 +17,10 @@ public static class ServiceExtensions
     {
         services
             .AddServices()
+            .AddIdentity()
             .AddMappers()
             .AddValidators()
-            .ConfigureOptions(configuration)
-            .AddDefaultUsers(configuration).Wait();
+            .ConfigureOptions(configuration);
 
         return services;
     }
@@ -32,6 +33,15 @@ public static class ServiceExtensions
         return services;
     }
 
+    private static IServiceCollection AddIdentity(this IServiceCollection services)
+    {
+        services
+            .AddIdentityCore<UserEntity>()
+            .AddRoles<IdentityRole<Guid>>();
+
+        return services;
+    }
+    
     private static IServiceCollection AddMappers(this IServiceCollection services)
     {
         services.AddScoped<IMapper, Mapper>();
@@ -42,33 +52,6 @@ public static class ServiceExtensions
     private static IServiceCollection AddValidators(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-
-        return services;
-    }
-
-    private static async Task<IServiceCollection> AddDefaultUsers(this IServiceCollection services,
-        IConfiguration configuration)
-    {
-        var defaultUsers = configuration
-            .GetSection("DefaultUsers")
-            .GetChildren();
-        var serviceProvider = services.BuildServiceProvider();
-        var userService = ActivatorUtilities.CreateInstance<UserService>(serviceProvider);
-
-        foreach (var user in defaultUsers)
-        {
-            var register = new RegisterDto
-            {
-                Email = user[nameof(RegisterDto.Email)]!,
-                Password = user[nameof(RegisterDto.Password)]!,
-                FirstName = user[nameof(RegisterDto.FirstName)]!,
-                LastName = user[nameof(RegisterDto.LastName)]!
-            };
-
-            var role = user["Role"];
-
-            await userService.EnsureUserCreatedAsync(register, role!);
-        }
 
         return services;
     }
