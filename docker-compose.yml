@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  identity.api:
+    build:
+      context: .
+      dockerfile: Services/IdentityService/IdentityService.WebAPI/Dockerfile
+  
+  postgres:
+    image: postgres:latest
+    
+  redis:
+    image: redis:latest
+
+  elasticsearch:
+    image: elasticsearch:8.10.2
+        
+  kibana:
+    image: kibana:8.10.2
