@@ -1,4 +1,4 @@
-﻿using IdentityService.Application.DTOs;
+using IdentityService.Application.DTOs;
 using IdentityService.Application.Exceptions;
 using IdentityService.Application.Interfaces;
 using IdentityService.Application.QueryParameters;
@@ -30,20 +30,28 @@ public class UserService(
     public async Task<LoginResultDto> LoginUserAsync(LoginDto login, CancellationToken cancellationToken)
     {
         var userEntity = await userManager.FindByEmailAsync(login.Email);
-        
         if (userEntity is null || !await userManager.CheckPasswordAsync(userEntity, login.Password))
         {
             logger.LogInformation("User with email {Email} failed to login", login.Email);
             throw new LoginFailedException("Invalid username or password");
         }
 
-        var accessToken = await tokenService.GenerateAccessTokenAsync(userEntity, cancellationToken);
-        var loginResultDto = new LoginResultDto
-        {
-            AccessToken = accessToken
-        };
+        return await LoginUserAsync(userEntity, cancellationToken);
+    }
 
-        return loginResultDto;
+    public async Task<LoginResultDto> LoginUserByRefreshTokenAsync(RefreshTokenDto refreshToken, CancellationToken cancellationToken)
+    {
+        var userId = await tokenService.GetUserIdByRefreshToken(refreshToken.RefreshToken, cancellationToken);
+
+        if (userId is null)
+        {
+            logger.LogInformation("User with refresh token {RefreshToken} failed to login", refreshToken.RefreshToken);
+            throw new LoginFailedException("Invalid refresh token");
+        }
+
+        var userEntity = await userManager.FindByIdAsync(userId.ToString()!);
+
+        return await LoginUserAsync(userEntity!, cancellationToken);
     }
 
     public async Task<IEnumerable<UserDto>> GetUsersAsync(UserQueryParameters userQueryParameters, CancellationToken cancellationToken)
@@ -56,7 +64,6 @@ public class UserService(
     public async Task<UserDto> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken)
     {
         var user = await userRepository.GetUserByIdAsync(userId, mapper.ProjectToUserDto, cancellationToken);
-        
         if (user is null)
         {
             logger.LogInformation("Failed to find user with '{UserId}'", userId);
@@ -70,7 +77,6 @@ public class UserService(
     {
         var userEntity = mapper.ToUserEntity(register);
         var registrationResult = await userManager.CreateAsync(userEntity, register.Password);
-        
         if (!registrationResult.Succeeded)
         {
             var errors = string.Join("\n", registrationResult.Errors.Select(e => e.Description));
@@ -82,5 +88,19 @@ public class UserService(
         await userManager.AddToRoleAsync(userEntity, role);
 
         return mapper.ToUserDto(userEntity);
+    }
+
+    private async Task<LoginResultDto> LoginUserAsync(UserEntity userEntity, CancellationToken cancellationToken)
+    {
+        var loginResults = await Task.WhenAll(
+            tokenService.GenerateAccessTokenAsync(userEntity, cancellationToken),
+            tokenService.GenerateAndSaveRefreshTokenAsync(userEntity.Id, cancellationToken));
+        var loginResultDto = new LoginResultDto
+        {
+            AccessToken = loginResults[0],
+            RefreshToken = loginResults[1]
+        };
+
+        return loginResultDto;
     }
 }
