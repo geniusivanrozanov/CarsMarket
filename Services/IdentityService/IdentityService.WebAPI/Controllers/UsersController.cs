@@ -2,6 +2,7 @@ using IdentityService.Application.DTOs;
 using IdentityService.Application.Interfaces;
 using IdentityService.Application.QueryParameters;
 using IdentityService.Domain.Constants;
+using IdentityService.WebAPI.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,7 @@ public class UsersController(IUserService userService) : ControllerBase
 {
     [HttpGet]
     [Authorize(Roles = Roles.Admin)]
+    [DistributedCache]
     public async Task<IActionResult> GetUsers([FromQuery] UserQueryParameters queryParameters, CancellationToken cancellationToken)
     {
         var users = await userService.GetUsersAsync(queryParameters, cancellationToken);
@@ -22,6 +24,7 @@ public class UsersController(IUserService userService) : ControllerBase
 
     [HttpGet("{id}")]
     [Authorize(Roles = Roles.Admin)]
+    [DistributedCache]
     public async Task<IActionResult> GetUserById(Guid id, CancellationToken cancellationToken)
     {
         var user = await userService.GetUserByIdAsync(id, cancellationToken);
@@ -50,6 +53,14 @@ public class UsersController(IUserService userService) : ControllerBase
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto, CancellationToken cancellationToken)
     {
         var result = await userService.LoginUserAsync(loginDto, cancellationToken);
+
+        return Ok(result);
+    }
+
+    [HttpPost("login/refresh")]
+    public async Task<IActionResult> LoginRefresh([FromBody] RefreshTokenDto refreshTokenDto, CancellationToken cancellationToken)
+    {
+        var result = await userService.LoginUserByRefreshTokenAsync(refreshTokenDto, cancellationToken);
 
         return Ok(result);
     }
