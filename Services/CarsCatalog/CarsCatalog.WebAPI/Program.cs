@@ -2,10 +2,13 @@ using CarsCatalog.Application.Extensions;
 using CarsCatalog.Infrastructure.Extensions;
 using CarsCatalog.WebAPI.Extensions;
 using CarsCatalog.WebAPI.Middlewares;
+using Common.Logging;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var configuration = builder.Configuration;
+
+builder.Host.UseSerilog(SeriLogger.Configure);
 
 builder.Services
     .AddApplicationLayer()
