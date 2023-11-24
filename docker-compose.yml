@@ -5,6 +5,11 @@ services:
     build:
       context: .
       dockerfile: Services/IdentityService/IdentityService.WebAPI/Dockerfile
+      
+  cars-catalog.api:
+    build:
+      context: .
+      dockerfile: Services/CarsCatalog/CarsCatalog.WebAPI/Dockerfile
   
   postgres:
     image: postgres:latest
