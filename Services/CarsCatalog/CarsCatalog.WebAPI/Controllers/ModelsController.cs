@@ -1,7 +1,9 @@
 ﻿using CarsCatalog.Application.DTOs;
 using CarsCatalog.Application.Features.Commands;
 using CarsCatalog.Application.Features.Queries;
+using CarsCatalog.Domain.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarsCatalog.WebAPI.Controllers;
@@ -31,6 +33,7 @@ public class ModelsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> CreateModel([FromBody] CreateModelDto createModelDto,
         CancellationToken cancellationToken)
     {
@@ -40,6 +43,7 @@ public class ModelsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> UpdateModel(Guid id, [FromBody] UpdateModelDto updateModelDto,
         CancellationToken cancellationToken)
     {
@@ -49,6 +53,7 @@ public class ModelsController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> DeleteModel(Guid id, CancellationToken cancellationToken)
     {
         await mediator.Send(new DeleteModelCommand(id), cancellationToken);
