@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Advertisement.Application.Extensions;
@@ -9,6 +10,7 @@ public static class ServiceCollectionExtensions
     {
         return services
             .AddMediator()
+            .AddValidators()
             .AddTimeProvider();
     }
 
@@ -22,6 +24,13 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    private static IServiceCollection AddValidators(this IServiceCollection services)
+    {
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+        return services;
+    }
+    
     private static IServiceCollection AddTimeProvider(this IServiceCollection services)
     {
         services.AddSingleton(TimeProvider.System);
