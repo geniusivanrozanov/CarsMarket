@@ -7,7 +7,8 @@ public class ExceptionHandlerMiddleware
 {
     private readonly Dictionary<Type, HttpStatusCode> _statusCodes = new()
     {
-        { typeof(NotExistsException), HttpStatusCode.NotFound }
+        { typeof(NotExistsException), HttpStatusCode.NotFound },
+        { typeof(AlreadyExistsException), HttpStatusCode.Conflict }
     };
 
     private readonly ILogger<ExceptionHandlerMiddleware> _logger;

@@ -35,6 +35,13 @@ public class UpdateAdCommandHandler : IRequestHandler<UpdateAdCommand, GetAdDto>
         }
         
         var dto = request.UpdateAdDto;
+        
+        if (dto.Vin is not null && entity.Vin != dto.Vin && await _adRepository.ExistsWithVinAsync(dto.Vin, cancellationToken))
+        {
+            _logger.LogInformation("Ad with VIN '{Vin}' already exists", dto.Vin);
+            throw new AlreadyExistsException($"Ad with VIN '{dto.Vin}' already exists");
+        }
+        
         dto.ToAdEntity(entity);
 
         entity.UpdatedAt = currentTime;

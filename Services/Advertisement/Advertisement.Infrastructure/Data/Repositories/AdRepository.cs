@@ -40,6 +40,13 @@ public class AdRepository : IAdRepository
             .AnyAsync(cancellationToken);
     }
 
+    public async Task<bool> ExistsWithVinAsync(string vin, CancellationToken cancellationToken = default)
+    {
+        return await _context.Ads
+            .Find(x => x.Vin == vin)
+            .AnyAsync(cancellationToken);
+    }
+
     public async Task CreateAd(AdEntity entity)
     {
         await _context.Ads
