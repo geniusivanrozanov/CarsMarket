@@ -16,7 +16,7 @@ public class GetAdsListQueryHandler : IRequestHandler<GetAdsListQuery, IEnumerab
 
     public async Task<IEnumerable<GetAdDto>> Handle(GetAdsListQuery request, CancellationToken cancellationToken)
     {
-        var entities = await _adRepository.GetAdsAsync(cancellationToken);
+        var entities = await _adRepository.GetAdsAsync(request.QueryParameters, cancellationToken);
 
         return entities.ToGetAdDto();
     }

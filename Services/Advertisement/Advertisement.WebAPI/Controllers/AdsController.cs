@@ -5,6 +5,7 @@ using Advertisement.Application.Features.Commands.UpdateAd;
 using Advertisement.Application.Features.Commands.UpdateAdStatus;
 using Advertisement.Application.Features.Queries.GetAdById;
 using Advertisement.Application.Features.Queries.GetAdsList;
+using Advertisement.Application.QueryParameters;
 using Advertisement.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -24,9 +25,9 @@ public class AdsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAds(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAds([FromQuery] AdQueryParameters adQueryParameters, CancellationToken cancellationToken)
     {
-        var dto = await _mediator.Send(new GetAdsListQuery(), cancellationToken);
+        var dto = await _mediator.Send(new GetAdsListQuery(adQueryParameters), cancellationToken);
 
         return Ok(dto);
     }
