@@ -16,5 +16,8 @@ public class BrandEntityConfiguration : IEntityTypeConfiguration<BrandEntity>
         builder.Property(x => x.Name)
             .HasMaxLength(NameMaxLength)
             .IsRequired();
+
+        builder.HasMany(x => x.Models)
+            .WithOne(x => x.Brand);
     }
 }

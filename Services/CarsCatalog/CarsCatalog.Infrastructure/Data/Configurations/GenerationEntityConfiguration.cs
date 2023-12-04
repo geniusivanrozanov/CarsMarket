@@ -22,5 +22,8 @@ public class GenerationEntityConfiguration : IEntityTypeConfiguration<Generation
 
         builder.Property(x => x.EndYear)
             .HasAnnotation("Range", new[] { DateTimeOffset.MinValue.Year, DateTimeOffset.MaxValue.Year });
+
+        builder.HasOne(x => x.Model)
+            .WithMany(x => x.Generations);
     }
 }

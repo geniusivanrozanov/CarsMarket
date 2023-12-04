@@ -16,5 +16,11 @@ public class ModelEntityConfiguration : IEntityTypeConfiguration<ModelEntity>
         builder.Property(x => x.Name)
             .HasMaxLength(NameMaxLength)
             .IsRequired();
+
+        builder.HasMany(x => x.Generations)
+            .WithOne(x => x.Model);
+
+        builder.HasOne(x => x.Brand)
+            .WithMany(x => x.Models);
     }
 }
