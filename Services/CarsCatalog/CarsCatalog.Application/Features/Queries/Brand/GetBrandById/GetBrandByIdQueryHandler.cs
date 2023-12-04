@@ -6,12 +6,18 @@ using MediatR;
 
 namespace CarsCatalog.Application.Features.Queries;
 
-public class GetBrandByIdQueryHandler(
-    IRepositoryUnitOfWork repositoryUnitOfWork,
-    ILogger<GetBrandByIdQueryHandler> logger) :
+public class GetBrandByIdQueryHandler :
     IRequestHandler<GetBrandByIdQuery, GetBrandDto>
 {
-    private readonly IBrandRepository _brandRepository = repositoryUnitOfWork.Brands;
+    private readonly IBrandRepository _brandRepository;
+    private readonly ILogger<GetBrandByIdQueryHandler> _logger;
+
+    public GetBrandByIdQueryHandler(IRepositoryUnitOfWork repositoryUnitOfWork,
+        ILogger<GetBrandByIdQueryHandler> logger)
+    {
+        _logger = logger;
+        _brandRepository = repositoryUnitOfWork.Brands;
+    }
 
     public async Task<GetBrandDto> Handle(GetBrandByIdQuery request, CancellationToken cancellationToken)
     {
@@ -19,7 +25,7 @@ public class GetBrandByIdQueryHandler(
 
         if (dto is null)
         {
-            logger.LogInformation("Brand with id {Id} not exists", request.BrandId);
+            _logger.LogInformation("Brand with id {Id} not exists", request.BrandId);
             throw new NotExistsException($"Brand with id '{request.BrandId}' not exists.");
         }
 

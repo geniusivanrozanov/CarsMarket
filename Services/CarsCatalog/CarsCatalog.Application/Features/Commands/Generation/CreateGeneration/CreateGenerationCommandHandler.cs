@@ -7,31 +7,39 @@ using Microsoft.Extensions.Logging;
 
 namespace CarsCatalog.Application.Features.Commands;
 
-public class CreateGenerationCommandHandler(
-    IRepositoryUnitOfWork repositoryUnitOfWork,
-    ILogger<CreateGenerationCommandHandler> logger) :
+public class CreateGenerationCommandHandler :
     IRequestHandler<CreateGenerationCommand, GetGenerationDto>
 {
-    private readonly IGenerationRepository _generationRepository = repositoryUnitOfWork.Generations;
+    private readonly IGenerationRepository _generationRepository;
+    private readonly IRepositoryUnitOfWork _repositoryUnitOfWork;
+    private readonly ILogger<CreateGenerationCommandHandler> _logger;
+
+    public CreateGenerationCommandHandler(IRepositoryUnitOfWork repositoryUnitOfWork,
+        ILogger<CreateGenerationCommandHandler> logger)
+    {
+        _repositoryUnitOfWork = repositoryUnitOfWork;
+        _logger = logger;
+        _generationRepository = repositoryUnitOfWork.Generations;
+    }
 
     public async Task<GetGenerationDto> Handle(CreateGenerationCommand request, CancellationToken cancellationToken)
     {
         var entity = request.CreateGenerationDto.ToGenerationEntity();
 
-        if (!await repositoryUnitOfWork.Models.ExistsWithIdAsync(entity.ModelId, cancellationToken))
+        if (!await _repositoryUnitOfWork.Models.ExistsWithIdAsync(entity.ModelId, cancellationToken))
         {
-            logger.LogInformation("Model with id {Id} not exists", entity.ModelId);
+            _logger.LogInformation("Model with id {Id} not exists", entity.ModelId);
             throw new NotExistsException($"Model with id '{entity.ModelId}' not exists.");
         }
 
         if (await _generationRepository.ExistsWithNameAndModelIdAsync(entity.Name, entity.ModelId, cancellationToken))
         {
-            logger.LogInformation("Generation with name '{Name}' already exists", entity.Name);
+            _logger.LogInformation("Generation with name '{Name}' already exists", entity.Name);
             throw new AlreadyExistsException($"Generation with name '{entity.Name}' already exists");
         }
 
         _generationRepository.CreateGeneration(entity);
-        await repositoryUnitOfWork.SaveAsync(cancellationToken);
+        await _repositoryUnitOfWork.SaveAsync(cancellationToken);
 
         var dto = entity.ToGetGenerationDto();
 

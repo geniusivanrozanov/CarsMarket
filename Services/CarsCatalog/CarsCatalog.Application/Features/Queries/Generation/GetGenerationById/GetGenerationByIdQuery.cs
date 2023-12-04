@@ -3,7 +3,14 @@ using MediatR;
 
 namespace CarsCatalog.Application.Features.Queries;
 
-public class GetGenerationByIdQuery(Guid generationId) : IRequest<GetGenerationDto>
+public class GetGenerationByIdQuery : IRequest<GetGenerationDto>
 {
-    public Guid GenerationId => generationId;
+    private readonly Guid _generationId;
+
+    public GetGenerationByIdQuery(Guid generationId)
+    {
+        _generationId = generationId;
+    }
+
+    public Guid GenerationId => _generationId;
 }

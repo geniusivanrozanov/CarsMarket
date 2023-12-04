@@ -2,7 +2,14 @@
 
 namespace CarsCatalog.Application.Features.Commands;
 
-public class DeleteGenerationCommand(Guid generationId) : IRequest
+public class DeleteGenerationCommand : IRequest
 {
-    public Guid GenerationId => generationId;
+    private readonly Guid _generationId;
+
+    public DeleteGenerationCommand(Guid generationId)
+    {
+        _generationId = generationId;
+    }
+
+    public Guid GenerationId => _generationId;
 }

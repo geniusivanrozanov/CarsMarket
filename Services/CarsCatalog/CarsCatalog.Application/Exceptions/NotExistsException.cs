@@ -1,3 +1,8 @@
 ﻿namespace CarsCatalog.Application.Exceptions;
 
-public class NotExistsException(string message) : Exception(message);
+public class NotExistsException : Exception
+{
+    public NotExistsException(string message) : base(message)
+    {
+    }
+}

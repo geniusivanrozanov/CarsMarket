@@ -10,8 +10,15 @@ namespace CarsCatalog.WebAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class GenerationsController(IMediator mediator) : ControllerBase
+public class GenerationsController : ControllerBase
 {
+    private readonly IMediator _mediator;
+
+    public GenerationsController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetGenerations(
         Guid? brandId,
@@ -21,7 +28,7 @@ public class GenerationsController(IMediator mediator) : ControllerBase
         int? productionYear,
         CancellationToken cancellationToken)
     {
-        var dto = await mediator.Send(new GetGenerationsListQuery
+        var dto = await _mediator.Send(new GetGenerationsListQuery
         {
             BrandId = brandId,
             BrandName = brandName,
@@ -36,7 +43,7 @@ public class GenerationsController(IMediator mediator) : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetGenerationById(Guid id, CancellationToken cancellationToken)
     {
-        var dto = await mediator.Send(new GetGenerationByIdQuery(id), cancellationToken);
+        var dto = await _mediator.Send(new GetGenerationByIdQuery(id), cancellationToken);
 
         return Ok(dto);
     }
@@ -46,7 +53,7 @@ public class GenerationsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> CreateGeneration([FromBody] CreateGenerationDto createGenerationDto,
         CancellationToken cancellationToken)
     {
-        var dto = await mediator.Send(new CreateGenerationCommand(createGenerationDto), cancellationToken);
+        var dto = await _mediator.Send(new CreateGenerationCommand(createGenerationDto), cancellationToken);
 
         return CreatedAtAction(nameof(GetGenerationById), new { dto.Id }, dto);
     }
@@ -56,7 +63,7 @@ public class GenerationsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> UpdateGeneration(Guid id, [FromBody] UpdateGenerationDto updateGenerationDto,
         CancellationToken cancellationToken)
     {
-        var dto = await mediator.Send(new UpdateGenerationCommand(id, updateGenerationDto), cancellationToken);
+        var dto = await _mediator.Send(new UpdateGenerationCommand(id, updateGenerationDto), cancellationToken);
 
         return CreatedAtAction(nameof(GetGenerationById), new { dto.Id }, dto);
     }
@@ -65,7 +72,7 @@ public class GenerationsController(IMediator mediator) : ControllerBase
     [Authorize(Roles = Roles.Admin)]
     public async Task<IActionResult> DeleteGeneration(Guid id, CancellationToken cancellationToken)
     {
-        await mediator.Send(new DeleteGenerationCommand(id), cancellationToken);
+        await _mediator.Send(new DeleteGenerationCommand(id), cancellationToken);
 
         return NoContent();
     }

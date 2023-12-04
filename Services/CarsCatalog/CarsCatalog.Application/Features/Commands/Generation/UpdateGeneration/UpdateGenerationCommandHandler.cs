@@ -8,12 +8,20 @@ using Microsoft.Extensions.Logging;
 
 namespace CarsCatalog.Application.Features.Commands;
 
-public class UpdateGenerationCommandHandler(
-    IRepositoryUnitOfWork repositoryUnitOfWork,
-    ILogger<UpdateGenerationCommandHandler> logger) :
+public class UpdateGenerationCommandHandler :
     IRequestHandler<UpdateGenerationCommand, GetGenerationDto>
 {
-    private readonly IGenerationRepository _generationRepository = repositoryUnitOfWork.Generations;
+    private readonly IGenerationRepository _generationRepository;
+    private readonly IRepositoryUnitOfWork _repositoryUnitOfWork;
+    private readonly ILogger<UpdateGenerationCommandHandler> _logger;
+
+    public UpdateGenerationCommandHandler(IRepositoryUnitOfWork repositoryUnitOfWork,
+        ILogger<UpdateGenerationCommandHandler> logger)
+    {
+        _repositoryUnitOfWork = repositoryUnitOfWork;
+        _logger = logger;
+        _generationRepository = repositoryUnitOfWork.Generations;
+    }
 
     public async Task<GetGenerationDto> Handle(UpdateGenerationCommand request, CancellationToken cancellationToken)
     {
@@ -23,7 +31,7 @@ public class UpdateGenerationCommandHandler(
 
         if (entity is null)
         {
-            logger.LogInformation("Generation with id {Id} not exists", request.GenerationId);
+            _logger.LogInformation("Generation with id {Id} not exists", request.GenerationId);
             throw new NotExistsException($"Generation with id '{request.GenerationId}' not exists.");
         }
 
@@ -31,7 +39,7 @@ public class UpdateGenerationCommandHandler(
             await _generationRepository.ExistsWithNameAndModelIdAsync(request.UpdateGenerationDto.Name, entity.ModelId,
                 cancellationToken))
         {
-            logger.LogInformation("Generation with name '{Name}' already exists", entity.Name);
+            _logger.LogInformation("Generation with name '{Name}' already exists", entity.Name);
             throw new AlreadyExistsException($"Generation with name '{entity.Name}' already exists");
         }
 
@@ -39,7 +47,7 @@ public class UpdateGenerationCommandHandler(
         entity.Id = request.GenerationId;
 
         _generationRepository.UpdateGeneration(entity);
-        await repositoryUnitOfWork.SaveAsync(cancellationToken);
+        await _repositoryUnitOfWork.SaveAsync(cancellationToken);
 
         var dto = entity.ToGetGenerationDto();
 

@@ -4,10 +4,15 @@ using MediatR;
 
 namespace CarsCatalog.Application.Features.Queries;
 
-public class GetGenerationsListQueryHandler(IRepositoryUnitOfWork repositoryUnitOfWork) :
+public class GetGenerationsListQueryHandler :
     IRequestHandler<GetGenerationsListQuery, IEnumerable<GetGenerationDto>>
 {
-    private readonly IGenerationRepository _generationRepository = repositoryUnitOfWork.Generations;
+    private readonly IGenerationRepository _generationRepository;
+
+    public GetGenerationsListQueryHandler(IRepositoryUnitOfWork repositoryUnitOfWork)
+    {
+        _generationRepository = repositoryUnitOfWork.Generations;
+    }
 
     public async Task<IEnumerable<GetGenerationDto>> Handle(GetGenerationsListQuery request,
         CancellationToken cancellationToken)

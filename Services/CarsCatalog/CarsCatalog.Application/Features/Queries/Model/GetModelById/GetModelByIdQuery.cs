@@ -3,7 +3,14 @@ using MediatR;
 
 namespace CarsCatalog.Application.Features.Queries;
 
-public class GetModelByIdQuery(Guid modelId) : IRequest<GetModelDto>
+public class GetModelByIdQuery : IRequest<GetModelDto>
 {
-    public Guid ModelId => modelId;
+    private readonly Guid _modelId;
+
+    public GetModelByIdQuery(Guid modelId)
+    {
+        _modelId = modelId;
+    }
+
+    public Guid ModelId => _modelId;
 }

@@ -7,12 +7,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarsCatalog.Infrastructure.Data.Repositories;
 
-public class ModelRepository(CatalogContext context) : IModelRepository
+public class ModelRepository : IModelRepository
 {
+    private readonly CatalogContext _context;
+
+    public ModelRepository(CatalogContext context)
+    {
+        _context = context;
+    }
+
     public async Task<TProjection?> GetModelByIdAsync<TProjection>(Guid modelId,
         CancellationToken cancellationToken = default)
     {
-        var query = context.Models
+        var query = _context.Models
             .Where(x => x.Id == modelId)
             .ProjectTo<IQueryable<TProjection>>();
 
@@ -24,7 +31,7 @@ public class ModelRepository(CatalogContext context) : IModelRepository
         string? brandName = default,
         CancellationToken cancellationToken = default)
     {
-        var query = context.Models
+        var query = _context.Models
             .AsNoTracking();
 
         if (brandId.HasValue)
@@ -50,25 +57,25 @@ public class ModelRepository(CatalogContext context) : IModelRepository
 
     public void CreateModel(ModelEntity model)
     {
-        context.Models
+        _context.Models
             .Add(model);
     }
 
     public void UpdateModel(ModelEntity model)
     {
-        context.Models
+        _context.Models
             .Update(model);
     }
 
     public void DeleteModel(ModelEntity model)
     {
-        context.Models
+        _context.Models
             .Remove(model);
     }
 
     private async Task<bool> Exists(Expression<Func<ModelEntity, bool>> predicate)
     {
-        return await context.Models
+        return await _context.Models
             .AnyAsync(predicate);
     }
 }

@@ -3,8 +3,17 @@ using MediatR;
 
 namespace CarsCatalog.Application.Features.Commands;
 
-public class UpdateModelCommand(Guid modelId, UpdateModelDto updateModelDto) : IRequest<GetModelDto>
+public class UpdateModelCommand : IRequest<GetModelDto>
 {
-    public Guid ModelId => modelId;
-    public UpdateModelDto UpdateModelDto => updateModelDto;
+    private readonly Guid _modelId;
+    private readonly UpdateModelDto _updateModelDto;
+
+    public UpdateModelCommand(Guid modelId, UpdateModelDto updateModelDto)
+    {
+        _modelId = modelId;
+        _updateModelDto = updateModelDto;
+    }
+
+    public Guid ModelId => _modelId;
+    public UpdateModelDto UpdateModelDto => _updateModelDto;
 }
