@@ -14,7 +14,7 @@ public class GenerationRepository(CatalogContext context) : IGenerationRepositor
     {
         var query = context.Generations
             .Where(x => x.Id == generationId)
-            .ProjectTo<TProjection>();
+            .ProjectTo<IQueryable<TProjection>>();
 
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
@@ -45,7 +45,7 @@ public class GenerationRepository(CatalogContext context) : IGenerationRepositor
                 productionYear >= x.StartYear && productionYear <= (x.EndYear ?? DateTimeOffset.UtcNow.Year));
 
         return await query
-            .ProjectTo<TProjection>()
+            .ProjectTo<IQueryable<TProjection>>()
             .ToArrayAsync(cancellationToken);
     }
 

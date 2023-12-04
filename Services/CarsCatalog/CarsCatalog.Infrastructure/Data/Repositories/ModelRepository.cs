@@ -14,7 +14,7 @@ public class ModelRepository(CatalogContext context) : IModelRepository
     {
         var query = context.Models
             .Where(x => x.Id == modelId)
-            .ProjectTo<TProjection>();
+            .ProjectTo<IQueryable<TProjection>>();
 
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
@@ -33,7 +33,7 @@ public class ModelRepository(CatalogContext context) : IModelRepository
             query = query.Where(x => EF.Functions.ILike(x.Brand!.Name, $"%{brandName}%"));
 
         return await query
-            .ProjectTo<TProjection>()
+            .ProjectTo<IQueryable<TProjection>>()
             .ToArrayAsync(cancellationToken);
     }
 
