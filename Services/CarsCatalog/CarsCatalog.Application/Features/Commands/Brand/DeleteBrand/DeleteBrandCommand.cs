@@ -2,7 +2,14 @@
 
 namespace CarsCatalog.Application.Features.Commands;
 
-public class DeleteBrandCommand(Guid brandId) : IRequest
+public class DeleteBrandCommand : IRequest
 {
-    public Guid BrandId => brandId;
+    private readonly Guid _brandId;
+
+    public DeleteBrandCommand(Guid brandId)
+    {
+        _brandId = brandId;
+    }
+
+    public Guid BrandId => _brandId;
 }

@@ -8,12 +8,20 @@ using Microsoft.Extensions.Logging;
 
 namespace CarsCatalog.Application.Features.Commands;
 
-public class UpdateBrandCommandHandler(
-    IRepositoryUnitOfWork repositoryUnitOfWork,
-    ILogger<UpdateBrandCommandHandler> logger) :
+public class UpdateBrandCommandHandler :
     IRequestHandler<UpdateBrandCommand, GetBrandDto>
 {
-    private readonly IBrandRepository _brandRepository = repositoryUnitOfWork.Brands;
+    private readonly IBrandRepository _brandRepository;
+    private readonly IRepositoryUnitOfWork _repositoryUnitOfWork;
+    private readonly ILogger<UpdateBrandCommandHandler> _logger;
+
+    public UpdateBrandCommandHandler(IRepositoryUnitOfWork repositoryUnitOfWork,
+        ILogger<UpdateBrandCommandHandler> logger)
+    {
+        _repositoryUnitOfWork = repositoryUnitOfWork;
+        _logger = logger;
+        _brandRepository = repositoryUnitOfWork.Brands;
+    }
 
     public async Task<GetBrandDto> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
     {
@@ -21,14 +29,14 @@ public class UpdateBrandCommandHandler(
 
         if (entity is null)
         {
-            logger.LogInformation("Brand with id {Id} not exists", request.BrandId);
+            _logger.LogInformation("Brand with id {Id} not exists", request.BrandId);
             throw new NotExistsException($"Brand with id '{request.BrandId}' not exists.");
         }
 
         if (entity.Name != request.UpdateBrandDto.Name &&
             await _brandRepository.ExistsWithNameAsync(request.UpdateBrandDto.Name, cancellationToken))
         {
-            logger.LogInformation("Brand with name '{Name}' already exists", entity.Name);
+            _logger.LogInformation("Brand with name '{Name}' already exists", entity.Name);
             throw new AlreadyExistsException($"Brand with name '{entity.Name}' already exists");
         }
 
@@ -36,7 +44,7 @@ public class UpdateBrandCommandHandler(
         entity.Id = request.BrandId;
 
         _brandRepository.UpdateBrand(entity);
-        await repositoryUnitOfWork.SaveAsync(cancellationToken);
+        await _repositoryUnitOfWork.SaveAsync(cancellationToken);
 
         var dto = entity.ToGetBrandDto();
 

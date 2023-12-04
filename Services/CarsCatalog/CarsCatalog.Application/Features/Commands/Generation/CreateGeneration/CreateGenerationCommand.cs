@@ -3,7 +3,12 @@ using MediatR;
 
 namespace CarsCatalog.Application.Features.Commands;
 
-public class CreateGenerationCommand(CreateGenerationDto createGenerationDto) : IRequest<GetGenerationDto>
+public class CreateGenerationCommand : IRequest<GetGenerationDto>
 {
-    public CreateGenerationDto CreateGenerationDto { get; } = createGenerationDto;
+    public CreateGenerationCommand(CreateGenerationDto createGenerationDto)
+    {
+        CreateGenerationDto = createGenerationDto;
+    }
+
+    public CreateGenerationDto CreateGenerationDto { get; }
 }

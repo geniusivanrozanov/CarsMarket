@@ -2,7 +2,14 @@
 
 namespace CarsCatalog.Application.Features.Commands;
 
-public class DeleteModelCommand(Guid modelId) : IRequest
+public class DeleteModelCommand : IRequest
 {
-    public Guid ModelId => modelId;
+    private readonly Guid _modelId;
+
+    public DeleteModelCommand(Guid modelId)
+    {
+        _modelId = modelId;
+    }
+
+    public Guid ModelId => _modelId;
 }

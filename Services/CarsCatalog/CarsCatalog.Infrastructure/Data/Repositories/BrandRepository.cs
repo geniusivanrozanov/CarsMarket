@@ -7,12 +7,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarsCatalog.Infrastructure.Data.Repositories;
 
-public class BrandRepository(CatalogContext context) : IBrandRepository
+public class BrandRepository : IBrandRepository
 {
+    private readonly CatalogContext _context;
+
+    public BrandRepository(CatalogContext context)
+    {
+        _context = context;
+    }
+
     public async Task<TProjection?> GetBrandByIdAsync<TProjection>(Guid brandId,
         CancellationToken cancellationToken = default)
     {
-        var query = context.Brands
+        var query = _context.Brands
             .Where(x => x.Id == brandId)
             .ProjectTo<IQueryable<TProjection>>();
 
@@ -22,7 +29,7 @@ public class BrandRepository(CatalogContext context) : IBrandRepository
     public async Task<IEnumerable<TProjection>> GetBrandsAsync<TProjection>(
         CancellationToken cancellationToken = default)
     {
-        var query = context.Brands
+        var query = _context.Brands
             .AsNoTracking()
             .ProjectTo<IQueryable<TProjection>>();
 
@@ -41,25 +48,25 @@ public class BrandRepository(CatalogContext context) : IBrandRepository
 
     public void CreateBrand(BrandEntity brand)
     {
-        context.Brands
+        _context.Brands
             .Add(brand);
     }
 
     public void UpdateBrand(BrandEntity brand)
     {
-        context.Brands
+        _context.Brands
             .Update(brand);
     }
 
     public void DeleteBrand(BrandEntity brand)
     {
-        context.Brands
+        _context.Brands
             .Remove(brand);
     }
 
     private async Task<bool> Exists(Expression<Func<BrandEntity, bool>> predicate)
     {
-        return await context.Brands
+        return await _context.Brands
             .AnyAsync(predicate);
     }
 }

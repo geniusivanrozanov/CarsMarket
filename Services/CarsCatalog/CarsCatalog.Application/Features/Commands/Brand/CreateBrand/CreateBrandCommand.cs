@@ -3,7 +3,12 @@ using MediatR;
 
 namespace CarsCatalog.Application.Features.Commands;
 
-public class CreateBrandCommand(CreateBrandDto createBrandDto) : IRequest<GetBrandDto>
+public class CreateBrandCommand : IRequest<GetBrandDto>
 {
-    public CreateBrandDto CreateBrandDto { get; } = createBrandDto;
+    public CreateBrandCommand(CreateBrandDto createBrandDto)
+    {
+        CreateBrandDto = createBrandDto;
+    }
+
+    public CreateBrandDto CreateBrandDto { get; }
 }

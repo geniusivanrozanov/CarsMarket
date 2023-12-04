@@ -1,3 +1,8 @@
 ﻿namespace CarsCatalog.Application.Exceptions;
 
-public class AlreadyExistsException(string message) : Exception(message);
+public class AlreadyExistsException : Exception
+{
+    public AlreadyExistsException(string message) : base(message)
+    {
+    }
+}

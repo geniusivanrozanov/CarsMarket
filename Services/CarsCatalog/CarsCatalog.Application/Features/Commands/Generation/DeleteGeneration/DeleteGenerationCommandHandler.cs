@@ -6,12 +6,20 @@ using Microsoft.Extensions.Logging;
 
 namespace CarsCatalog.Application.Features.Commands;
 
-public class DeleteGenerationCommandHandler(
-    IRepositoryUnitOfWork repositoryUnitOfWork,
-    ILogger<DeleteGenerationCommandHandler> logger) :
+public class DeleteGenerationCommandHandler :
     IRequestHandler<DeleteGenerationCommand>
 {
-    private readonly IGenerationRepository _generationRepository = repositoryUnitOfWork.Generations;
+    private readonly IGenerationRepository _generationRepository;
+    private readonly IRepositoryUnitOfWork _repositoryUnitOfWork;
+    private readonly ILogger<DeleteGenerationCommandHandler> _logger;
+
+    public DeleteGenerationCommandHandler(IRepositoryUnitOfWork repositoryUnitOfWork,
+        ILogger<DeleteGenerationCommandHandler> logger)
+    {
+        _repositoryUnitOfWork = repositoryUnitOfWork;
+        _logger = logger;
+        _generationRepository = repositoryUnitOfWork.Generations;
+    }
 
     public async Task Handle(DeleteGenerationCommand request, CancellationToken cancellationToken)
     {
@@ -21,11 +29,11 @@ public class DeleteGenerationCommandHandler(
 
         if (entity is null)
         {
-            logger.LogInformation("Generation with id {Id} not exists", request.GenerationId);
+            _logger.LogInformation("Generation with id {Id} not exists", request.GenerationId);
             throw new NotExistsException($"Generation with id '{request.GenerationId}' not exists.");
         }
 
         _generationRepository.DeleteGeneration(entity);
-        await repositoryUnitOfWork.SaveAsync(cancellationToken);
+        await _repositoryUnitOfWork.SaveAsync(cancellationToken);
     }
 }

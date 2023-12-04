@@ -3,9 +3,17 @@ using MediatR;
 
 namespace CarsCatalog.Application.Features.Commands;
 
-public class UpdateGenerationCommand
-    (Guid generationId, UpdateGenerationDto updateGenerationDto) : IRequest<GetGenerationDto>
+public class UpdateGenerationCommand : IRequest<GetGenerationDto>
 {
-    public Guid GenerationId => generationId;
-    public UpdateGenerationDto UpdateGenerationDto => updateGenerationDto;
+    private readonly Guid _generationId;
+    private readonly UpdateGenerationDto _updateGenerationDto;
+
+    public UpdateGenerationCommand(Guid generationId, UpdateGenerationDto updateGenerationDto)
+    {
+        _generationId = generationId;
+        _updateGenerationDto = updateGenerationDto;
+    }
+
+    public Guid GenerationId => _generationId;
+    public UpdateGenerationDto UpdateGenerationDto => _updateGenerationDto;
 }

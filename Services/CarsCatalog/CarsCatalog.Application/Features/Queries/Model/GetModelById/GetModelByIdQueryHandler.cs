@@ -6,12 +6,18 @@ using MediatR;
 
 namespace CarsCatalog.Application.Features.Queries;
 
-public class GetModelByIdQueryHandler(
-    IRepositoryUnitOfWork repositoryUnitOfWork,
-    ILogger<GetModelByIdQueryHandler> logger) :
+public class GetModelByIdQueryHandler :
     IRequestHandler<GetModelByIdQuery, GetModelDto>
 {
-    private readonly IModelRepository _modelRepository = repositoryUnitOfWork.Models;
+    private readonly IModelRepository _modelRepository;
+    private readonly ILogger<GetModelByIdQueryHandler> _logger;
+
+    public GetModelByIdQueryHandler(IRepositoryUnitOfWork repositoryUnitOfWork,
+        ILogger<GetModelByIdQueryHandler> logger)
+    {
+        _logger = logger;
+        _modelRepository = repositoryUnitOfWork.Models;
+    }
 
     public async Task<GetModelDto> Handle(GetModelByIdQuery request, CancellationToken cancellationToken)
     {
@@ -19,7 +25,7 @@ public class GetModelByIdQueryHandler(
 
         if (dto is null)
         {
-            logger.LogInformation("Model with id {Id} not exists", request.ModelId);
+            _logger.LogInformation("Model with id {Id} not exists", request.ModelId);
             throw new NotExistsException($"Model with id '{request.ModelId}' not exists.");
         }
 
