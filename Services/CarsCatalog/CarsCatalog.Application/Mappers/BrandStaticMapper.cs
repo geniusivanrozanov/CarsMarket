@@ -12,5 +12,13 @@ public static partial class BrandStaticMapper
     public static partial BrandEntity ToBrandEntity(this UpdateBrandDto updateBrandDto);
     public static partial void ToBrandEntity(this UpdateBrandDto updateBrandDto, BrandEntity brandEntity);
     public static partial IQueryable<GetBrandDto> ProjectToGetBrandDto(this IQueryable<BrandEntity> queryable);
-    public static partial TResult ProjectTo<TResult>(this IQueryable<BrandEntity> queryable);
+
+    public static IQueryable<TResult> ProjectTo<TResult>(this IQueryable<BrandEntity> queryable)
+    {
+        if (queryable is IQueryable<TResult> query) return query;
+
+        return queryable.MapTo<IQueryable<TResult>>();
+    }
+
+    private static partial TResult MapTo<TResult>(this object source);
 }
