@@ -37,12 +37,12 @@ public class GenerationRepository : RepositoryBase<GenerationEntity, Guid>, IGen
         if (modelId.HasValue)
             query = query.Where(x => x.ModelId == modelId);
         else if (modelName is not null)
-            query = query.Where(x => x.Model!.Name.Contains(modelName.ToLower()));
+            query = query.Where(x => x.Model!.Name.ToLower().Contains(modelName.ToLower()));
 
         if (brandId.HasValue)
             query = query.Where(x => x.Model!.BrandId == brandId);
         else if (brandName is not null)
-            query = query.Where(x => x.Model!.Brand!.Name.Contains(brandName.ToLower()));
+            query = query.Where(x => x.Model!.Brand!.Name.ToLower().Contains(brandName.ToLower()));
 
         if (productionYear.HasValue)
             query = query.Where(x =>
