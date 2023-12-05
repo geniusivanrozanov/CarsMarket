@@ -1,6 +1,6 @@
 ﻿namespace CarsCatalog.Domain.Interfaces;
 
-public interface IEntity
+public interface IEntity<TKey>
 {
-    Guid Id { get; set; }
+    TKey Id { get; set; }
 }
