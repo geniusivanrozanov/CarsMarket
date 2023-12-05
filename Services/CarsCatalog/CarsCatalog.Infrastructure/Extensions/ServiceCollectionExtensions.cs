@@ -30,6 +30,9 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IRepositoryUnitOfWork, RepositoryUnitOfWork>();
+        services.AddScoped<IBrandRepository, BrandRepository>();
+        services.AddScoped<IModelRepository, ModelRepository>();
+        services.AddScoped<IGenerationRepository, GenerationRepository>();
 
         return services;
     }
