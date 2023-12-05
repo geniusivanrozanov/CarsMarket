@@ -18,7 +18,7 @@ public class GenerationRepository : RepositoryBase<GenerationEntity, Guid>, IGen
     {
         var query = Query
             .Where(x => x.Id == generationId)
-            .ProjectTo<IQueryable<TProjection>>();
+            .ProjectTo<TProjection>();
 
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
@@ -49,7 +49,7 @@ public class GenerationRepository : RepositoryBase<GenerationEntity, Guid>, IGen
                 productionYear >= x.StartYear && productionYear <= (x.EndYear ?? DateTimeOffset.UtcNow.Year));
 
         return await query
-            .ProjectTo<IQueryable<TProjection>>()
+            .ProjectTo<TProjection>()
             .ToArrayAsync(cancellationToken);
     }
 

@@ -18,7 +18,7 @@ public class BrandRepository : RepositoryBase<BrandEntity, Guid>, IBrandReposito
     {
         var query = Query
             .Where(x => x.Id == brandId)
-            .ProjectTo<IQueryable<TProjection>>();
+            .ProjectTo<TProjection>();
 
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
@@ -28,7 +28,7 @@ public class BrandRepository : RepositoryBase<BrandEntity, Guid>, IBrandReposito
     {
         var query = Query
             .AsNoTracking()
-            .ProjectTo<IQueryable<TProjection>>();
+            .ProjectTo<TProjection>();
 
         return await query.ToArrayAsync(cancellationToken);
     }

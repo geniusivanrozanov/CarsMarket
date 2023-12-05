@@ -16,5 +16,13 @@ public static partial class GenerationStaticMapper
 
     public static partial IQueryable<GetGenerationDto> ProjectToGetGenerationDto(
         this IQueryable<GenerationEntity> queryable);
-    public static partial TResult ProjectTo<TResult>(this IQueryable<GenerationEntity> queryable);
+    
+    public static IQueryable<TResult> ProjectTo<TResult>(this IQueryable<GenerationEntity> queryable)
+    {
+        if (queryable is IQueryable<TResult> query) return query;
+
+        return queryable.MapTo<IQueryable<TResult>>();
+    }
+
+    private static partial TResult MapTo<TResult>(this object source);
 }

@@ -18,7 +18,7 @@ public class ModelRepository : RepositoryBase<ModelEntity, Guid>, IModelReposito
     {
         var query = Query
             .Where(x => x.Id == modelId)
-            .ProjectTo<IQueryable<TProjection>>();
+            .ProjectTo<TProjection>();
 
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
@@ -37,7 +37,7 @@ public class ModelRepository : RepositoryBase<ModelEntity, Guid>, IModelReposito
             query = query.Where(x => x.Brand!.Name.ToLower().Contains(brandName.ToLower()));
 
         return await query
-            .ProjectTo<IQueryable<TProjection>>()
+            .ProjectTo<TProjection>()
             .ToArrayAsync(cancellationToken);
     }
 
