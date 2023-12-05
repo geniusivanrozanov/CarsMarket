@@ -17,12 +17,14 @@ public class GetGenerationsListQueryHandler :
     public async Task<IEnumerable<GetGenerationDto>> Handle(GetGenerationsListQuery request,
         CancellationToken cancellationToken)
     {
+        var queryParameters = request.QueryParameters;
+        
         var dto = await _generationRepository.GetGenerationsAsync<GetGenerationDto>(
-            request.BrandId,
-            request.BrandName,
-            request.ModelId,
-            request.ModelName,
-            request.ProductionYear,
+            queryParameters.BrandId,
+            queryParameters.BrandName,
+            queryParameters.ModelId,
+            queryParameters.ModelName,
+            queryParameters.ProductionYear,
             cancellationToken);
 
         return dto;

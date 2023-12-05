@@ -16,9 +16,11 @@ public class GetModelsListQueryHandler :
 
     public async Task<IEnumerable<GetModelDto>> Handle(GetModelsListQuery request, CancellationToken cancellationToken)
     {
+        var queryParameters = request.QueryParameters;
+        
         var dto = await _modelRepository.GetModelsAsync<GetModelDto>(
-            request.BrandId,
-            request.BrandName,
+            queryParameters.BrandId,
+            queryParameters.BrandName,
             cancellationToken);
 
         return dto;

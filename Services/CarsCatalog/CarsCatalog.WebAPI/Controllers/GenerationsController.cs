@@ -20,22 +20,9 @@ public class GenerationsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetGenerations(
-        Guid? brandId,
-        string? brandName,
-        Guid? modelId,
-        string? modelName,
-        int? productionYear,
-        CancellationToken cancellationToken)
+    public async Task<IActionResult> GetGenerations([FromQuery] GetGenerationsListQueryParameters queryParameters, CancellationToken cancellationToken)
     {
-        var dto = await _mediator.Send(new GetGenerationsListQuery
-        {
-            BrandId = brandId,
-            BrandName = brandName,
-            ModelId = modelId,
-            ModelName = modelName,
-            ProductionYear = productionYear
-        }, cancellationToken);
+        var dto = await _mediator.Send(new GetGenerationsListQuery(queryParameters), cancellationToken);
 
         return Ok(dto);
     }
