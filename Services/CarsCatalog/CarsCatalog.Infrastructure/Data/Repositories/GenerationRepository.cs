@@ -7,19 +7,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarsCatalog.Infrastructure.Data.Repositories;
 
-public class GenerationRepository : IGenerationRepository
+public class GenerationRepository : RepositoryBase<GenerationEntity, Guid>, IGenerationRepository
 {
-    private readonly CatalogContext _context;
-
-    public GenerationRepository(CatalogContext context)
+    public GenerationRepository(CatalogContext context) : base(context)
     {
-        _context = context;
     }
 
     public async Task<TProjection?> GetGenerationByIdAsync<TProjection>(Guid generationId,
         CancellationToken cancellationToken = default)
     {
-        var query = _context.Generations
+        var query = Query
             .Where(x => x.Id == generationId)
             .ProjectTo<IQueryable<TProjection>>();
 
@@ -34,7 +31,7 @@ public class GenerationRepository : IGenerationRepository
         int? productionYear = default,
         CancellationToken cancellationToken = default)
     {
-        var query = _context.Generations
+        var query = Query
             .AsNoTracking();
 
         if (modelId.HasValue)
@@ -67,27 +64,9 @@ public class GenerationRepository : IGenerationRepository
         return Exists(x => x.Name == name && x.ModelId == modelId);
     }
 
-    public void CreateGeneration(GenerationEntity generation)
-    {
-        _context.Generations
-            .Add(generation);
-    }
-
-    public void UpdateGeneration(GenerationEntity generation)
-    {
-        _context.Generations
-            .Update(generation);
-    }
-
-    public void DeleteGeneration(GenerationEntity generation)
-    {
-        _context.Generations
-            .Remove(generation);
-    }
-
     private async Task<bool> Exists(Expression<Func<GenerationEntity, bool>> predicate)
     {
-        return await _context.Generations
+        return await Query
             .AnyAsync(predicate);
     }
 }

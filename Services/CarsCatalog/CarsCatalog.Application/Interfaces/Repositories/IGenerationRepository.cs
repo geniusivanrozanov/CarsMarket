@@ -2,7 +2,7 @@
 
 namespace CarsCatalog.Application.Interfaces.Repositories;
 
-public interface IGenerationRepository
+public interface IGenerationRepository : IRepositoryBase<GenerationEntity, Guid>
 {
     Task<IEnumerable<TProjection>> GetGenerationsAsync<TProjection>(
         Guid? brandId = default,
@@ -17,7 +17,4 @@ public interface IGenerationRepository
 
     Task<bool> ExistsWithIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<bool> ExistsWithNameAndModelIdAsync(string name, Guid modelId, CancellationToken cancellationToken = default);
-    void CreateGeneration(GenerationEntity generation);
-    void UpdateGeneration(GenerationEntity generation);
-    void DeleteGeneration(GenerationEntity generation);
 }

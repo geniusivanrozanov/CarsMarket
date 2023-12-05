@@ -46,7 +46,7 @@ public class UpdateGenerationCommandHandler :
         request.UpdateGenerationDto.ToGenerationEntity(entity);
         entity.Id = request.GenerationId;
 
-        _generationRepository.UpdateGeneration(entity);
+        _generationRepository.Update(entity);
         await _repositoryUnitOfWork.SaveAsync(cancellationToken);
 
         var dto = entity.ToGetGenerationDto();

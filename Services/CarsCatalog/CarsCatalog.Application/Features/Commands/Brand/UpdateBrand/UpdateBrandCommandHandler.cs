@@ -43,7 +43,7 @@ public class UpdateBrandCommandHandler :
         request.UpdateBrandDto.ToBrandEntity(entity);
         entity.Id = request.BrandId;
 
-        _brandRepository.UpdateBrand(entity);
+        _brandRepository.Update(entity);
         await _repositoryUnitOfWork.SaveAsync(cancellationToken);
 
         var dto = entity.ToGetBrandDto();

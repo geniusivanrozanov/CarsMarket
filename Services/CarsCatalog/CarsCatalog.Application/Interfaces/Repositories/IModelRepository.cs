@@ -2,7 +2,7 @@
 
 namespace CarsCatalog.Application.Interfaces.Repositories;
 
-public interface IModelRepository
+public interface IModelRepository : IRepositoryBase<ModelEntity, Guid>
 {
     Task<IEnumerable<TProjection>> GetModelsAsync<TProjection>(
         Guid? brandId = default,
@@ -12,7 +12,4 @@ public interface IModelRepository
     Task<TProjection?> GetModelByIdAsync<TProjection>(Guid modelId, CancellationToken cancellationToken = default);
     Task<bool> ExistsWithIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<bool> ExistsWithNameAndBrandIdAsync(string name, Guid brandId, CancellationToken cancellationToken = default);
-    void CreateModel(ModelEntity model);
-    void UpdateModel(ModelEntity model);
-    void DeleteModel(ModelEntity model);
 }
