@@ -37,7 +37,7 @@ public class ModelRepository : IModelRepository
         if (brandId.HasValue)
             query = query.Where(x => x.BrandId == brandId);
         else if (brandName is not null)
-            query = query.Where(x => EF.Functions.ILike(x.Brand!.Name, $"%{brandName}%"));
+            query = query.Where(x => x.Brand!.Name.ToLower().Contains(brandName.ToLower()));
 
         return await query
             .ProjectTo<IQueryable<TProjection>>()
