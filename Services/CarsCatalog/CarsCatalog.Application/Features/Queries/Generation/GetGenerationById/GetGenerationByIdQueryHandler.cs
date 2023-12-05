@@ -7,26 +7,26 @@ using MediatR;
 namespace CarsCatalog.Application.Features.Queries;
 
 public class GetGenerationByIdQueryHandler :
-    IRequestHandler<GetBrandByIdQuery, GetBrandDto>
+    IRequestHandler<GetGenerationByIdQuery, GetGenerationDto>
 {
-    private readonly IBrandRepository _brandRepository;
+    private readonly IGenerationRepository _generationRepository;
     private readonly ILogger<GetGenerationByIdQueryHandler> _logger;
 
     public GetGenerationByIdQueryHandler(IRepositoryUnitOfWork repositoryUnitOfWork,
         ILogger<GetGenerationByIdQueryHandler> logger)
     {
         _logger = logger;
-        _brandRepository = repositoryUnitOfWork.Brands;
+        _generationRepository = repositoryUnitOfWork.Generations;
     }
 
-    public async Task<GetBrandDto> Handle(GetBrandByIdQuery request, CancellationToken cancellationToken)
+    public async Task<GetGenerationDto> Handle(GetGenerationByIdQuery request, CancellationToken cancellationToken)
     {
-        var dto = await _brandRepository.GetBrandByIdAsync<GetBrandDto>(request.BrandId, cancellationToken);
+        var dto = await _generationRepository.GetGenerationByIdAsync<GetGenerationDto>(request.GenerationId, cancellationToken);
 
         if (dto is null)
         {
-            _logger.LogInformation("Brand with id {Id} not exists", request.BrandId);
-            throw new NotExistsException($"Brand with id '{request.BrandId}' not exists.");
+            _logger.LogInformation("Generation with id {Id} not exists", request.GenerationId);
+            throw new NotExistsException($"Generation with id '{request.GenerationId}' not exists.");
         }
 
         return dto;
