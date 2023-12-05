@@ -40,12 +40,12 @@ public class GenerationRepository : IGenerationRepository
         if (modelId.HasValue)
             query = query.Where(x => x.ModelId == modelId);
         else if (modelName is not null)
-            query = query.Where(x => EF.Functions.ILike(x.Model!.Name, $"%{modelName}%"));
+            query = query.Where(x => x.Model!.Name.Contains(modelName.ToLower()));
 
         if (brandId.HasValue)
             query = query.Where(x => x.Model!.BrandId == brandId);
         else if (brandName is not null)
-            query = query.Where(x => EF.Functions.ILike(x.Model!.Brand!.Name, $"%{brandName}%"));
+            query = query.Where(x => x.Model!.Brand!.Name.Contains(brandName.ToLower()));
 
         if (productionYear.HasValue)
             query = query.Where(x =>
