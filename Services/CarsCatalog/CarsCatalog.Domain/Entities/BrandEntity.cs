@@ -1,10 +1,7 @@
-﻿using CarsCatalog.Domain.Interfaces;
+﻿namespace CarsCatalog.Domain.Entities;
 
-namespace CarsCatalog.Domain.Entities;
-
-public class BrandEntity : IEntity
+public class BrandEntity : EntityBase<Guid>
 {
-    public Guid Id { get; set; }
     public required string Name { get; set; }
 
     public ICollection<ModelEntity>? Models { get; set; }

@@ -1,10 +1,7 @@
-﻿using CarsCatalog.Domain.Interfaces;
+﻿namespace CarsCatalog.Domain.Entities;
 
-namespace CarsCatalog.Domain.Entities;
-
-public class GenerationEntity : IEntity
+public class GenerationEntity : EntityBase<Guid>
 {
-    public Guid Id { get; set; }
     public required string Name { get; set; }
 
     public int StartYear { get; set; }
