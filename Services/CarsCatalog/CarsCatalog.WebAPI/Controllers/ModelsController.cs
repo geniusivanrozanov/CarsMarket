@@ -20,13 +20,9 @@ public class ModelsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetModels(Guid? brandId, string? brandName, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetModels([FromQuery] GetModelsListQueryParameters queryParameters, CancellationToken cancellationToken)
     {
-        var dto = await _mediator.Send(new GetModelsListQuery
-        {
-            BrandId = brandId,
-            BrandName = brandName
-        }, cancellationToken);
+        var dto = await _mediator.Send(new GetModelsListQuery(queryParameters), cancellationToken);
 
         return Ok(dto);
     }
