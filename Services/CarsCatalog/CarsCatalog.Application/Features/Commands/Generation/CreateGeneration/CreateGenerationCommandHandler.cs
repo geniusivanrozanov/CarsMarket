@@ -38,7 +38,7 @@ public class CreateGenerationCommandHandler :
             throw new AlreadyExistsException($"Generation with name '{entity.Name}' already exists");
         }
 
-        _generationRepository.CreateGeneration(entity);
+        _generationRepository.Create(entity);
         await _repositoryUnitOfWork.SaveAsync(cancellationToken);
 
         var dto = entity.ToGetGenerationDto();

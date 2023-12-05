@@ -44,7 +44,7 @@ public class UpdateModelCommandHandler :
         request.UpdateModelDto.ToModelEntity(entity);
         entity.Id = request.ModelId;
 
-        _modelRepository.UpdateModel(entity);
+        _modelRepository.Update(entity);
         await _repositoryUnitOfWork.SaveAsync(cancellationToken);
 
         var dto = entity.ToGetModelDto();

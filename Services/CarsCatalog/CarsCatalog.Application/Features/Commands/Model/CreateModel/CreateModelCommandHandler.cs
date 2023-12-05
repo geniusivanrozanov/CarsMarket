@@ -38,7 +38,7 @@ public class CreateModelCommandHandler :
             throw new AlreadyExistsException($"Model with name '{entity.Name}' already exists");
         }
 
-        _modelRepository.CreateModel(entity);
+        _modelRepository.Create(entity);
         await _repositoryUnitOfWork.SaveAsync(cancellationToken);
 
         var dto = entity.ToGetModelDto();

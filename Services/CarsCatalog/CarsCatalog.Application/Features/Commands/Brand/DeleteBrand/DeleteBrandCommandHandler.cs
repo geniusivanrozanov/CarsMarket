@@ -31,7 +31,7 @@ public class DeleteBrandCommandHandler :
             throw new NotExistsException($"Brand with id '{request.BrandId}' not exists.");
         }
 
-        _brandRepository.DeleteBrand(entity);
+        _brandRepository.Delete(entity);
         await _repositoryUnitOfWork.SaveAsync(cancellationToken);
     }
 }

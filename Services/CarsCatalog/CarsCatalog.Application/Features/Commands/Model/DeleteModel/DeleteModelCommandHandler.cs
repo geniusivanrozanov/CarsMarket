@@ -31,7 +31,7 @@ public class DeleteModelCommandHandler :
             throw new NotExistsException($"Model with id '{request.ModelId}' not exists.");
         }
 
-        _modelRepository.DeleteModel(entity);
+        _modelRepository.Delete(entity);
         await _repositoryUnitOfWork.SaveAsync(cancellationToken);
     }
 }

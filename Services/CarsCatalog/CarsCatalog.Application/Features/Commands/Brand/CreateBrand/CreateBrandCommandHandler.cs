@@ -32,7 +32,7 @@ public class CreateBrandCommandHandler :
             throw new AlreadyExistsException($"Brand with name '{entity.Name}' already exists");
         }
 
-        _brandRepository.CreateBrand(entity);
+        _brandRepository.Create(entity);
         await _repositoryUnitOfWork.SaveAsync(cancellationToken);
 
         var dto = entity.ToGetBrandDto();

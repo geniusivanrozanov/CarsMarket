@@ -33,7 +33,7 @@ public class DeleteGenerationCommandHandler :
             throw new NotExistsException($"Generation with id '{request.GenerationId}' not exists.");
         }
 
-        _generationRepository.DeleteGeneration(entity);
+        _generationRepository.Delete(entity);
         await _repositoryUnitOfWork.SaveAsync(cancellationToken);
     }
 }
