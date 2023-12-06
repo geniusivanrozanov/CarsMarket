@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyName>Identity.gRPC.Contracts</AssemblyName>
+        <RootNamespace>Identity.gRPC.Contracts</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="protobuf-net.Grpc" Version="1.1.1" />
+      <PackageReference Include="System.ServiceModel.Primitives" Version="8.0.0" />
+    </ItemGroup>
+
+</Project>
