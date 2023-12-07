@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProtoBuf.Grpc.Server;
 using StackExchange.Redis;
 
 namespace IdentityService.WebAPI.Extensions;
@@ -29,9 +30,18 @@ public static class ServiceExtensions
             .AddMiddlewares()
             .AddSwagger()
             .AddDistributedCache(configuration)
+            .AddGrpc()
             .ConfigureOptions(configuration);
     }
 
+    private static IServiceCollection AddGrpc(this IServiceCollection services)
+    {
+        services.AddCodeFirstGrpc();
+
+        return services;
+    }
+
+    
     private static IServiceCollection AddValidators(this IServiceCollection services)
     {
         services.AddFluentValidationAutoValidation();
