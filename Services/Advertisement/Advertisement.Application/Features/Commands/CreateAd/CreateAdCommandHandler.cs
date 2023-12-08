@@ -4,7 +4,9 @@ using Advertisement.Application.Interfaces.Repositories;
 using Advertisement.Application.Interfaces.Services;
 using Advertisement.Application.Mappers;
 using Advertisement.Domain.Enums;
-using Advertisement.Domain.ValueObjects;
+using Identity.gRPC.Contracts;
+using Identity.gRPC.Contracts.Enums;
+using Identity.gRPC.Contracts.Requests;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -15,15 +17,17 @@ public class CreateAdCommandHandler : IRequestHandler<CreateAdCommand, GetAdDto>
     private readonly IAdRepository _adRepository;
     private readonly TimeProvider _timeProvider;
     private readonly IUser _user;
+    private readonly IIdentityService _identityService;
     private readonly ILogger<CreateAdCommandHandler> _logger;
 
     public CreateAdCommandHandler(IAdRepository adRepository, TimeProvider timeProvider, IUser user,
-        ILogger<CreateAdCommandHandler> logger)
+        ILogger<CreateAdCommandHandler> logger, IIdentityService identityService)
     {
         _adRepository = adRepository;
         _timeProvider = timeProvider;
         _user = user;
         _logger = logger;
+        _identityService = identityService;
     }
 
     public async Task<GetAdDto> Handle(CreateAdCommand request, CancellationToken cancellationToken)
@@ -37,7 +41,21 @@ public class CreateAdCommandHandler : IRequestHandler<CreateAdCommand, GetAdDto>
             _logger.LogInformation("Ad with VIN '{Vin}' already exists", entity.Vin);
             throw new AlreadyExistsException($"Ad with VIN '{entity.Vin}' already exists");
         }
+        
+        entity.OwnerId = _user.Id;
+        var ownerNameReply = await _identityService.GetUserFirstNameAsync(new GetUserFirstNameByIdRequest
+        {
+            UserId = entity.OwnerId
+        });
 
+        if (ownerNameReply.Error is Error.UserNotFound)
+        {
+            _logger.LogInformation("gRPC call failed with message '{Message}'", ownerNameReply.ErrorMessage);
+            throw new NotExistsException(ownerNameReply.ErrorMessage!);
+        }
+
+        entity.OwnerName = ownerNameReply.FirstName;
+        
         entity.CreatedAt = entity.UpdatedAt = currentTime;
 
         var price = dto.ToPrice();
@@ -50,9 +68,7 @@ public class CreateAdCommandHandler : IRequestHandler<CreateAdCommand, GetAdDto>
         };
 
         entity.Status = AdStatus.NotActive;
-
-        entity.OwnerId = _user.Id;
-
+        
         await _adRepository.CreateAd(entity);
 
         return entity.ToGetAdDto();
