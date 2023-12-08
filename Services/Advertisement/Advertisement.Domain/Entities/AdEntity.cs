@@ -7,6 +7,7 @@ namespace Advertisement.Domain.Entities;
 public class AdEntity : EntityBase<Guid>, ICreatedAtAuditable, IUpdatedAtAuditable
 {
     public Guid OwnerId { get; set; }
+    public string OwnerName { get; set; } = null!;
     public string? Description { get; set; }
     public string? Vin { get; set; }
     public int BrandId { get; set; }
