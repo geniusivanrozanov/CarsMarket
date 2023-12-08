@@ -27,7 +27,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\Common\Common.Logging\Common.Logging.csproj"/>
-        <ProjectReference Include="..\..\..\Common\GRPC\Identity.gRPC.Contracts\Identity.gRPC.Contracts.csproj" />
+        <ProjectReference Include="..\..\..\Common\Identity.gRPC.Contracts\Identity.gRPC.Contracts.csproj" />
         <ProjectReference Include="..\IdentityService.Application\IdentityService.Application.csproj"/>
         <ProjectReference Include="..\IdentityService.Infrastructure\IdentityService.Infrastructure.csproj"/>
     </ItemGroup>
