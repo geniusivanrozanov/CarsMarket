@@ -8,12 +8,16 @@
 
     <ItemGroup>
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.1"/>
+        <PackageReference Include="Grpc.Net.ClientFactory" Version="2.59.0" />
         <PackageReference Include="MediatR" Version="12.2.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0"/>
+        <PackageReference Include="protobuf-net.Grpc.ClientFactory" Version="1.1.1" />
         <PackageReference Include="Riok.Mapperly" Version="3.2.0"/>
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\Common\GRPC\Identity.gRPC.Contracts\Identity.gRPC.Contracts.csproj" />
         <ProjectReference Include="..\Advertisement.Domain\Advertisement.Domain.csproj"/>
     </ItemGroup>
 
