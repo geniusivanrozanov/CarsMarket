@@ -10,6 +10,11 @@ services:
     build:
       context: .
       dockerfile: Services/Advertisement/Advertisement.WebAPI/Dockerfile
+      
+  cars-catalog.api:
+    build:
+      context: .
+      dockerfile: Services/CarsCatalog/CarsCatalog.WebAPI/Dockerfile
   
   postgres:
     image: postgres:latest
