@@ -3,7 +3,7 @@ using Advertisement.Application.Exceptions;
 
 namespace Advertisement.WebAPI.Middlewares;
 
-public class ExceptionHandlerMiddleware
+public class ExceptionHandlerMiddleware : IMiddleware
 {
     private readonly Dictionary<Type, HttpStatusCode> _statusCodes = new()
     {
