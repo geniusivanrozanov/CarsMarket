@@ -2,8 +2,12 @@ using Advertisement.Application.Extensions;
 using Advertisement.Infrastructure.Extensions;
 using Advertisement.WebAPI.Extensions;
 using Advertisement.WebAPI.Middlewares;
+using Common.Logging;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog(SeriLogger.Configure);
 
 var configuration = builder.Configuration;
 

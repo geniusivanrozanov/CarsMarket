@@ -22,6 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Common\Common.Logging\Common.Logging.csproj" />
       <ProjectReference Include="..\Advertisement.Application\Advertisement.Application.csproj" />
       <ProjectReference Include="..\Advertisement.Infrastructure\Advertisement.Infrastructure.csproj" />
     </ItemGroup>
