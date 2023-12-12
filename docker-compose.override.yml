@@ -4,7 +4,7 @@ services:
   identity.api:
     container_name: identity.api
     ports:
-      - "8000:8080"
+      - "8000:8000"
     environment:
       - ElasticConfiguration:Uri=http://elasticsearch:9200
       - ConnectionStrings:IdentityPostgres=Server=postgres;Port=5432;Database=Identity;User Id=postgres;Password=postgres;
@@ -21,6 +21,7 @@ services:
       - "8002:8080"
     environment:
       - ElasticConfiguration:Uri=http://elasticsearch:9200
+      - IdentityConfiguration:Uri=http://identity.api:7000
       - ConnectionStrings:MongoDB=mongodb://mongodb:27017
     depends_on:
       mongodb:
