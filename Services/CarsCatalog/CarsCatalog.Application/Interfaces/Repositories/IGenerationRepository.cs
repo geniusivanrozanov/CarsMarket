@@ -14,6 +14,11 @@ public interface IGenerationRepository : IRepositoryBase<GenerationEntity, Guid>
 
     Task<TProjection?> GetGenerationByIdAsync<TProjection>(Guid generationId,
         CancellationToken cancellationToken = default);
+    
+    Task<TProjection?> GetGenerationByOwnIdAndModelIdAndBrandIdAsync<TProjection>(Guid generationId,
+        Guid modelId,
+        Guid brandId,
+        CancellationToken cancellationToken = default);
 
     Task<bool> ExistsWithIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<bool> ExistsWithNameAndModelIdAsync(string name, Guid modelId, CancellationToken cancellationToken = default);
