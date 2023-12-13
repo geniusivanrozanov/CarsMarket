@@ -29,11 +29,11 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    
+
     private static IServiceCollection AddDbContexts(this IServiceCollection services)
     {
         services.AddScoped<AdvertisementContext>();
-        
+
         return services;
     }
 
@@ -48,9 +48,9 @@ public static class ServiceCollectionExtensions
     {
         var databaseName = configuration["MongoDatabaseName"];
         ArgumentException.ThrowIfNullOrEmpty(databaseName);
-        
+
         services.Configure<DatabaseOptions>(options => options.DatabaseName = databaseName);
-        
+
         return services;
     }
 }

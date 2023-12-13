@@ -9,6 +9,7 @@ namespace Advertisement.Infrastructure.Data.Contexts;
 public class AdvertisementContext : MongoContextBase
 {
     private static bool _isCreated = false;
+
     public AdvertisementContext(MongoClient client, IOptions<DatabaseOptions> options) : base(client, options)
     {
         Ads = Database.GetCollection<AdEntity>(nameof(Ads));
@@ -19,9 +20,9 @@ public class AdvertisementContext : MongoContextBase
             _isCreated = true;
         }
     }
-    
+
     public IMongoCollection<AdEntity> Ads { get; }
-    
+
     private void OnConfiguring()
     {
         var adEntityConfiguration = new AdEntityConfiguration();

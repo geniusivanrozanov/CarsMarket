@@ -25,7 +25,8 @@ public class AdsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAds([FromQuery] AdQueryParameters adQueryParameters, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAds([FromQuery] AdQueryParameters adQueryParameters,
+        CancellationToken cancellationToken)
     {
         var dto = await _mediator.Send(new GetAdsListQuery(adQueryParameters), cancellationToken);
 
@@ -39,7 +40,7 @@ public class AdsController : ControllerBase
 
         return Ok(dto);
     }
-    
+
     [HttpGet("{id}/price-history")]
     public async Task<IActionResult> GetAdPriceHistoryById(Guid id, CancellationToken cancellationToken)
     {
@@ -47,14 +48,14 @@ public class AdsController : ControllerBase
 
         return Ok(dto);
     }
-    
+
     [HttpPost]
     [Authorize(Roles = Roles.User)]
     public async Task<IActionResult> CreateAd([FromBody] CreateAdDto createAdDto,
         CancellationToken cancellationToken)
     {
         var dto = await _mediator.Send(new CreateAdCommand(createAdDto), cancellationToken);
-        
+
         return CreatedAtAction(nameof(GetAdById), new { dto.Id }, dto);
     }
 
@@ -67,7 +68,7 @@ public class AdsController : ControllerBase
 
         return CreatedAtAction(nameof(GetAdById), new { dto.Id }, dto);
     }
-    
+
     [HttpPut("{id}/status")]
     [Authorize(Roles = $"{Roles.Moderator}, {Roles.Admin}")]
     public async Task<IActionResult> UpdateAdStatus(Guid id, [FromBody] UpdateAdStatusDto updateAdStatusDto,

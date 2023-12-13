@@ -13,16 +13,18 @@ public class GetAdPriceHistoryByIdQueryHandler : IRequestHandler<GetAdPriceHisto
     private readonly IAdRepository _adRepository;
     private readonly ILogger<GetAdPriceHistoryByIdQueryHandler> _logger;
 
-    public GetAdPriceHistoryByIdQueryHandler(IAdRepository adRepository, ILogger<GetAdPriceHistoryByIdQueryHandler> logger)
+    public GetAdPriceHistoryByIdQueryHandler(IAdRepository adRepository,
+        ILogger<GetAdPriceHistoryByIdQueryHandler> logger)
     {
         _adRepository = adRepository;
         _logger = logger;
     }
 
-    public async Task<IEnumerable<GetPriceDto>> Handle(GetAdPriceHistoryByIdQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<GetPriceDto>> Handle(GetAdPriceHistoryByIdQuery request,
+        CancellationToken cancellationToken)
     {
         var entity = await _adRepository.GetAdByIdAsync(request.AdId, cancellationToken);
-        
+
         if (entity is null)
         {
             _logger.LogInformation("Ad with id '{Id}' not exists", request.AdId);

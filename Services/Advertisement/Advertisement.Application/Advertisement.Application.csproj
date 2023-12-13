@@ -7,14 +7,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.1" />
-      <PackageReference Include="MediatR" Version="12.2.0" />
-      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
-      <PackageReference Include="Riok.Mapperly" Version="3.2.0" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.1"/>
+        <PackageReference Include="MediatR" Version="12.2.0"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0"/>
+        <PackageReference Include="Riok.Mapperly" Version="3.2.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Advertisement.Domain\Advertisement.Domain.csproj" />
+        <ProjectReference Include="..\Advertisement.Domain\Advertisement.Domain.csproj"/>
     </ItemGroup>
 
 </Project>

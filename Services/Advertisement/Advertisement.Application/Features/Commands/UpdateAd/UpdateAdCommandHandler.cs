@@ -16,7 +16,8 @@ public class UpdateAdCommandHandler : IRequestHandler<UpdateAdCommand, GetAdDto>
     private readonly ILogger<UpdateAdCommandHandler> _logger;
     private readonly TimeProvider _timeProvider;
 
-    public UpdateAdCommandHandler(IAdRepository adRepository, ILogger<UpdateAdCommandHandler> logger, TimeProvider timeProvider)
+    public UpdateAdCommandHandler(IAdRepository adRepository, ILogger<UpdateAdCommandHandler> logger,
+        TimeProvider timeProvider)
     {
         _adRepository = adRepository;
         _logger = logger;
@@ -27,21 +28,22 @@ public class UpdateAdCommandHandler : IRequestHandler<UpdateAdCommand, GetAdDto>
     {
         var currentTime = _timeProvider.GetUtcNow();
         var entity = await _adRepository.GetAdByIdAsync(request.AdId, cancellationToken);
-        
+
         if (entity is null)
         {
             _logger.LogInformation("Ad with id '{Id}' not exists", request.AdId);
             throw new NotExistsException($"Ad with id '{request.AdId}' not exists");
         }
-        
+
         var dto = request.UpdateAdDto;
-        
-        if (dto.Vin is not null && entity.Vin != dto.Vin && await _adRepository.ExistsWithVinAsync(dto.Vin, cancellationToken))
+
+        if (dto.Vin is not null && entity.Vin != dto.Vin &&
+            await _adRepository.ExistsWithVinAsync(dto.Vin, cancellationToken))
         {
             _logger.LogInformation("Ad with VIN '{Vin}' already exists", dto.Vin);
             throw new AlreadyExistsException($"Ad with VIN '{dto.Vin}' already exists");
         }
-        
+
         dto.ToAdEntity(entity);
 
         entity.UpdatedAt = currentTime;
@@ -53,7 +55,7 @@ public class UpdateAdCommandHandler : IRequestHandler<UpdateAdCommand, GetAdDto>
         entity.Prices.Add(newPrice);
 
         entity.CurrentPrice = newPrice;
-        
+
         entity.Status = AdStatus.NotActive;
 
         await _adRepository.UpdateAd(entity);

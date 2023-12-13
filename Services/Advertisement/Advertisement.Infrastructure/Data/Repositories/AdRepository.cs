@@ -22,13 +22,14 @@ public class AdRepository : IAdRepository
         var projection = Builders<AdEntity>
             .Projection
             .Include(x => x.CurrentPrice);
-        
+
         return await _context.Ads
             .Find(x => x.Id == adId)
             .SingleOrDefaultAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<AdEntity>> GetAdsAsync(AdQueryParameters queryParameters, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<AdEntity>> GetAdsAsync(AdQueryParameters queryParameters,
+        CancellationToken cancellationToken = default)
     {
         var filter = GenerateFilter(queryParameters);
 
@@ -49,21 +50,16 @@ public class AdRepository : IAdRepository
                 var sort = queryParameters.Desc != null && queryParameters.Desc.Value
                     ? Builders<AdEntity>.Sort.Descending(sortExpression)
                     : Builders<AdEntity>.Sort.Ascending(sortExpression);
-            
-                findFluent = findFluent.Sort(sort);   
+
+                findFluent = findFluent.Sort(sort);
             }
         }
 
         if (queryParameters.Page is not null && queryParameters.PageSize is not null)
-        {
             findFluent = findFluent.Skip(queryParameters.Page.Value * queryParameters.PageSize.Value);
-        }
 
-        if (queryParameters.PageSize is not null)
-        {
-            findFluent = findFluent.Limit(queryParameters.PageSize);
-        }
-        
+        if (queryParameters.PageSize is not null) findFluent = findFluent.Limit(queryParameters.PageSize);
+
         return await findFluent.ToListAsync(cancellationToken);
     }
 
@@ -98,59 +94,32 @@ public class AdRepository : IAdRepository
         var builder = Builders<AdEntity>.Filter;
         var filter = builder.Empty;
 
-        if (queryParameters.Description is not null)
-        {
-            filter &= builder.Text(queryParameters.Description);
-        }
+        if (queryParameters.Description is not null) filter &= builder.Text(queryParameters.Description);
 
-        if (queryParameters.BrandId is not null)
-        {
-            filter &= builder.Eq(x => x.BrandId, queryParameters.BrandId);
-        }
+        if (queryParameters.BrandId is not null) filter &= builder.Eq(x => x.BrandId, queryParameters.BrandId);
 
-        if (queryParameters.ModelId is not null)
-        {
-            filter &= builder.Eq(x => x.ModelId, queryParameters.ModelId);
-        }
-        
+        if (queryParameters.ModelId is not null) filter &= builder.Eq(x => x.ModelId, queryParameters.ModelId);
+
         if (queryParameters.GenerationId is not null)
-        {
             filter &= builder.Eq(x => x.GenerationId, queryParameters.GenerationId);
-        }
 
-        if (queryParameters.MinMileage is not null)
-        {
-            filter &= builder.Gte(x => x.Mileage, queryParameters.MinMileage);
-        }
-        
-        if (queryParameters.MaxMileage is not null)
-        {
-            filter &= builder.Lte(x => x.Mileage, queryParameters.MaxMileage);
-        }
-        
-        if (queryParameters.MinYear is not null)
-        {
-            filter &= builder.Gte(x => x.Year, queryParameters.MinYear);
-        }
-        
-        if (queryParameters.MaxYear is not null)
-        {
-            filter &= builder.Lte(x => x.Year, queryParameters.MaxYear);
-        }
-        
+        if (queryParameters.MinMileage is not null) filter &= builder.Gte(x => x.Mileage, queryParameters.MinMileage);
+
+        if (queryParameters.MaxMileage is not null) filter &= builder.Lte(x => x.Mileage, queryParameters.MaxMileage);
+
+        if (queryParameters.MinYear is not null) filter &= builder.Gte(x => x.Year, queryParameters.MinYear);
+
+        if (queryParameters.MaxYear is not null) filter &= builder.Lte(x => x.Year, queryParameters.MaxYear);
+
         if (queryParameters.Currency is not null)
         {
             var currencyFilter = builder.Eq(x => x.CurrentPrice.Currency, queryParameters.Currency);
-            
+
             if (queryParameters.MinPrice is not null)
-            {
                 filter &= currencyFilter & builder.Gte(x => x.CurrentPrice.Value, queryParameters.MinPrice);
-            }
-            
+
             if (queryParameters.MaxPrice is not null)
-            {
                 filter &= currencyFilter & builder.Lte(x => x.CurrentPrice.Value, queryParameters.MaxPrice);
-            }
         }
 
         return filter;

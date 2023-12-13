@@ -17,7 +17,8 @@ public class CreateAdCommandHandler : IRequestHandler<CreateAdCommand, GetAdDto>
     private readonly IUser _user;
     private readonly ILogger<CreateAdCommandHandler> _logger;
 
-    public CreateAdCommandHandler(IAdRepository adRepository, TimeProvider timeProvider, IUser user, ILogger<CreateAdCommandHandler> logger)
+    public CreateAdCommandHandler(IAdRepository adRepository, TimeProvider timeProvider, IUser user,
+        ILogger<CreateAdCommandHandler> logger)
     {
         _adRepository = adRepository;
         _timeProvider = timeProvider;
@@ -38,12 +39,12 @@ public class CreateAdCommandHandler : IRequestHandler<CreateAdCommand, GetAdDto>
         }
 
         entity.CreatedAt = entity.UpdatedAt = currentTime;
-        
+
         var price = dto.ToPrice();
         price.CreatedAt = currentTime;
         entity.CurrentPrice = price;
 
-        entity.Prices = new []
+        entity.Prices = new[]
         {
             price
         };
@@ -51,7 +52,7 @@ public class CreateAdCommandHandler : IRequestHandler<CreateAdCommand, GetAdDto>
         entity.Status = AdStatus.NotActive;
 
         entity.OwnerId = _user.Id;
-        
+
         await _adRepository.CreateAd(entity);
 
         return entity.ToGetAdDto();

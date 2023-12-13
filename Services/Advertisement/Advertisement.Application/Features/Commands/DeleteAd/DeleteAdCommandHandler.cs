@@ -13,7 +13,8 @@ public class DeleteAdCommandHandler : IRequestHandler<DeleteAdCommand>
     private readonly ILogger<DeleteAdCommandHandler> _logger;
     private readonly TimeProvider _timeProvider;
 
-    public DeleteAdCommandHandler(IAdRepository adRepository, ILogger<DeleteAdCommandHandler> logger, TimeProvider timeProvider)
+    public DeleteAdCommandHandler(IAdRepository adRepository, ILogger<DeleteAdCommandHandler> logger,
+        TimeProvider timeProvider)
     {
         _adRepository = adRepository;
         _logger = logger;

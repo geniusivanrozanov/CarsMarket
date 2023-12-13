@@ -14,7 +14,7 @@ public class UpdateAdDtoValidator : AbstractValidator<UpdateAdDto>
         RuleFor(x => x.Vin!)
             .IsValidVinNumber()
             .When(x => x.Vin is not null);
-        
+
         RuleFor(x => x.Year)
             .InclusiveBetween(DateTimeOffset.MinValue.Year, timeProvider.GetUtcNow().Year);
 

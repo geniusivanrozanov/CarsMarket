@@ -15,13 +15,10 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddApiLayer(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddHttpContextAccessor();
-        
+
         return services
             .AddControllers()
-            .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-            })
+            .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); })
             .Services
             .AddRouting(options =>
             {
@@ -40,10 +37,10 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IUser, CurrentUser>();
-        
+
         return services;
     }
-    
+
     private static IServiceCollection AddMiddlewares(this IServiceCollection services)
     {
         services.AddSingleton<ExceptionHandlerMiddleware>();
@@ -57,7 +54,7 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    
+
     private static IServiceCollection AddSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen(options =>
@@ -90,13 +87,14 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    
-    private static IServiceCollection ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
+
+    private static IServiceCollection ConfigureAuthentication(this IServiceCollection services,
+        IConfiguration configuration)
     {
         var key = configuration["JwtOptions:Key"];
         var issuer = configuration["JwtOptions:Issuer"];
         var audience = configuration["JwtOptions:Audience"];
-        
+
         ArgumentException.ThrowIfNullOrEmpty(key);
         ArgumentException.ThrowIfNullOrEmpty(issuer);
         ArgumentException.ThrowIfNullOrEmpty(audience);

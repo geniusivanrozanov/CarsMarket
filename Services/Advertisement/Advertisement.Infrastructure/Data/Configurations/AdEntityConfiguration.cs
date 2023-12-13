@@ -16,21 +16,21 @@ public class AdEntityConfiguration : IMongoCollectionConfiguration<AdEntity, Gui
                 Unique = true,
                 PartialFilterExpression = Builders<AdEntity>.Filter.Type(x => x.Vin, BsonType.String)
             });
-        
+
         var brandIdIndex = new CreateIndexModel<AdEntity>(Builders<AdEntity>.IndexKeys
             .Ascending(x => x.BrandId));
-        
+
         var modelIdIndex = new CreateIndexModel<AdEntity>(Builders<AdEntity>.IndexKeys
             .Ascending(x => x.ModelId));
-        
+
         var generationIdIndex = new CreateIndexModel<AdEntity>(Builders<AdEntity>.IndexKeys
             .Ascending(x => x.GenerationId));
-        
+
         var descriptionIndex = new CreateIndexModel<AdEntity>(Builders<AdEntity>.IndexKeys
             .Text(x => x.Description));
 
         collection.Indexes.DropAll();
-        
+
         collection
             .Indexes
             .CreateMany(new[] { vinIndex, brandIdIndex, modelIdIndex, generationIdIndex, descriptionIndex });

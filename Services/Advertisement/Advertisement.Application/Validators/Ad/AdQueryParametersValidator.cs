@@ -20,7 +20,7 @@ public class AdQueryParametersValidator : AbstractValidator<AdQueryParameters>
         RuleFor(x => x.Page)
             .GreaterThanOrEqualTo(0)
             .When(x => x.Page.HasValue);
-        
+
         RuleFor(x => x.PageSize)
             .GreaterThanOrEqualTo(0)
             .When(x => x.PageSize.HasValue);

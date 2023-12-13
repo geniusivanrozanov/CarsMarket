@@ -22,7 +22,7 @@ public class UpdateAdStatusCommandHandler : IRequestHandler<UpdateAdStatusComman
     public async Task<GetAdDto> Handle(UpdateAdStatusCommand request, CancellationToken cancellationToken)
     {
         var entity = await _adRepository.GetAdByIdAsync(request.AdId, cancellationToken);
-        
+
         if (entity is null)
         {
             _logger.LogInformation("Ad with id '{Id}' not exists", request.AdId);
