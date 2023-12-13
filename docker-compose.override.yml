@@ -14,6 +14,19 @@ services:
         condition: service_healthy
       elasticsearch:
         condition: service_started
+        
+  advertisement.api:
+    container_name: advertisement.api
+    ports:
+      - "8002:8080"
+    environment:
+      - ElasticConfiguration:Uri=http://elasticsearch:9200
+      - ConnectionStrings:MongoDB=mongodb://mongodb:27017
+    depends_on:
+      mongodb:
+        condition: service_started
+      elasticsearch:
+        condition: service_started
   
   postgres:
     container_name: postgres
@@ -29,6 +42,13 @@ services:
       retries: 5
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+  
+  mongodb:
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/etc/mongo
   
   redis:
     container_name: redis
@@ -64,5 +84,6 @@ services:
 
 volumes:
   postgres_data:
+  mongo_data:
   elasticsearch_data:
   redis_data:
