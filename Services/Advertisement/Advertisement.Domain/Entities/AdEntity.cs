@@ -10,9 +10,9 @@ public class AdEntity : EntityBase<Guid>, ICreatedAtAuditable, IUpdatedAtAuditab
     public string OwnerName { get; set; } = null!;
     public string? Description { get; set; }
     public string? Vin { get; set; }
-    public int BrandId { get; set; }
-    public int ModelId { get; set; }
-    public int GenerationId { get; set; }
+    public Guid BrandId { get; set; }
+    public Guid ModelId { get; set; }
+    public Guid GenerationId { get; set; }
     public int Year { get; set; }
     public int Mileage { get; set; }
     public AdStatus Status { get; set; }

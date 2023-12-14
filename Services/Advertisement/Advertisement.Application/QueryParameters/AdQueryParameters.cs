@@ -6,9 +6,9 @@ namespace Advertisement.Application.QueryParameters;
 public class AdQueryParameters : QueryParametersBase<AdEntity, Guid>
 {
     public string? Description { get; set; }
-    public int? BrandId { get; set; }
-    public int? ModelId { get; set; }
-    public int? GenerationId { get; set; }
+    public Guid? BrandId { get; set; }
+    public Guid? ModelId { get; set; }
+    public Guid? GenerationId { get; set; }
     public int? MinYear { get; set; }
     public int? MaxYear { get; set; }
     public int? MinMileage { get; set; }
