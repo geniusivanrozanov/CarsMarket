@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProtoBuf.Grpc.Server;
 
 namespace CarsCatalog.WebAPI.Extensions;
 
@@ -24,9 +25,17 @@ public static class ServiceCollectionExtensions
             .AddEndpointsApiExplorer()
             .AddValidators()
             .AddMiddlewares()
+            .AddGrpc()
             .AddSwagger();
     }
 
+    private static IServiceCollection AddGrpc(this IServiceCollection services)
+    {
+        services.AddCodeFirstGrpc();
+
+        return services;
+    }
+    
     private static IServiceCollection AddValidators(this IServiceCollection services)
     {
         services.AddFluentValidationAutoValidation();
