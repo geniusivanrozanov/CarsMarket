@@ -13,6 +13,9 @@ public class AdEntity : EntityBase<Guid>, ICreatedAtAuditable, IUpdatedAtAuditab
     public Guid BrandId { get; set; }
     public Guid ModelId { get; set; }
     public Guid GenerationId { get; set; }
+    public string BrandName { get; set; } = null!;
+    public string ModelName { get; set; } = null!;
+    public string GenerationName { get; set; } = null!;
     public int Year { get; set; }
     public int Mileage { get; set; }
     public AdStatus Status { get; set; }
