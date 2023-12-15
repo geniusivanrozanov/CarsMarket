@@ -1,6 +1,5 @@
 ﻿using Advertisement.Application.Exceptions;
 using Advertisement.Application.Interfaces.Repositories;
-using Advertisement.Domain.Entities;
 using Advertisement.Domain.Enums;
 using MediatR;
 using Microsoft.Extensions.Logging;

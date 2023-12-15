@@ -1,5 +1,4 @@
-﻿using Advertisement.Application.DTOs.Ad;
-using Advertisement.Application.DTOs.Price;
+﻿using Advertisement.Application.DTOs.Price;
 using Advertisement.Application.Exceptions;
 using Advertisement.Application.Interfaces.Repositories;
 using Advertisement.Application.Mappers;

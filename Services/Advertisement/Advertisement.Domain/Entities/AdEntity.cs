@@ -1,10 +1,9 @@
 ﻿using Advertisement.Domain.Enums;
-using Advertisement.Domain.Interfaces;
 using Advertisement.Domain.ValueObjects;
 
 namespace Advertisement.Domain.Entities;
 
-public class AdEntity : EntityBase<Guid>, ICreatedAtAuditable, IUpdatedAtAuditable
+public class AdEntity : EntityBase<Guid>
 {
     public Guid OwnerId { get; set; }
     public string OwnerName { get; set; } = null!;

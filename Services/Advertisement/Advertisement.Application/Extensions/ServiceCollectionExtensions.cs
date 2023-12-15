@@ -1,11 +1,9 @@
 ﻿using System.Reflection;
 using CarsCatalog.gRPC.Contracts;
 using FluentValidation;
-using Grpc.Net.Client;
 using Identity.gRPC.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ProtoBuf.Grpc.Client;
 using ProtoBuf.Grpc.ClientFactory;
 
 namespace Advertisement.Application.Extensions;

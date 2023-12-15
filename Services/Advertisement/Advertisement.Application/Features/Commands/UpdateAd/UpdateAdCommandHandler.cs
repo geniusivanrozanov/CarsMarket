@@ -2,7 +2,6 @@
 using Advertisement.Application.Exceptions;
 using Advertisement.Application.Interfaces.Repositories;
 using Advertisement.Application.Mappers;
-using Advertisement.Domain.Entities;
 using Advertisement.Domain.Enums;
 using Advertisement.Domain.ValueObjects;
 using MediatR;
