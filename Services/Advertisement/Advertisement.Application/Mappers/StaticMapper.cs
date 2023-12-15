@@ -9,9 +9,9 @@ namespace Advertisement.Application.Mappers;
 [Mapper]
 public static partial class StaticMapper
 {
-    [MapProperty(nameof(AdEntity.BrandId), nameof(GetAdDto.Brand))]
-    [MapProperty(nameof(AdEntity.ModelId), nameof(GetAdDto.Model))]
-    [MapProperty(nameof(AdEntity.GenerationId), nameof(GetAdDto.Generation))]
+    [MapProperty(nameof(AdEntity.BrandName), nameof(GetAdDto.Brand))]
+    [MapProperty(nameof(AdEntity.ModelName), nameof(GetAdDto.Model))]
+    [MapProperty(nameof(AdEntity.GenerationName), nameof(GetAdDto.Generation))]
     [MapProperty($"{nameof(AdEntity.CurrentPrice)}.{nameof(AdEntity.CurrentPrice.Currency)}",
         nameof(GetAdDto.Currency))]
     [MapProperty($"{nameof(AdEntity.CurrentPrice)}.{nameof(AdEntity.CurrentPrice.Value)}", nameof(GetAdDto.Price))]
