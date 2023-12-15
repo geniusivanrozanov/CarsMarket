@@ -18,7 +18,7 @@ services:
   advertisement.api:
     container_name: advertisement.api
     ports:
-      - "8002:8080"
+      - "8002:8002"
     environment:
       - ElasticConfiguration:Uri=http://elasticsearch:9200
       - IdentityConfiguration:Uri=http://identity.api:7000
