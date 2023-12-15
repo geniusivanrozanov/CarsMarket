@@ -22,6 +22,7 @@ services:
     environment:
       - ElasticConfiguration:Uri=http://elasticsearch:9200
       - IdentityConfiguration:Uri=http://identity.api:7000
+      - CarsCatalogConfiguration:Uri=http://cars-catalog.api:7001
       - ConnectionStrings:MongoDB=mongodb://mongodb:27017
     depends_on:
       mongodb:
