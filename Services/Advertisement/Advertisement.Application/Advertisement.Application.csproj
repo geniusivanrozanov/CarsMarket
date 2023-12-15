@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\Common\CarsCatalog.gRPC.Contracts\CarsCatalog.gRPC.Contracts.csproj" />
         <ProjectReference Include="..\..\..\Common\Identity.gRPC.Contracts\Identity.gRPC.Contracts.csproj" />
         <ProjectReference Include="..\Advertisement.Domain\Advertisement.Domain.csproj"/>
     </ItemGroup>

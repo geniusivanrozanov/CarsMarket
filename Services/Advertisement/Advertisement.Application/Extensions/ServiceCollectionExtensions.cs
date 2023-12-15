@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using CarsCatalog.gRPC.Contracts;
 using FluentValidation;
 using Grpc.Net.Client;
 using Identity.gRPC.Contracts;
@@ -23,11 +24,19 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddGrpcClients(this IServiceCollection services, IConfiguration configuration)
     {
         var identityUri = configuration["IdentityConfiguration:Uri"];
+        var carsCatalogUri = configuration["CarsCatalogConfiguration:Uri"];
+        
         ArgumentException.ThrowIfNullOrEmpty(identityUri);
+        ArgumentException.ThrowIfNullOrEmpty(carsCatalogUri);
 
         services.AddCodeFirstGrpcClient<IIdentityService>(options =>
         {
             options.Address = new Uri(identityUri);
+        });
+        
+        services.AddCodeFirstGrpcClient<ICarsCatalogService>(options =>
+        {
+            options.Address = new Uri(carsCatalogUri);
         });
         
         return services;
