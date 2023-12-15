@@ -8,7 +8,7 @@ namespace Advertisement.Infrastructure.Data.Contexts;
 
 public class AdvertisementContext : MongoContextBase
 {
-    private static bool _isCreated = false;
+    private static bool _isCreated;
 
     public AdvertisementContext(MongoClient client, IOptions<DatabaseOptions> options) : base(client, options)
     {
