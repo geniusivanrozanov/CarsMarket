@@ -23,6 +23,9 @@ public static partial class GenerationStaticMapper
     public static partial IQueryable<GetGenerationDto> ProjectToGetGenerationDto(
         this IQueryable<GenerationEntity> queryable);
     
+    public static partial IQueryable<GetModificationNamesReply> ProjectToGetModificationNamesReply(
+        this IQueryable<GenerationEntity> queryable);
+    
     public static IQueryable<TResult> ProjectTo<TResult>(this IQueryable<GenerationEntity> queryable)
     {
         if (queryable is IQueryable<TResult> query) return query;
