@@ -1,5 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarsCatalog.Domain", "Services\CarsCatalog\CarsCatalog.Domain\CarsCatalog.Domain.csproj", "{D6B7F029-55B4-4E4B-9B89-B06E58320B4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CarsCatalog", "CarsCatalog", "{298B6A5A-B887-47EF-94DD-425407E8A98E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarsCatalog.Application", "Services\CarsCatalog\CarsCatalog.Application\CarsCatalog.Application.csproj", "{9B0D3246-3674-4C43-89F3-F70FBDB08724}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarsCatalog.Infrastructure", "Services\CarsCatalog\CarsCatalog.Infrastructure\CarsCatalog.Infrastructure.csproj", "{9BB09FDF-EE2D-457A-9150-459EA2B7297A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarsCatalog.WebAPI", "Services\CarsCatalog\CarsCatalog.WebAPI\CarsCatalog.WebAPI.csproj", "{1B09C9DF-8DB9-48F4-B1C7-3B138DC62EA5}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService.Domain", "Services\IdentityService\IdentityService.Domain\IdentityService.Domain.csproj", "{87579E8E-B4AB-406B-84F8-2B9B9E542D67}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityService", "IdentityService", "{7095656B-7824-4E3B-A538-B6851874CBCC}"
@@ -18,6 +28,30 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6B7F029-55B4-4E4B-9B89-B06E58320B4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6B7F029-55B4-4E4B-9B89-B06E58320B4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6B7F029-55B4-4E4B-9B89-B06E58320B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6B7F029-55B4-4E4B-9B89-B06E58320B4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B0D3246-3674-4C43-89F3-F70FBDB08724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B0D3246-3674-4C43-89F3-F70FBDB08724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B0D3246-3674-4C43-89F3-F70FBDB08724}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B0D3246-3674-4C43-89F3-F70FBDB08724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BB09FDF-EE2D-457A-9150-459EA2B7297A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BB09FDF-EE2D-457A-9150-459EA2B7297A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BB09FDF-EE2D-457A-9150-459EA2B7297A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BB09FDF-EE2D-457A-9150-459EA2B7297A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B09C9DF-8DB9-48F4-B1C7-3B138DC62EA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B09C9DF-8DB9-48F4-B1C7-3B138DC62EA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B09C9DF-8DB9-48F4-B1C7-3B138DC62EA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B09C9DF-8DB9-48F4-B1C7-3B138DC62EA5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D6B7F029-55B4-4E4B-9B89-B06E58320B4A} = {298B6A5A-B887-47EF-94DD-425407E8A98E}
+		{9B0D3246-3674-4C43-89F3-F70FBDB08724} = {298B6A5A-B887-47EF-94DD-425407E8A98E}
+		{9BB09FDF-EE2D-457A-9150-459EA2B7297A} = {298B6A5A-B887-47EF-94DD-425407E8A98E}
+		{1B09C9DF-8DB9-48F4-B1C7-3B138DC62EA5} = {298B6A5A-B887-47EF-94DD-425407E8A98E}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{87579E8E-B4AB-406B-84F8-2B9B9E542D67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
