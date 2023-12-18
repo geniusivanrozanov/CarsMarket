@@ -4,9 +4,9 @@ using MediatR;
 
 namespace Advertisement.Application.Features.Queries.GetAdById;
 
-public class GetAdPriceHistoryByIdQuery : IRequest<IEnumerable<GetPriceDto>>
+public class GetAdPriceHistoryQuery : IRequest<IEnumerable<GetPriceDto>>
 {
-    public GetAdPriceHistoryByIdQuery(Guid adId)
+    public GetAdPriceHistoryQuery(Guid adId)
     {
         AdId = adId;
     }

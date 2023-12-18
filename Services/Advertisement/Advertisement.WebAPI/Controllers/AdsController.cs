@@ -44,7 +44,7 @@ public class AdsController : ControllerBase
     [HttpGet("{id}/price-history")]
     public async Task<IActionResult> GetAdPriceHistoryById(Guid id, CancellationToken cancellationToken)
     {
-        var dto = await _mediator.Send(new GetAdPriceHistoryByIdQuery(id), cancellationToken);
+        var dto = await _mediator.Send(new GetAdPriceHistoryQuery(id), cancellationToken);
 
         return Ok(dto);
     }
