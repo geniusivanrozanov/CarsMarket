@@ -24,6 +24,7 @@ public class DeleteAdCommandHandler : IRequestHandler<DeleteAdCommand>
     {
         var currentTime = _timeProvider.GetUtcNow();
         var entity = await _adRepository.GetAdByIdAsync(request.AdId, cancellationToken);
+        
         if (entity is null)
         {
             _logger.LogInformation("Ad with id '{Id}' not exists", request.AdId);
@@ -33,6 +34,6 @@ public class DeleteAdCommandHandler : IRequestHandler<DeleteAdCommand>
         entity.UpdatedAt = currentTime;
         entity.Status = AdStatus.Deleted;
 
-        await _adRepository.UpdateAd(entity);
+        await _adRepository.UpdateAd(entity, cancellationToken);
     }
 }

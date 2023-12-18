@@ -92,7 +92,7 @@ public class CreateAdCommandHandler : IRequestHandler<CreateAdCommand, GetAdDto>
 
         entity.Status = AdStatus.NotActive;
         
-        await _adRepository.CreateAd(entity);
+        await _adRepository.CreateAd(entity, cancellationToken);
 
         return entity.ToGetAdDto();
     }

@@ -72,16 +72,16 @@ public class AdRepository : IAdRepository
             .AnyAsync(cancellationToken);
     }
 
-    public async Task CreateAd(AdEntity entity)
+    public async Task CreateAd(AdEntity entity, CancellationToken cancellationToken = default)
     {
         await _context.Ads
-            .InsertOneAsync(entity);
+            .InsertOneAsync(entity, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateAd(AdEntity entity)
+    public async Task UpdateAd(AdEntity entity, CancellationToken cancellationToken = default)
     {
         await _context.Ads
-            .ReplaceOneAsync(x => x.Id == entity.Id, entity);
+            .ReplaceOneAsync(x => x.Id == entity.Id, entity, cancellationToken: cancellationToken);
     }
 
     private static FilterDefinition<AdEntity> GenerateFilter(AdQueryParameters queryParameters)

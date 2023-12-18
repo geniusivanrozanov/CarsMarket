@@ -7,19 +7,19 @@ using Microsoft.Extensions.Logging;
 
 namespace Advertisement.Application.Features.Queries.GetAdById;
 
-public class GetAdPriceHistoryByIdQueryHandler : IRequestHandler<GetAdPriceHistoryByIdQuery, IEnumerable<GetPriceDto>>
+public class GetAdPriceHistoryQueryHandler : IRequestHandler<GetAdPriceHistoryQuery, IEnumerable<GetPriceDto>>
 {
     private readonly IAdRepository _adRepository;
-    private readonly ILogger<GetAdPriceHistoryByIdQueryHandler> _logger;
+    private readonly ILogger<GetAdPriceHistoryQueryHandler> _logger;
 
-    public GetAdPriceHistoryByIdQueryHandler(IAdRepository adRepository,
-        ILogger<GetAdPriceHistoryByIdQueryHandler> logger)
+    public GetAdPriceHistoryQueryHandler(IAdRepository adRepository,
+        ILogger<GetAdPriceHistoryQueryHandler> logger)
     {
         _adRepository = adRepository;
         _logger = logger;
     }
 
-    public async Task<IEnumerable<GetPriceDto>> Handle(GetAdPriceHistoryByIdQuery request,
+    public async Task<IEnumerable<GetPriceDto>> Handle(GetAdPriceHistoryQuery request,
         CancellationToken cancellationToken)
     {
         var entity = await _adRepository.GetAdByIdAsync(request.AdId, cancellationToken);

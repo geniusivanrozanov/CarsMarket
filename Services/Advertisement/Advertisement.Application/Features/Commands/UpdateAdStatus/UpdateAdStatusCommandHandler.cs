@@ -30,7 +30,7 @@ public class UpdateAdStatusCommandHandler : IRequestHandler<UpdateAdStatusComman
         }
 
         entity.Status = request.UpdateAdStatusDto.Status;
-        await _adRepository.UpdateAd(entity);
+        await _adRepository.UpdateAd(entity, cancellationToken);
 
         return entity.ToGetAdDto();
     }
