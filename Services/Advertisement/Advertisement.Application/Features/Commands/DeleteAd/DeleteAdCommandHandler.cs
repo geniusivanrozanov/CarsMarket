@@ -35,6 +35,6 @@ public class DeleteAdCommandHandler : IRequestHandler<DeleteAdCommand>
         entity.UpdatedAt = currentTime;
         entity.Status = AdStatus.Deleted;
 
-        await _adRepository.UpdateAd(entity);
+        await _adRepository.UpdateAd(entity, cancellationToken);
     }
 }

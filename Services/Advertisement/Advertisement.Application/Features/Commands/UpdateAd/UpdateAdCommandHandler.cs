@@ -58,7 +58,7 @@ public class UpdateAdCommandHandler : IRequestHandler<UpdateAdCommand, GetAdDto>
 
         entity.Status = AdStatus.NotActive;
 
-        await _adRepository.UpdateAd(entity);
+        await _adRepository.UpdateAd(entity, cancellationToken);
 
         return entity.ToGetAdDto();
     }
