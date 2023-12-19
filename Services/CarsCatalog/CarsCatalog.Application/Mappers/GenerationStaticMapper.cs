@@ -1,6 +1,7 @@
 ﻿using CarsCatalog.Application.DTOs;
 using CarsCatalog.Domain.Entities;
 using CarsCatalog.gRPC.Contracts.Replies;
+using CarsCatalog.Messages.Contracts;
 using Riok.Mapperly.Abstractions;
 
 namespace CarsCatalog.Application.Mappers;
@@ -13,6 +14,9 @@ public static partial class GenerationStaticMapper
     [MapProperty($"{nameof(GenerationEntity.Model)}.{nameof(GenerationEntity.Model.Name)}", $"{nameof(GetModificationNamesReply.ModelName)}")]
     [MapProperty($"{nameof(GenerationEntity.Model)}.{nameof(GenerationEntity.Model.Brand)}.{nameof(GenerationEntity.Model.Brand.Name)}", $"{nameof(GetModificationNamesReply.BrandName)}")]
     public static partial GetModificationNamesReply ToGetModificationNamesReplyDto(this GenerationEntity generationEntity);
+    [MapProperty(nameof(GenerationEntity.Id), nameof(GenerationUpdatedMessage.GenerationId))]
+    [MapProperty(nameof(GenerationEntity.Name), nameof(GenerationUpdatedMessage.UpdatedGenerationName))]
+    public static partial GenerationUpdatedMessage ToGenerationUpdatedMessage(this GenerationEntity generationEntity);
 
     public static partial GenerationEntity ToGenerationEntity(this CreateGenerationDto createGenerationDto);
     public static partial GenerationEntity ToGenerationEntity(this UpdateGenerationDto updateGenerationDto);
