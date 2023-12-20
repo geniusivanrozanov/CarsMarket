@@ -1,7 +1,9 @@
 ﻿using System.Reflection;
+using Advertisement.Application.Features.Consumers;
 using CarsCatalog.gRPC.Contracts;
 using FluentValidation;
 using Identity.gRPC.Contracts;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProtoBuf.Grpc.ClientFactory;
@@ -16,9 +18,40 @@ public static class ServiceCollectionExtensions
             .AddMediator()
             .AddValidators()
             .AddGrpcClients(configuration)
+            .ConfigureMassTransit(configuration)
             .AddTimeProvider();
     }
 
+    private static IServiceCollection ConfigureMassTransit(this IServiceCollection services, IConfiguration configuration)
+    {
+        var host = configuration["RabbitMQConfiguration:Host"];
+        var username = configuration["RabbitMQConfiguration:Username"];
+        var password = configuration["RabbitMQConfiguration:Password"];
+        
+        ArgumentException.ThrowIfNullOrEmpty(host);
+        ArgumentException.ThrowIfNullOrEmpty(username);
+        ArgumentException.ThrowIfNullOrEmpty(password);
+        
+        
+        services.AddMassTransit(configurator =>
+        {
+            configurator.AddConsumers(Assembly.GetExecutingAssembly());
+            
+            configurator.UsingRabbitMq((context, factoryConfigurator) =>
+            {
+                factoryConfigurator.Host(host, hostConfigurator =>
+                {
+                    hostConfigurator.Username(username);
+                    hostConfigurator.Password(password);
+                });
+                
+                factoryConfigurator.ConfigureEndpoints(context);
+            });
+        });
+
+        return services;
+    }
+    
     private static IServiceCollection AddGrpcClients(this IServiceCollection services, IConfiguration configuration)
     {
         var identityUri = configuration["IdentityConfiguration:Uri"];
