@@ -84,6 +84,35 @@ public class AdRepository : IAdRepository
             .ReplaceOneAsync(x => x.Id == entity.Id, entity, cancellationToken: cancellationToken);
     }
 
+    public async Task UpdateBrandNameAsync(Guid brandId, string brandName, CancellationToken cancellationToken = default)
+    {
+        var update = Builders<AdEntity>.Update
+            .Set(entity => entity.BrandName, brandName);
+
+        await _context.Ads
+            .UpdateManyAsync(entity => entity.BrandId == brandId, update, cancellationToken: cancellationToken);
+    }
+
+    public async Task UpdateModelNameAsync(Guid modelId, string modelName, CancellationToken cancellationToken = default)
+    {
+        var update = Builders<AdEntity>.Update
+            .Set(entity => entity.ModelName, modelName);
+
+        await _context.Ads
+            .UpdateManyAsync(entity => entity.ModelId == modelId, update, cancellationToken: cancellationToken);
+
+    }
+
+    public async Task UpdateGenerationNameAsync(Guid generationId, string generationName, CancellationToken cancellationToken = default)
+    {
+        var update = Builders<AdEntity>.Update
+            .Set(entity => entity.GenerationName, generationName);
+
+        await _context.Ads
+            .UpdateManyAsync(entity => entity.GenerationId == generationId, update, cancellationToken: cancellationToken);
+
+    }
+
     private static FilterDefinition<AdEntity> GenerateFilter(AdQueryParameters queryParameters)
     {
         var builder = Builders<AdEntity>.Filter;
