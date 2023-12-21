@@ -9,4 +9,6 @@ public interface IMapper
 
     UserEntity ToUserEntity(RegisterDto registerDto);
     UserDto ToUserDto(UserEntity userEntity);
+    void ToUserEntity(UpdateUserDto updateUserDto, UserEntity userEntity);
+
 }

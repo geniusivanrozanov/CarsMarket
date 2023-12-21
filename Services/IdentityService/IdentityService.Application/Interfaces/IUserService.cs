@@ -7,6 +7,7 @@ public interface IUserService
 {
     Task<UserDto> RegisterUserAsync(RegisterDto register, CancellationToken cancellationToken);
     Task<UserDto> RegisterModeratorAsync(RegisterDto register, CancellationToken cancellationToken);
+    Task<UserDto> UpdateUserAsync(Guid userId, UpdateUserDto updateUserDto, CancellationToken cancellationToken);
     Task<LoginResultDto> LoginUserAsync(LoginDto login, CancellationToken cancellationToken);
     Task<LoginResultDto> LoginUserByRefreshTokenAsync(RefreshTokenDto refreshToken, CancellationToken cancellationToken);
     Task<IEnumerable<UserDto>> GetUsersAsync(UserQueryParameters userQueryParameters, CancellationToken cancellationToken);

@@ -14,7 +14,8 @@ public class UserService(
         ITokenService tokenService,
         IUserRepository userRepository,
         IMapper mapper,
-        UserManager<UserEntity> userManager)
+        UserManager<UserEntity> userManager,
+        ICurrentUser currentUser)
     : IUserService
 {
     public Task<UserDto> RegisterUserAsync(RegisterDto register, CancellationToken cancellationToken)
@@ -25,6 +26,30 @@ public class UserService(
     public Task<UserDto> RegisterModeratorAsync(RegisterDto register, CancellationToken cancellationToken)
     {
         return RegisterUserAsync(register, Roles.Moderator, cancellationToken);
+    }
+
+    public async Task<UserDto> UpdateUserAsync(Guid userId, UpdateUserDto updateUserDto, CancellationToken cancellationToken)
+    {
+        var user = await userManager.FindByIdAsync(userId.ToString());
+
+        if (user is null)
+        {
+            logger.LogInformation("Failed to find user with '{UserId}'", userId);
+            throw new NotExistsException("User doesn't exist");
+        }
+
+        if (currentUser.Id != userId)
+        {
+            throw new ForbiddenActionException($"Current user cannot update user with id '{userId}'");
+        }
+
+        mapper.ToUserEntity(updateUserDto, user);
+
+        await userManager.UpdateAsync(user);
+
+        var dto = mapper.ToUserDto(user);
+
+        return dto;
     }
 
     public async Task<LoginResultDto> LoginUserAsync(LoginDto login, CancellationToken cancellationToken)

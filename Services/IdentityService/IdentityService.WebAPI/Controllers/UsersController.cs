@@ -48,6 +48,15 @@ public class UsersController(IUserService userService) : ControllerBase
 
         return CreatedAtAction(nameof(GetUserById), new { user.Id }, user);
     }
+    
+    [Authorize(Roles = Roles.User)]
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserDto updateUserDto, CancellationToken cancellationToken)
+    {
+        var user = await userService.UpdateUserAsync(id, updateUserDto, cancellationToken);
+
+        return CreatedAtAction(nameof(GetUserById), new { user.Id }, user);
+    }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto, CancellationToken cancellationToken)

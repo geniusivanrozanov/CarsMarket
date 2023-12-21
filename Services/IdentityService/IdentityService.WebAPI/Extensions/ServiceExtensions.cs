@@ -34,6 +34,7 @@ public static class ServiceExtensions
             .AddSwagger()
             .AddDistributedCache(configuration)
             .AddGrpc()
+            .AddServices()
             .ConfigureOptions(configuration);
     }
 

@@ -9,7 +9,8 @@ public class ExceptionHandlerMiddleware(ILogger<ExceptionHandlerMiddleware> logg
     {
         { typeof(NotExistsException), HttpStatusCode.NotFound },
         { typeof(LoginFailedException), HttpStatusCode.BadRequest },
-        { typeof(RegistrationFailedException), HttpStatusCode.Conflict }
+        { typeof(RegistrationFailedException), HttpStatusCode.Conflict },
+        { typeof(ForbiddenActionException), HttpStatusCode.Forbidden }
     };
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)

@@ -14,4 +14,6 @@ public partial class Mapper : IMapper
     public partial UserEntity ToUserEntity(RegisterDto registerDto);
 
     public partial UserDto ToUserDto(UserEntity userEntity);
+
+    public partial void ToUserEntity(UpdateUserDto updateUserDto, UserEntity userEntity);
 }
