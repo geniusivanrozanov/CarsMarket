@@ -1,8 +1,10 @@
 ﻿using System.Text;
 using FluentValidation.AspNetCore;
+using IdentityService.Application.Interfaces;
 using IdentityService.Application.Options;
 using IdentityService.WebAPI.Middlewares;
 using IdentityService.WebAPI.Options;
+using IdentityService.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -25,6 +27,7 @@ public static class ServiceExtensions
             })
             .AddAuthorization()
             .ConfigureAuthentication()
+            .AddHttpContextAccessor()
             .AddEndpointsApiExplorer()
             .AddValidators()
             .AddMiddlewares()
@@ -41,6 +44,12 @@ public static class ServiceExtensions
         return services;
     }
 
+    private static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<ICurrentUser, CurrentUser>();
+
+        return services;
+    }
     
     private static IServiceCollection AddValidators(this IServiceCollection services)
     {
