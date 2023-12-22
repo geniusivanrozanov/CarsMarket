@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\Common\Identity.Messages.Contracts\Identity.Messages.Contracts.csproj" />
         <ProjectReference Include="..\IdentityService.Domain\IdentityService.Domain.csproj"/>
     </ItemGroup>
 
