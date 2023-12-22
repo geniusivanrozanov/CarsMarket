@@ -21,6 +21,7 @@
         <ProjectReference Include="..\..\..\Common\CarsCatalog.gRPC.Contracts\CarsCatalog.gRPC.Contracts.csproj" />
         <ProjectReference Include="..\..\..\Common\CarsCatalog.Messages.Contracts\CarsCatalog.Messages.Contracts.csproj" />
         <ProjectReference Include="..\..\..\Common\Identity.gRPC.Contracts\Identity.gRPC.Contracts.csproj" />
+        <ProjectReference Include="..\..\..\Common\Identity.Messages.Contracts\Identity.Messages.Contracts.csproj" />
         <ProjectReference Include="..\Advertisement.Domain\Advertisement.Domain.csproj"/>
     </ItemGroup>
 
