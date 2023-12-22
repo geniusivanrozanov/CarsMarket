@@ -4,6 +4,7 @@ using IdentityService.Application.Interfaces;
 using IdentityService.Application.QueryParameters;
 using IdentityService.Domain.Constants;
 using IdentityService.Domain.Entities;
+using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
@@ -15,7 +16,8 @@ public class UserService(
         IUserRepository userRepository,
         IMapper mapper,
         UserManager<UserEntity> userManager,
-        ICurrentUser currentUser)
+        ICurrentUser currentUser,
+        IPublishEndpoint publishEndpoint)
     : IUserService
 {
     public Task<UserDto> RegisterUserAsync(RegisterDto register, CancellationToken cancellationToken)
@@ -46,6 +48,9 @@ public class UserService(
         mapper.ToUserEntity(updateUserDto, user);
 
         await userManager.UpdateAsync(user);
+
+        var message = mapper.ToUserUpdatedMessage(user);
+        await publishEndpoint.Publish(message, cancellationToken);
 
         var dto = mapper.ToUserDto(user);
 
