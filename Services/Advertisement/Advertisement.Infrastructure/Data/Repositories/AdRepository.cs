@@ -84,6 +84,16 @@ public class AdRepository : IAdRepository
             .ReplaceOneAsync(x => x.Id == entity.Id, entity, cancellationToken: cancellationToken);
     }
 
+    public async Task UpdateOwnerNameAsync(Guid ownerId, string ownerName, CancellationToken cancellationToken = default)
+    {
+        var update = Builders<AdEntity>.Update
+            .Set(entity => entity.OwnerName, ownerName);
+
+        await _context.Ads
+            .UpdateManyAsync(entity => entity.OwnerId == ownerId, update, cancellationToken: cancellationToken);
+
+    }
+
     public async Task UpdateBrandNameAsync(Guid brandId, string brandName, CancellationToken cancellationToken = default)
     {
         var update = Builders<AdEntity>.Update

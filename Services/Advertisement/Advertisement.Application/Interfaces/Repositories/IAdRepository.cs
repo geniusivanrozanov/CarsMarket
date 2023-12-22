@@ -13,6 +13,7 @@ public interface IAdRepository
     Task<bool> ExistsWithIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<bool> ExistsWithVinAsync(string vin, CancellationToken cancellationToken = default);
     
+    Task UpdateOwnerNameAsync(Guid ownerId, string ownerName, CancellationToken cancellationToken = default);
     Task UpdateBrandNameAsync(Guid brandId, string brandName, CancellationToken cancellationToken = default);
     Task UpdateModelNameAsync(Guid modelId, string modelName, CancellationToken cancellationToken = default);
     Task UpdateGenerationNameAsync(Guid generationId, string generationName, CancellationToken cancellationToken = default);
