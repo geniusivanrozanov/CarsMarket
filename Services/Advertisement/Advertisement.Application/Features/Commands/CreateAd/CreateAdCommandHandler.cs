@@ -53,7 +53,7 @@ public class CreateAdCommandHandler : IRequestHandler<CreateAdCommand, GetAdDto>
 
         entity.OwnerId = _user.Id;
 
-        await _adRepository.CreateAd(entity, cancellationToken);
+        await _adRepository.CreateAdAsync(entity, cancellationToken);
 
         return entity.ToGetAdDto();
     }
