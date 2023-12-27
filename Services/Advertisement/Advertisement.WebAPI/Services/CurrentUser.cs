@@ -14,5 +14,9 @@ public class CurrentUser : IUser
     }
 
     public Guid Id => Guid.Parse(_user.FindFirstValue(ClaimTypes.NameIdentifier)!);
-    public bool IsInRole(string role) => _user.IsInRole(role);
+
+    public bool IsInRole(string role)
+    {
+        return _user.IsInRole(role);
+    }
 }
