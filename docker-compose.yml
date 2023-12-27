@@ -5,7 +5,10 @@ services:
     build:
       context: .
       dockerfile: Services/IdentityService/IdentityService.WebAPI/Dockerfile
-      
+  advertisement.api:
+    build:
+      context: .
+      dockerfile: Services/Advertisement/Advertisement.WebAPI/Dockerfile
   cars-catalog.api:
     build:
       context: .
@@ -13,6 +16,9 @@ services:
   
   postgres:
     image: postgres:latest
+    
+  mongodb:
+    image: mongo:latest
     
   redis:
     image: redis:latest
