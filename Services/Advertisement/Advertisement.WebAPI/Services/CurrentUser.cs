@@ -7,14 +7,14 @@ namespace Advertisement.WebAPI.Services;
 public class CurrentUser : IUser
 {
     private readonly ClaimsPrincipal _user;
+    
+    public Guid Id => Guid.Parse(_user.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
     public CurrentUser(IHttpContextAccessor httpContextAccessor)
     {
         _user = httpContextAccessor.HttpContext!.User;
     }
-
-    public Guid Id => Guid.Parse(_user.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
+    
     public bool IsInRole(string role)
     {
         return _user.IsInRole(role);
