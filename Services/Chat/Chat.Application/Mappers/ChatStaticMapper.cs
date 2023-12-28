@@ -10,5 +10,5 @@ public static partial class ChatStaticMapper
 {
     public static partial GetChatDto ToGetChatDto(this ChatEntity chatEntity);
 
-    public static partial ChatEntity ToGetChatEntity(this CreateChatDto createChatDto);
+    public static partial ChatEntity ToChatEntity(this CreateChatDto createChatDto);
 }
