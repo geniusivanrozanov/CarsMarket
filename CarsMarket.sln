@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Domain", "Services\Cha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Application", "Services\Chat\Chat.Application\Chat.Application.csproj", "{AB488F60-1364-4484-9C1D-E4F2FA8209CA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Advertisement.gRPC.Contracts", "Common\Advertisement.gRPC.Contracts\Advertisement.gRPC.Contracts.csproj", "{DE26D070-6DCD-4502-9C57-E08C99FE6FB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,10 @@ Global
 		{AB488F60-1364-4484-9C1D-E4F2FA8209CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB488F60-1364-4484-9C1D-E4F2FA8209CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB488F60-1364-4484-9C1D-E4F2FA8209CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE26D070-6DCD-4502-9C57-E08C99FE6FB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE26D070-6DCD-4502-9C57-E08C99FE6FB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE26D070-6DCD-4502-9C57-E08C99FE6FB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE26D070-6DCD-4502-9C57-E08C99FE6FB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5EECBD1F-E08B-4E06-8D6F-01A8D252DE87} = {51A01FF6-1892-4761-970B-130BE858B188}
@@ -126,6 +132,7 @@ Global
 		{1B09C9DF-8DB9-48F4-B1C7-3B138DC62EA5} = {298B6A5A-B887-47EF-94DD-425407E8A98E}
 		{3EB58790-F441-4EB4-A6AD-E22B838440C7} = {C8711C00-4BC1-4511-9F45-9E0EA29DE65F}
 		{AB488F60-1364-4484-9C1D-E4F2FA8209CA} = {C8711C00-4BC1-4511-9F45-9E0EA29DE65F}
+		{DE26D070-6DCD-4502-9C57-E08C99FE6FB5} = {33ED6351-CF2A-41EC-BE66-12083B7507AD}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{87579E8E-B4AB-406B-84F8-2B9B9E542D67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
