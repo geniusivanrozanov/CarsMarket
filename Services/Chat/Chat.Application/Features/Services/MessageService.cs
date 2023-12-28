@@ -37,8 +37,11 @@ public class MessageService : IMessageService
     {
         await CheckChatAndMemberCompatibility(sendMessageDto.ChatId, _currentUser.Id, cancellationToken);
 
+        var currentTime = TimeProvider.System.GetUtcNow();
+        
         var messageEntity = sendMessageDto.ToMessageEntity();
         messageEntity.SenderId = _currentUser.Id;
+        messageEntity.CreatedAt = currentTime;
 
         await _messageRepository.CreateMessageAsync(messageEntity, cancellationToken);
 
