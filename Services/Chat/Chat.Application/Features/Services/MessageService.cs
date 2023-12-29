@@ -44,6 +44,7 @@ public class MessageService : IMessageService
         messageEntity.CreatedAt = currentTime;
 
         await _messageRepository.CreateMessageAsync(messageEntity, cancellationToken);
+        await _chatRepository.UpdateLastMessageAsync(messageEntity, cancellationToken);
 
         var messageDto = messageEntity.ToGetMessageDto();
 

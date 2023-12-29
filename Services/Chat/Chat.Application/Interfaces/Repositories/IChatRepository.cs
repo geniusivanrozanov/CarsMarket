@@ -8,6 +8,7 @@ public interface IChatRepository
         CancellationToken cancellationToken = default);
 
     Task CreateChatAsync(ChatEntity entity, CancellationToken cancellationToken = default);
+    Task UpdateLastMessageAsync(MessageEntity lastMessage, CancellationToken cancellationToken = default);
 
     Task<bool> ExistsWithIdAsync(Guid id, CancellationToken cancellationToken = default);
 

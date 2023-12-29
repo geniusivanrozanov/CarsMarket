@@ -6,6 +6,7 @@ namespace Chat.Application.Mappers;
 
 [Mapper]
 [UseStaticMapper(typeof(MemberStaticMapper))]
+[UseStaticMapper(typeof(MessageStaticMapper))]
 public static partial class ChatStaticMapper
 {
     public static partial GetChatDto ToGetChatDto(this ChatEntity chatEntity);
