@@ -1,4 +1,5 @@
 ﻿using Chat.Domain.Entities;
+using Chat.Infrastructure.Data.Configurations;
 using Chat.Infrastructure.Options;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -26,6 +27,10 @@ public class ChatContext : MongoContextBase
     
     private void OnConfiguring()
     {
+        var chatEntityConfiguration = new ChatEntityConfiguration();
+        var messageEntityConfiguration = new MessageEntityConfiguration();
         
+        chatEntityConfiguration.Configure(Chats);
+        messageEntityConfiguration.Configure(Messages);
     }
 }
