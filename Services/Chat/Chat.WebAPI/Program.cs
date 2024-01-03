@@ -1,9 +1,16 @@
+using Chat.Application.Extensions;
+using Chat.Infrastructure.Extensions;
+using Chat.WebAPI.Extensions;
 using Chat.WebAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var configuration = builder.Configuration;
+
+builder.Services
+    .AddApplicationLayer(configuration)
+    .AddInfrastructureLayer(configuration)
+    .AddApiLayer(configuration);
 
 var app = builder.Build();
 
