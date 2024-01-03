@@ -13,7 +13,7 @@ public class ChatContext : MongoContextBase
     public IMongoCollection<ChatEntity> Chats { get; }
     public IMongoCollection<MessageEntity> Messages { get; }
     
-    protected ChatContext(MongoClient client, IOptions<DatabaseOptions> options) : base(client, options)
+    public ChatContext(MongoClient client, IOptions<DatabaseOptions> options) : base(client, options)
     {
         Chats = Database.GetCollection<ChatEntity>(nameof(Chats));
         Messages = Database.GetCollection<MessageEntity>(nameof(Messages));
