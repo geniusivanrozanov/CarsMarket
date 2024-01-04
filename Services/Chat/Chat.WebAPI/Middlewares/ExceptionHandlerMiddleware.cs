@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Chat.Application.Exceptions;
+using InvalidOperationException = Chat.Application.Exceptions.InvalidOperationException;
 
 namespace Chat.WebAPI.Middlewares;
 
@@ -8,7 +9,8 @@ public class ExceptionHandlerMiddleware : IMiddleware
     private readonly Dictionary<Type, HttpStatusCode> _statusCodes = new()
     {
         { typeof(NotExistsException), HttpStatusCode.NotFound },
-        { typeof(ForbiddenActionException), HttpStatusCode.Forbidden }
+        { typeof(ForbiddenActionException), HttpStatusCode.Forbidden },
+        { typeof(InvalidOperationException), HttpStatusCode.BadRequest }
     };
 
     private readonly ILogger<ExceptionHandlerMiddleware> _logger;

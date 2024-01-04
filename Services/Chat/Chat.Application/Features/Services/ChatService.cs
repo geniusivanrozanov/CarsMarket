@@ -11,6 +11,7 @@ using Identity.gRPC.Contracts;
 using Identity.gRPC.Contracts.Enums;
 using Identity.gRPC.Contracts.Requests;
 using Microsoft.Extensions.Logging;
+using InvalidOperationException = Chat.Application.Exceptions.InvalidOperationException;
 
 namespace Chat.Application.Features.Services;
 
@@ -46,6 +47,18 @@ public class ChatService : IChatService
             AdId = createChatDto.AdId
         });
 
+        if (adInfoReply.Error is Advertisement.gRPC.Contracts.Enums.Error.AdNotFound)
+        {
+            _logger.LogInformation("gRPC call failed with message '{Message}'", adInfoReply.ErrorMessage);
+            throw new NotExistsException(adInfoReply.ErrorMessage!);
+        }
+
+        if (adInfoReply.OwnerId == _currentUser.Id)
+        {
+            _logger.LogInformation("User with id '{UserId}' tried to create chat with himself", _currentUser.Id);
+            throw new InvalidOperationException("User cannot create chat with himself");
+        }
+        
         var members = await GetMembersAsync(adInfoReply.OwnerId, _currentUser.Id);
 
         var chatEntity = createChatDto.ToChatEntity();
