@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net;
+using System.Text;
 using System.Text.Json.Serialization;
 using Chat.Application.Interfaces.Services;
 using Chat.WebAPI.Middlewares;
@@ -18,6 +19,8 @@ public static class ServiceCollectionExtensions
         return services
             .AddControllers()
             .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); })
+            .Services
+            .AddSignalR()
             .Services
             .AddRouting(options =>
             {
@@ -42,6 +45,7 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddMiddlewares(this IServiceCollection services)
     {
         services.AddSingleton<ExceptionHandlerMiddleware>();
+        services.AddSingleton<WebSocketsMiddleware>();
 
         return services;
     }

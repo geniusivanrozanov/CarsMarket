@@ -1,6 +1,7 @@
 using Chat.Application.Extensions;
 using Chat.Infrastructure.Extensions;
 using Chat.WebAPI.Extensions;
+using Chat.WebAPI.Hubs;
 using Chat.WebAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,9 +27,13 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
+app.UseMiddleware<WebSocketsMiddleware>();
+
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.MapHub<MessageHub>("messages");
 
 app.MapControllers();
 
