@@ -7,6 +7,6 @@ public class GetChatDto
 {
     public Guid Id { get; set; }
     public Guid AdId { get; set; }
-    public GetMessageDto LastMessage { get; set; } = null!;
+    public GetMessageDto? LastMessage { get; set; }
     public ICollection<GetMemberDto> Members { get; set; } = null!;
 }
