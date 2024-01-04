@@ -31,8 +31,25 @@ public static class ServiceCollectionExtensions
             .ConfigureAuthentication(configuration)
             .AddEndpointsApiExplorer()
             .AddServices()
+            .AddCorsDefaultPolicy()
             .AddMiddlewares()
             .AddSwagger();
+    }
+    
+    private static IServiceCollection AddCorsDefaultPolicy(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin();
+            });
+        });
+
+        return services;
     }
     
     private static IServiceCollection AddServices(this IServiceCollection services)

@@ -32,10 +32,27 @@ public static class ServiceCollectionExtensions
             .AddServices()
             .AddGrpc()
             .AddMiddlewares()
+            .AddCorsDefaultPolicy()
             .AddValidators()
             .AddSwagger();
     }
 
+    private static IServiceCollection AddCorsDefaultPolicy(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin();
+            });
+        });
+
+        return services;
+    }
+    
     private static IServiceCollection AddGrpc(this IServiceCollection services)
     {
         services.AddCodeFirstGrpc();
