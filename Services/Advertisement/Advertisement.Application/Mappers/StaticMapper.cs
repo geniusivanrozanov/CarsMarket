@@ -2,6 +2,7 @@
 using Advertisement.Application.DTOs.Price;
 using Advertisement.Domain.Entities;
 using Advertisement.Domain.ValueObjects;
+using Advertisement.gRPC.Contracts.Replies;
 using Riok.Mapperly.Abstractions;
 
 namespace Advertisement.Application.Mappers;
@@ -18,6 +19,8 @@ public static partial class StaticMapper
     public static partial GetAdDto ToGetAdDto(this AdEntity adEntity);
 
     public static partial IEnumerable<GetAdDto> ToGetAdDto(this IEnumerable<AdEntity> adEntities);
+    
+    public static partial GetAdInfoByIdReply ToGetAdInfoByIdReply(this AdEntity adEntity);
 
     public static partial AdEntity ToAdEntity(this CreateAdDto createAdDto);
     public static partial AdEntity ToAdEntity(this UpdateAdDto updateAdDto);

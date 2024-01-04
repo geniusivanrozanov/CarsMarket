@@ -1,4 +1,5 @@
 using Advertisement.Application.Extensions;
+using Advertisement.Application.Features.Services;
 using Advertisement.Infrastructure.Extensions;
 using Advertisement.WebAPI.Extensions;
 using Advertisement.WebAPI.Middlewares;
@@ -33,6 +34,8 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.MapGrpcService<AdvertisementService>();
 
 app.MapControllers();
 
