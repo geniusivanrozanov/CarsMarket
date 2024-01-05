@@ -3,8 +3,12 @@ using Chat.Infrastructure.Extensions;
 using Chat.WebAPI.Extensions;
 using Chat.WebAPI.Hubs;
 using Chat.WebAPI.Middlewares;
+using Common.Logging;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog(SeriLogger.Configure);
 
 var configuration = builder.Configuration;
 

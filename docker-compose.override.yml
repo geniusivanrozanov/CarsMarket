@@ -47,6 +47,20 @@ services:
         condition: service_healthy
       elasticsearch:
         condition: service_started
+        
+  chat.api:
+    container_name: chat.api
+    ports:
+      - "8003:8003"
+    environment:
+      - ElasticConfiguration:Uri=http://elasticsearch:9200
+      - IdentityConfiguration:Uri=http://identity.api:7000
+      - AdvertisementConfiguration:Uri=http://advertisement.api:7002
+      - ConnectionStrings:MongoDB=mongodb://mongodb:27017
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      mongodb:
+        condition: service_started
   
   postgres:
     container_name: postgres
