@@ -35,7 +35,7 @@ public static class ServiceCollectionExtensions
             .AddMiddlewares()
             .AddSwagger();
     }
-    
+
     private static IServiceCollection AddCorsDefaultPolicy(this IServiceCollection services)
     {
         services.AddCors(options =>
@@ -51,14 +51,14 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    
+
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<ICurrentUser, CurrentUser>();
 
         return services;
     }
-    
+
     private static IServiceCollection AddMiddlewares(this IServiceCollection services)
     {
         services.AddSingleton<ExceptionHandlerMiddleware>();
@@ -66,7 +66,7 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    
+
     private static IServiceCollection AddSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen(options =>

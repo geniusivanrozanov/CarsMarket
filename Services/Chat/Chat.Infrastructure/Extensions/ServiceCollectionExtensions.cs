@@ -19,7 +19,7 @@ public static class ServiceCollectionExtensions
             .AddRepositories()
             .ConfigureOptions(configuration);
     }
-    
+
     private static IServiceCollection AddMongoClient(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("MongoDB");
@@ -29,14 +29,14 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    
+
     private static IServiceCollection AddDbContexts(this IServiceCollection services)
     {
         services.AddScoped<ChatContext>();
 
         return services;
     }
-    
+
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IChatRepository, ChatRepository>();
@@ -44,7 +44,7 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    
+
     private static IServiceCollection ConfigureOptions(this IServiceCollection services, IConfiguration configuration)
     {
         var databaseName = configuration["MongoDatabaseName"];

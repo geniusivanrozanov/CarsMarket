@@ -16,7 +16,7 @@ public class MessageHub : Hub
         _chatService = chatService;
         _messageService = messageService;
     }
-    
+
     public override async Task OnConnectedAsync()
     {
         var chats = await _chatService.GetChatsAsync();
@@ -27,10 +27,10 @@ public class MessageHub : Hub
 
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
         }
-        
+
         await base.OnConnectedAsync();
     }
-    
+
     public async Task SendMessage(SendMessageDto sendMessageDto, CancellationToken cancellationToken)
     {
         var dto = await _messageService.SendMessageAsync(sendMessageDto, cancellationToken);

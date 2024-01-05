@@ -15,7 +15,8 @@ public class MessageService : IMessageService
     private readonly TimeProvider _timeProvider;
     private readonly ILogger<MessageService> _logger;
 
-    public MessageService(IMessageRepository messageRepository, IChatRepository chatRepository, ILogger<MessageService> logger, ICurrentUser currentUser, TimeProvider timeProvider)
+    public MessageService(IMessageRepository messageRepository, IChatRepository chatRepository,
+        ILogger<MessageService> logger, ICurrentUser currentUser, TimeProvider timeProvider)
     {
         _messageRepository = messageRepository;
         _chatRepository = chatRepository;
@@ -24,7 +25,8 @@ public class MessageService : IMessageService
         _timeProvider = timeProvider;
     }
 
-    public async Task<IEnumerable<GetMessageDto>> GetMessagesByChatIdAsync(Guid chatId, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<GetMessageDto>> GetMessagesByChatIdAsync(Guid chatId,
+        CancellationToken cancellationToken = default)
     {
         await CheckChatAndMemberCompatibility(chatId, _currentUser.Id, cancellationToken);
 
@@ -33,12 +35,13 @@ public class MessageService : IMessageService
         return messagesDto;
     }
 
-    public async Task<GetMessageDto> SendMessageAsync(SendMessageDto sendMessageDto, CancellationToken cancellationToken = default)
+    public async Task<GetMessageDto> SendMessageAsync(SendMessageDto sendMessageDto,
+        CancellationToken cancellationToken = default)
     {
         await CheckChatAndMemberCompatibility(sendMessageDto.ChatId, _currentUser.Id, cancellationToken);
 
         var currentTime = _timeProvider.GetUtcNow();
-        
+
         var messageEntity = sendMessageDto.ToMessageEntity();
         messageEntity.SenderId = _currentUser.Id;
         messageEntity.CreatedAt = currentTime;
@@ -50,7 +53,7 @@ public class MessageService : IMessageService
 
         return messageDto;
     }
-    
+
     private async Task CheckChatAndMemberCompatibility(Guid chatId, Guid memberId, CancellationToken cancellationToken)
     {
         if (!await _chatRepository.ExistsWithIdAsync(chatId, cancellationToken))
@@ -61,7 +64,8 @@ public class MessageService : IMessageService
 
         if (!await _chatRepository.ExistsWithIdAndMemberIdAsync(chatId, memberId, cancellationToken))
         {
-            _logger.LogInformation("User with id '{UserId}' is not a member of chat with id '{ChatId}'", memberId, chatId);
+            _logger.LogInformation("User with id '{UserId}' is not a member of chat with id '{ChatId}'", memberId,
+                chatId);
             throw new ForbiddenActionException($"User with id '{memberId}' is not a member of chat with id '{chatId}'");
         }
     }

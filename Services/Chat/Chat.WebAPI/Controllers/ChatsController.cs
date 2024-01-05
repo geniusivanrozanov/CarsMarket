@@ -16,7 +16,7 @@ public class ChatsController : ControllerBase
     {
         _chatService = chatService;
     }
-    
+
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> GetChats(CancellationToken cancellationToken)
@@ -25,10 +25,11 @@ public class ChatsController : ControllerBase
 
         return Ok(dto);
     }
-    
+
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> CreateChat([FromBody] CreateChatDto createChatDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateChat([FromBody] CreateChatDto createChatDto,
+        CancellationToken cancellationToken)
     {
         var dto = await _chatService.CreateChatAsync(createChatDto, cancellationToken);
 

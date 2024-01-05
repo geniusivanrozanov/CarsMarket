@@ -9,6 +9,5 @@ public class ChatEntityConfiguration : IMongoCollectionConfiguration<ChatEntity>
 {
     public void Configure(IMongoCollection<ChatEntity> collection)
     {
-        
     }
 }

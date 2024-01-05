@@ -17,7 +17,8 @@ public class ChatRepository : IChatRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<TProjection>> GetChatsByMemberIdAsync<TProjection>(Guid memberId, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TProjection>> GetChatsByMemberIdAsync<TProjection>(Guid memberId,
+        CancellationToken cancellationToken = default)
     {
         var query = _context.Chats.AsQueryable();
 
@@ -52,7 +53,8 @@ public class ChatRepository : IChatRepository
             .AnyAsync(cancellationToken);
     }
 
-    public async Task<bool> ExistsWithIdAndMemberIdAsync(Guid id, Guid memberId, CancellationToken cancellationToken = default)
+    public async Task<bool> ExistsWithIdAndMemberIdAsync(Guid id, Guid memberId,
+        CancellationToken cancellationToken = default)
     {
         return await _context.Chats
             .Find(x => x.Id == id && x.Members.Any(m => m.Id == memberId))

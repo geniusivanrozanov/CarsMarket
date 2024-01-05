@@ -17,10 +17,11 @@ public class MessageRepository : IMessageRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<TProjection>> GetMessagesByChatIdAsync<TProjection>(Guid chatId, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<TProjection>> GetMessagesByChatIdAsync<TProjection>(Guid chatId,
+        CancellationToken cancellationToken = default)
     {
         var query = _context.Messages.AsQueryable();
-        
+
         return await query
             .Where(x => x.ChatId == chatId)
             .ProjectTo<TProjection>()

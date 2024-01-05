@@ -23,7 +23,8 @@ public class ChatService : IChatService
     private readonly IIdentityService _identityService;
     private readonly ILogger<ChatService> _logger;
 
-    public ChatService(IChatRepository chatRepository, ICurrentUser currentUser, IAdvertisementService advertisementService, IIdentityService identityService, ILogger<ChatService> logger)
+    public ChatService(IChatRepository chatRepository, ICurrentUser currentUser,
+        IAdvertisementService advertisementService, IIdentityService identityService, ILogger<ChatService> logger)
     {
         _chatRepository = chatRepository;
         _currentUser = currentUser;
@@ -40,7 +41,8 @@ public class ChatService : IChatService
         return chatsDto;
     }
 
-    public async Task<GetChatDto> CreateChatAsync(CreateChatDto createChatDto, CancellationToken cancellationToken = default)
+    public async Task<GetChatDto> CreateChatAsync(CreateChatDto createChatDto,
+        CancellationToken cancellationToken = default)
     {
         var adInfoReply = await _advertisementService.GetAdInfoByIdAsync(new GetAdInfoByIdRequest
         {
@@ -58,12 +60,12 @@ public class ChatService : IChatService
             _logger.LogInformation("User with id '{UserId}' tried to create chat with himself", _currentUser.Id);
             throw new InvalidOperationException("User cannot create chat with himself");
         }
-        
+
         var members = await GetMembersAsync(adInfoReply.OwnerId, _currentUser.Id);
 
         var chatEntity = createChatDto.ToChatEntity();
         chatEntity.Members = members;
-        
+
         await _chatRepository.CreateChatAsync(chatEntity, cancellationToken);
 
         var chatDto = chatEntity.ToGetChatDto();
@@ -88,27 +90,25 @@ public class ChatService : IChatService
             _identityService.GetUserFirstNameAsync(getBuyerRequest));
 
         foreach (var reply in membersNamesReplies)
-        {
             if (reply.Error is Error.UserNotFound)
             {
                 _logger.LogInformation("gRPC call failed with message '{Message}'", reply.ErrorMessage);
                 throw new NotExistsException(reply.ErrorMessage!);
             }
-        }
 
         var owner = new MemberEntity
         {
             Id = ownerId,
             Name = membersNamesReplies[0].FirstName
         };
-        
+
         var buyer = new MemberEntity
         {
             Id = buyerId,
             Name = membersNamesReplies[1].FirstName
         };
 
-        var members = new [] { owner, buyer };
+        var members = new[] { owner, buyer };
         return members;
     }
 }

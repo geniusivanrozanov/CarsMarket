@@ -17,7 +17,7 @@ public static class ServiceCollectionExtensions
             .AddGrpcClients(configuration)
             .AddTimeProvider();
     }
-    
+
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IChatService, ChatService>();
@@ -25,20 +25,20 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    
+
     private static IServiceCollection AddGrpcClients(this IServiceCollection services, IConfiguration configuration)
     {
         var identityUri = configuration["IdentityConfiguration:Uri"];
         var advertisementUri = configuration["AdvertisementConfiguration:Uri"];
-        
+
         ArgumentException.ThrowIfNullOrEmpty(identityUri);
         ArgumentException.ThrowIfNullOrEmpty(advertisementUri);
-        
+
         services.AddCodeFirstGrpcClient<IIdentityService>(options =>
         {
             options.Address = new Uri(identityUri);
         });
-        
+
         services.AddCodeFirstGrpcClient<IAdvertisementService>(options =>
         {
             options.Address = new Uri(advertisementUri);
@@ -46,7 +46,7 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-    
+
     private static IServiceCollection AddTimeProvider(this IServiceCollection services)
     {
         services.AddSingleton(TimeProvider.System);

@@ -13,7 +13,7 @@ public static partial class ChatStaticMapper
 
     public static partial IQueryable<GetChatDto> ProjectToGetChatDto(this IQueryable<ChatEntity> queryable);
 
-    
+
     public static IQueryable<TResult> ProjectTo<TResult>(this IQueryable<ChatEntity> queryable)
     {
         if (queryable is IQueryable<TResult> query)

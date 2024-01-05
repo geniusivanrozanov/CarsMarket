@@ -6,7 +6,7 @@ namespace Chat.WebAPI.Services;
 public class CurrentUser : ICurrentUser
 {
     private readonly ClaimsPrincipal _user;
-    
+
     public Guid Id => Guid.Parse(_user.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
     public CurrentUser(IHttpContextAccessor httpContextAccessor)
