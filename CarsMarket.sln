@@ -53,6 +53,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.Infrastructure", "Serv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat.WebAPI", "Services\Chat\Chat.WebAPI\Chat.WebAPI.csproj", "{2EDE2797-1FB7-4205-9A45-A24E2D42BFA7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notification", "Notification", "{39A880D3-1DED-4B82-9CC7-A3FF9C919A10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.Application", "Services\Notification\Notification.Application\Notification.Application.csproj", "{5BC2C5A1-9BCD-4BD7-AD46-F2D79555764C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.gRPC.Contracts", "Common\Notification.gRPC.Contracts\Notification.gRPC.Contracts.csproj", "{5F6682BD-C9D1-463F-8728-699D23B4D7CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +133,14 @@ Global
 		{2EDE2797-1FB7-4205-9A45-A24E2D42BFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EDE2797-1FB7-4205-9A45-A24E2D42BFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EDE2797-1FB7-4205-9A45-A24E2D42BFA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BC2C5A1-9BCD-4BD7-AD46-F2D79555764C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BC2C5A1-9BCD-4BD7-AD46-F2D79555764C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BC2C5A1-9BCD-4BD7-AD46-F2D79555764C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BC2C5A1-9BCD-4BD7-AD46-F2D79555764C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F6682BD-C9D1-463F-8728-699D23B4D7CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F6682BD-C9D1-463F-8728-699D23B4D7CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F6682BD-C9D1-463F-8728-699D23B4D7CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F6682BD-C9D1-463F-8728-699D23B4D7CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5EECBD1F-E08B-4E06-8D6F-01A8D252DE87} = {51A01FF6-1892-4761-970B-130BE858B188}
@@ -147,6 +161,8 @@ Global
 		{8E66B8EA-4E98-46B2-AECD-AEE30CC420F8} = {C8711C00-4BC1-4511-9F45-9E0EA29DE65F}
 		{BB779E61-5B6C-4C79-A545-93FECF4DCDD5} = {C8711C00-4BC1-4511-9F45-9E0EA29DE65F}
 		{2EDE2797-1FB7-4205-9A45-A24E2D42BFA7} = {C8711C00-4BC1-4511-9F45-9E0EA29DE65F}
+		{5BC2C5A1-9BCD-4BD7-AD46-F2D79555764C} = {39A880D3-1DED-4B82-9CC7-A3FF9C919A10}
+		{5F6682BD-C9D1-463F-8728-699D23B4D7CA} = {33ED6351-CF2A-41EC-BE66-12083B7507AD}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{87579E8E-B4AB-406B-84F8-2B9B9E542D67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
