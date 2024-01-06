@@ -17,6 +17,10 @@ services:
     build:
       context: .
       dockerfile: Services/Chat/Chat.WebAPI/Dockerfile
+  notification.grpc:
+    build:
+      context: .
+      dockerfile: Services/Notification/Notification.gRPC/Dockerfile
   
   postgres:
     image: postgres:latest
@@ -35,3 +39,6 @@ services:
 
   rabbitmq:
     image: rabbitmq:management
+
+  maildev:
+    image: maildev/maildev

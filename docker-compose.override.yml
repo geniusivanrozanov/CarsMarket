@@ -61,6 +61,15 @@ services:
     depends_on:
       mongodb:
         condition: service_started
+        
+  notification.grpc:
+    container_name: notification.grpc
+    environment:
+      - ElasticConfiguration:Uri=http://elasticsearch:9200
+      - MailConfiguration:Host=maildev
+      - MailConfiguration:Port=1025
+      - MailConfiguration:UserName=admin
+      - MailConfiguration:Password=admin
   
   postgres:
     container_name: postgres
@@ -125,6 +134,14 @@ services:
       - RABBITMQ_DEFAULT_PASS=guest
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+    
+  maildev:
+    container_name: maildev
+    ports:
+      - "1080:1080"
+    environment:
+      - MAILDEV_INCOMING_USER=admin
+      - MAILDEV_INCOMING_PASS=admin
 
 volumes:
   postgres_data:
