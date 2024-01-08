@@ -1,6 +1,7 @@
 using FavoriteFilters.Application.Extensions;
 using FavoriteFilters.Infrastructure.Extensions;
 using FavoriteFilters.WebAPI.Extensions;
+using FavoriteFilters.WebAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
