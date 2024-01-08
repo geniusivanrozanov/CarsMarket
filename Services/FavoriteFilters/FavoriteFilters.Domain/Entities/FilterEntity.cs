@@ -15,4 +15,7 @@ public class FilterEntity
     public double? MinPrice { get; set; }
     public double? MaxPrice { get; set; }
     public Currency? Currency { get; set; }
+    
+    public Guid UserId { get; set; }
+    public string UserEmail { get; set; } = null!;
 }
