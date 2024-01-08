@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\..\Common\Advertisement.gRPC.Contracts\Advertisement.gRPC.Contracts.csproj" />
         <ProjectReference Include="..\..\..\Common\CarsCatalog.gRPC.Contracts\CarsCatalog.gRPC.Contracts.csproj" />
         <ProjectReference Include="..\..\..\Common\CarsCatalog.Messages.Contracts\CarsCatalog.Messages.Contracts.csproj" />
         <ProjectReference Include="..\..\..\Common\Identity.gRPC.Contracts\Identity.gRPC.Contracts.csproj" />

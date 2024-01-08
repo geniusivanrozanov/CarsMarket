@@ -13,6 +13,10 @@ services:
     build:
       context: .
       dockerfile: Services/CarsCatalog/CarsCatalog.WebAPI/Dockerfile
+  chat.api:
+    build:
+      context: .
+      dockerfile: Services/Chat/Chat.WebAPI/Dockerfile
   
   postgres:
     image: postgres:latest
