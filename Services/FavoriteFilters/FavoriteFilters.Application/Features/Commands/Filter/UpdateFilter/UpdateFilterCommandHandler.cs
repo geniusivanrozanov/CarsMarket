@@ -1,6 +1,7 @@
 ﻿using FavoriteFilters.Application.DTOs.Filter;
 using FavoriteFilters.Application.Exceptions;
 using FavoriteFilters.Application.Interfaces.Repositories;
+using FavoriteFilters.Application.Interfaces.Services;
 using FavoriteFilters.Domain.Entities;
 using Mapster;
 using MediatR;
@@ -13,17 +14,23 @@ public class UpdateFilterCommandHandler : IRequestHandler<UpdateFilterCommand, G
     private readonly IFilterRepository _filterRepository;
     private readonly IRepositoryUnitOfWork _repositoryUnitOfWork;
     private readonly ILogger<UpdateFilterCommandHandler> _logger;
+    private readonly ICurrentUser _currentUser;
 
-    public UpdateFilterCommandHandler(IRepositoryUnitOfWork repositoryUnitOfWork, ILogger<UpdateFilterCommandHandler> logger)
+    public UpdateFilterCommandHandler(IRepositoryUnitOfWork repositoryUnitOfWork,
+        ILogger<UpdateFilterCommandHandler> logger,
+        ICurrentUser currentUser)
     {
         _repositoryUnitOfWork = repositoryUnitOfWork;
         _logger = logger;
+        _currentUser = currentUser;
         _filterRepository = repositoryUnitOfWork.Filters;
     }
     
     public async Task<GetFilterDto> Handle(UpdateFilterCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _filterRepository.GetFilterByIdAsync<FilterEntity>(request.FilterId, cancellationToken);
+        var entity = await _filterRepository.GetFilterByIdAndUserIdAsync<FilterEntity>(request.FilterId,
+            _currentUser.Id,
+            cancellationToken);
 
         if (entity is null)
         {

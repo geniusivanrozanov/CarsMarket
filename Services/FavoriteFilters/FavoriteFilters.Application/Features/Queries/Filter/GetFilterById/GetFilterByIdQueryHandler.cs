@@ -2,6 +2,7 @@
 using FavoriteFilters.Application.Exceptions;
 using FavoriteFilters.Application.Features.Commands.Filter.UpdateFilter;
 using FavoriteFilters.Application.Interfaces.Repositories;
+using FavoriteFilters.Application.Interfaces.Services;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -11,16 +12,22 @@ public class GetFilterByIdQueryHandler : IRequestHandler<GetFilterByIdQuery, Get
 {
     private readonly IFilterRepository _filterRepository;
     private readonly ILogger<GetFilterByIdQueryHandler> _logger;
+    private readonly ICurrentUser _currentUser;
 
-    public GetFilterByIdQueryHandler(IRepositoryUnitOfWork repositoryUnitOfWork, ILogger<GetFilterByIdQueryHandler> logger)
+    public GetFilterByIdQueryHandler(IRepositoryUnitOfWork repositoryUnitOfWork,
+        ILogger<GetFilterByIdQueryHandler> logger,
+        ICurrentUser currentUser)
     {
         _logger = logger;
+        _currentUser = currentUser;
         _filterRepository = repositoryUnitOfWork.Filters;
     }
     
     public async Task<GetFilterDto> Handle(GetFilterByIdQuery request, CancellationToken cancellationToken)
     {
-        var dto = await _filterRepository.GetFilterByIdAsync<GetFilterDto>(request.FilterId, cancellationToken);
+        var dto = await _filterRepository.GetFilterByIdAndUserIdAsync<GetFilterDto>(request.FilterId,
+            _currentUser.Id,
+            cancellationToken);
 
         if (dto is null)
         {
