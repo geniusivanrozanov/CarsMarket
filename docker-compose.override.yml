@@ -139,6 +139,7 @@ services:
     container_name: maildev
     ports:
       - "1080:1080"
+      - "1025:1025"
     environment:
       - MAILDEV_INCOMING_USER=admin
       - MAILDEV_INCOMING_PASS=admin
