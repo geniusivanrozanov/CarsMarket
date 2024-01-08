@@ -5,6 +5,7 @@ using FavoriteFilters.Application.Features.Commands.Filter.UpdateFilter;
 using FavoriteFilters.Application.Features.Queries.Filter.GetFilterById;
 using FavoriteFilters.Application.Features.Queries.Filter.GetFiltersList;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FavoriteFilters.WebAPI.Controllers
@@ -21,6 +22,7 @@ namespace FavoriteFilters.WebAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetFilters(CancellationToken cancellationToken)
         {
             var dto = await _mediator.Send(new GetFiltersListQuery(), cancellationToken);
@@ -29,6 +31,7 @@ namespace FavoriteFilters.WebAPI.Controllers
         }
         
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetFilterById([FromRoute] Guid id, CancellationToken cancellationToken)
         {
             var dto = await _mediator.Send(new GetFilterByIdQuery(id), cancellationToken);
@@ -37,6 +40,7 @@ namespace FavoriteFilters.WebAPI.Controllers
         }
         
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateFilter([FromBody] CreateFilterDto createFilterDto,
             CancellationToken cancellationToken)
         {
@@ -46,6 +50,7 @@ namespace FavoriteFilters.WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateFilter([FromRoute] Guid id, [FromBody] UpdateFilterDto updateFilterDto,
             CancellationToken cancellationToken)
         {
@@ -55,6 +60,7 @@ namespace FavoriteFilters.WebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteFilter([FromRoute] Guid id, CancellationToken cancellationToken)
         {
             await _mediator.Send(new DeleteFilterCommand(id), cancellationToken);

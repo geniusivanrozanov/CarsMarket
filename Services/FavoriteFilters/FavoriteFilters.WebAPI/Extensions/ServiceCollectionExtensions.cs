@@ -1,5 +1,7 @@
 ﻿using System.Text;
+using FavoriteFilters.Application.Interfaces.Services;
 using FavoriteFilters.WebAPI.Middlewares;
+using FavoriteFilters.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -22,6 +24,7 @@ public static class ServiceCollectionExtensions
             .AddEndpointsApiExplorer()
             .AddCorsDefaultPolicy()
             .AddMiddlewares()
+            .AddServices()
             .AddSwagger();
     }
     
@@ -37,6 +40,14 @@ public static class ServiceCollectionExtensions
                     .AllowAnyOrigin();
             });
         });
+
+        return services;
+    }
+    
+    private static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        services.AddHttpContextAccessor();
+        services.AddScoped<ICurrentUser, CurrentUser>();
 
         return services;
     }
