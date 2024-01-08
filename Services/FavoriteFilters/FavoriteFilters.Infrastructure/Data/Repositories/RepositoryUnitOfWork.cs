@@ -15,7 +15,7 @@ public class RepositoryUnitOfWork : IRepositoryUnitOfWork
         _serviceProvider = serviceProvider;
     }
 
-    public IFilterRepository Filters => _serviceProvider.GetRequiredService<FilterRepository>();
+    public IFilterRepository Filters => _serviceProvider.GetRequiredService<IFilterRepository>();
     
     public async Task SaveAsync(CancellationToken cancellationToken)
     {

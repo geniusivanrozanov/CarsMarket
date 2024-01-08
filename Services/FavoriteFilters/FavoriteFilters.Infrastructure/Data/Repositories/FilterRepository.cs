@@ -9,7 +9,7 @@ namespace FavoriteFilters.Infrastructure.Data.Repositories;
 
 public class FilterRepository : RepositoryBase<FilterEntity>, IFilterRepository
 {
-    protected FilterRepository(FiltersContext context) : base(context)
+    public FilterRepository(FiltersContext context) : base(context)
     {
     }
 
