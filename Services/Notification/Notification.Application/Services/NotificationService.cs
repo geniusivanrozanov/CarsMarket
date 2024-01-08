@@ -17,7 +17,7 @@ public class NotificationService : INotificationService
 
     public async Task<SendEmailReply> SendEmailAsync(SendEmailRequest request, CallContext context = default)
     {
-        await _emailService.SendEmailAsync(request.RecipientEmailAddress, request.Body, request.Subject,
+        await _emailService.SendEmailAsync(request.RecipientEmailAddress, request.Subject, request.Body,
             context.CancellationToken);
 
         return new SendEmailReply();
