@@ -11,9 +11,11 @@
     <ItemGroup>
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0"/>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13"/>
+        <PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.8.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0-rc.2.23480.2"/>
         <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="7.0.13"/>
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0-rc.2.23509.1"/>
+        <PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.1.1" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
     </ItemGroup>
 
@@ -25,6 +27,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\Common\Common.Logging\Common.Logging.csproj"/>
+        <ProjectReference Include="..\..\..\Common\Identity.gRPC.Contracts\Identity.gRPC.Contracts.csproj" />
         <ProjectReference Include="..\IdentityService.Application\IdentityService.Application.csproj"/>
         <ProjectReference Include="..\IdentityService.Infrastructure\IdentityService.Infrastructure.csproj"/>
     </ItemGroup>

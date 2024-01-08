@@ -1,4 +1,5 @@
 using CarsCatalog.Application.Extensions;
+using CarsCatalog.Application.Features.Services;
 using CarsCatalog.Infrastructure.Extensions;
 using CarsCatalog.WebAPI.Extensions;
 using CarsCatalog.WebAPI.Middlewares;
@@ -11,7 +12,7 @@ var configuration = builder.Configuration;
 builder.Host.UseSerilog(SeriLogger.Configure);
 
 builder.Services
-    .AddApplicationLayer()
+    .AddApplicationLayer(configuration)
     .AddInfrastructureLayer(configuration)
     .AddApiLayer(configuration);
 
@@ -26,7 +27,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseMiddleware<ExceptionHandlerMiddleware>();
+
+app.MapGrpcService<CarsCatalogService>();
+
 app.MapControllers();
 
 app.Run();

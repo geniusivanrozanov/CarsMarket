@@ -1,5 +1,6 @@
 ﻿using CarsCatalog.Application.DTOs;
 using CarsCatalog.Domain.Entities;
+using CarsCatalog.Messages.Contracts;
 using Riok.Mapperly.Abstractions;
 
 namespace CarsCatalog.Application.Mappers;
@@ -8,6 +9,9 @@ namespace CarsCatalog.Application.Mappers;
 public static partial class ModelStaticMapper
 {
     public static partial GetModelDto ToGetModelDto(this ModelEntity modelEntity);
+    [MapProperty(nameof(ModelEntity.Id), nameof(ModelUpdatedMessage.ModelId))]
+    [MapProperty(nameof(ModelEntity.Name), nameof(ModelUpdatedMessage.UpdatedModelName))]
+    public static partial ModelUpdatedMessage ToModelUpdatedMessage(this ModelEntity modelEntity);
     public static partial ModelEntity ToModelEntity(this CreateModelDto createModelDto);
     public static partial ModelEntity ToModelEntity(this UpdateModelDto updateModelDto);
     public static partial void ToModelEntity(this UpdateModelDto updateModelDto, ModelEntity modelEntity);

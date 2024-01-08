@@ -11,6 +11,7 @@ public class GetAdDto : IRequest
     public string Brand { get; set; } = null!;
     public string Model { get; set; } = null!;
     public string Generation { get; set; } = null!;
+    public string OwnerName { get; set; } = null!;
     public int Year { get; set; }
     public int Mileage { get; set; }
     public AdStatus Status { get; set; }

@@ -3,6 +3,7 @@ using CarsCatalog.Application.Exceptions;
 using CarsCatalog.Application.Interfaces.Repositories;
 using CarsCatalog.Application.Mappers;
 using CarsCatalog.Domain.Entities;
+using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -14,12 +15,14 @@ public class UpdateModelCommandHandler :
     private readonly IModelRepository _modelRepository;
     private readonly IRepositoryUnitOfWork _repositoryUnitOfWork;
     private readonly ILogger<UpdateModelCommandHandler> _logger;
+    private readonly IPublishEndpoint _publishEndpoint;
 
     public UpdateModelCommandHandler(IRepositoryUnitOfWork repositoryUnitOfWork,
-        ILogger<UpdateModelCommandHandler> logger)
+        ILogger<UpdateModelCommandHandler> logger, IPublishEndpoint publishEndpoint)
     {
         _repositoryUnitOfWork = repositoryUnitOfWork;
         _logger = logger;
+        _publishEndpoint = publishEndpoint;
         _modelRepository = repositoryUnitOfWork.Models;
     }
 
@@ -46,6 +49,9 @@ public class UpdateModelCommandHandler :
 
         _modelRepository.Update(entity);
         await _repositoryUnitOfWork.SaveAsync(cancellationToken);
+
+        var message = entity.ToModelUpdatedMessage();
+        await _publishEndpoint.Publish(message, cancellationToken);
 
         var dto = entity.ToGetModelDto();
 

@@ -3,6 +3,7 @@ using CarsCatalog.Application.Exceptions;
 using CarsCatalog.Application.Interfaces.Repositories;
 using CarsCatalog.Application.Mappers;
 using CarsCatalog.Domain.Entities;
+using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -14,12 +15,14 @@ public class UpdateGenerationCommandHandler :
     private readonly IGenerationRepository _generationRepository;
     private readonly IRepositoryUnitOfWork _repositoryUnitOfWork;
     private readonly ILogger<UpdateGenerationCommandHandler> _logger;
+    private readonly IPublishEndpoint _publishEndpoint;
 
     public UpdateGenerationCommandHandler(IRepositoryUnitOfWork repositoryUnitOfWork,
-        ILogger<UpdateGenerationCommandHandler> logger)
+        ILogger<UpdateGenerationCommandHandler> logger, IPublishEndpoint publishEndpoint)
     {
         _repositoryUnitOfWork = repositoryUnitOfWork;
         _logger = logger;
+        _publishEndpoint = publishEndpoint;
         _generationRepository = repositoryUnitOfWork.Generations;
     }
 
@@ -49,6 +52,9 @@ public class UpdateGenerationCommandHandler :
         _generationRepository.Update(entity);
         await _repositoryUnitOfWork.SaveAsync(cancellationToken);
 
+        var message = entity.ToGenerationUpdatedMessage();
+        await _publishEndpoint.Publish(message, cancellationToken);
+        
         var dto = entity.ToGetGenerationDto();
 
         return dto;

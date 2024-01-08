@@ -5,6 +5,7 @@ using IdentityService.Application.Mappers;
 using IdentityService.Application.Options;
 using IdentityService.Application.Services;
 using IdentityService.Domain.Entities;
+using MassTransit;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,11 +21,38 @@ public static class ServiceExtensions
             .AddIdentity()
             .AddMappers()
             .AddValidators()
-            .ConfigureOptions(configuration);
+            .ConfigureOptions(configuration)
+            .ConfigureMassTransit(configuration);
 
         return services;
     }
 
+    private static IServiceCollection ConfigureMassTransit(this IServiceCollection services, IConfiguration configuration)
+    {
+        var host = configuration["RabbitMQConfiguration:Host"];
+        var username = configuration["RabbitMQConfiguration:Username"];
+        var password = configuration["RabbitMQConfiguration:Password"];
+        
+        ArgumentException.ThrowIfNullOrEmpty(host);
+        ArgumentException.ThrowIfNullOrEmpty(username);
+        ArgumentException.ThrowIfNullOrEmpty(password);
+        
+        
+        services.AddMassTransit(configurator =>
+        {
+            configurator.UsingRabbitMq((context, factoryConfigurator) =>
+            {
+                factoryConfigurator.Host(host, hostConfigurator =>
+                {
+                    hostConfigurator.Username(username);
+                    hostConfigurator.Password(password);
+                });
+            });
+        });
+
+        return services;
+    }
+    
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<ITokenService, TokenService>();

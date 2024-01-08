@@ -4,11 +4,13 @@ services:
   identity.api:
     container_name: identity.api
     ports:
-      - "8000:8080"
+      - "8000:8000"
     environment:
       - ElasticConfiguration:Uri=http://elasticsearch:9200
+      - RabbitMQConfiguration:Host=amqp://rabbitmq:5672
       - ConnectionStrings:IdentityPostgres=Server=postgres;Port=5432;Database=Identity;User Id=postgres;Password=postgres;
       - ConnectionStrings:Redis=redis:6379
+      - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       postgres:
         condition: service_healthy
@@ -18,10 +20,14 @@ services:
   advertisement.api:
     container_name: advertisement.api
     ports:
-      - "8002:8080"
+      - "8002:8002"
     environment:
       - ElasticConfiguration:Uri=http://elasticsearch:9200
+      - IdentityConfiguration:Uri=http://identity.api:7000
+      - CarsCatalogConfiguration:Uri=http://cars-catalog.api:7001
+      - RabbitMQConfiguration:Host=amqp://rabbitmq:5672
       - ConnectionStrings:MongoDB=mongodb://mongodb:27017
+      - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       mongodb:
         condition: service_started
@@ -29,11 +35,13 @@ services:
   cars-catalog.api:
     container_name: cars-catalog.api
     ports:
-      - "8001:8080"
+      - "8001:8001"
     environment:
       - ElasticConfiguration:Uri=http://elasticsearch:9200
+      - RabbitMQConfiguration:Host=amqp://rabbitmq:5672
       - ConnectionStrings:CatalogPostgres=Server=postgres;Port=5432;Database=CarsCatalog;User Id=postgres;Password=postgres;
       - ConnectionStrings:Redis=redis:6379
+      - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       postgres:
         condition: service_healthy
@@ -92,10 +100,21 @@ services:
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-
+    
+  rabbitmq:
+    container_name: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
 
 volumes:
   postgres_data:
   mongo_data:
   elasticsearch_data:
   redis_data:
+  rabbitmq_data:

@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using Advertisement.Application.Interfaces.Repositories;
-using Advertisement.Application.Mappers;
 using Advertisement.Application.QueryParameters;
 using Advertisement.Domain.Entities;
 using Advertisement.Infrastructure.Data.Contexts;
@@ -19,10 +18,6 @@ public class AdRepository : IAdRepository
 
     public async Task<AdEntity?> GetAdByIdAsync(Guid adId, CancellationToken cancellationToken = default)
     {
-        var projection = Builders<AdEntity>
-            .Projection
-            .Include(x => x.CurrentPrice);
-
         return await _context.Ads
             .Find(x => x.Id == adId)
             .SingleOrDefaultAsync(cancellationToken);
@@ -87,6 +82,40 @@ public class AdRepository : IAdRepository
     {
         await _context.Ads
             .ReplaceOneAsync(x => x.Id == entity.Id, entity, cancellationToken: cancellationToken);
+    }
+
+    public async Task UpdateOwnerNameAsync(Guid ownerId, string ownerName, CancellationToken cancellationToken = default)
+    {
+        await UpdateFieldByFilterAsync(entity => entity.OwnerId == ownerId, entity => entity.OwnerName,
+            ownerName, cancellationToken);
+    }
+
+    public async Task UpdateBrandNameAsync(Guid brandId, string brandName, CancellationToken cancellationToken = default)
+    {
+        await UpdateFieldByFilterAsync(entity => entity.BrandId == brandId, entity => entity.BrandName,
+            brandName, cancellationToken);
+    }
+
+    public async Task UpdateModelNameAsync(Guid modelId, string modelName, CancellationToken cancellationToken = default)
+    {
+        await UpdateFieldByFilterAsync(entity => entity.ModelId == modelId, entity => entity.ModelName,
+            modelName, cancellationToken);
+    }
+
+    public async Task UpdateGenerationNameAsync(Guid generationId, string generationName, CancellationToken cancellationToken = default)
+    {
+        await UpdateFieldByFilterAsync(entity => entity.GenerationId == generationId, entity => entity.GenerationName,
+            generationName, cancellationToken);
+    }
+
+    private async Task UpdateFieldByFilterAsync<TField>(Expression<Func<AdEntity, bool>> filter,
+        Expression<Func<AdEntity, TField>> field, TField value, CancellationToken cancellationToken = default)
+    {
+        var update = Builders<AdEntity>.Update
+            .Set(field, value);
+
+        await _context.Ads
+            .UpdateManyAsync(filter, update, cancellationToken: cancellationToken);
     }
 
     private static FilterDefinition<AdEntity> GenerateFilter(AdQueryParameters queryParameters)
