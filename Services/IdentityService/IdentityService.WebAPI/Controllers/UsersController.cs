@@ -25,7 +25,7 @@ public class UsersController(IUserService userService) : ControllerBase
     [HttpGet("{id}")]
     [Authorize(Roles = Roles.Admin)]
     [DistributedCache]
-    public async Task<IActionResult> GetUserById(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetUserById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var user = await userService.GetUserByIdAsync(id, cancellationToken);
 
@@ -51,7 +51,7 @@ public class UsersController(IUserService userService) : ControllerBase
     
     [Authorize(Roles = Roles.User)]
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserDto updateUserDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateUser([FromRoute] Guid id, [FromBody] UpdateUserDto updateUserDto, CancellationToken cancellationToken)
     {
         var user = await userService.UpdateUserAsync(id, updateUserDto, cancellationToken);
 
