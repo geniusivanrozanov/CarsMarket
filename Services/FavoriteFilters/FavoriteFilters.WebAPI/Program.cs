@@ -3,7 +3,6 @@ using FavoriteFilters.Application.Extensions;
 using FavoriteFilters.Infrastructure.Extensions;
 using FavoriteFilters.WebAPI.Extensions;
 using FavoriteFilters.WebAPI.Middlewares;
-using Hangfire;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +24,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseHangfireDashboard();
+    app.UseHangfireDashboard(configuration);
 }
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
