@@ -21,6 +21,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHangfireDashboard();
 }
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
@@ -33,7 +34,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseHangfireDashboard();
 
 app.Run();

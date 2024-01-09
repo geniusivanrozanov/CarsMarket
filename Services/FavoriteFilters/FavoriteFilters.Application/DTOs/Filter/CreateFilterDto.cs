@@ -15,5 +15,9 @@ public class CreateFilterDto
     public double? MaxPrice { get; set; }
     public Currency? Currency { get; set; }
 
-    public string Cron { get; set; } = null!;
+    public int? CronMinute { get; set; }
+    public int? CronHour { get; set; }
+    public int? CronDayOfMonth { get; set; }
+    public int? CronMonth { get; set; }
+    public int? CronDayOfWeek { get; set; }
 }

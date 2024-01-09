@@ -49,7 +49,7 @@ public class AdvertisementService : IAdvertisementService
 
         var reply = new GetAdsByQueryParametersReply
         {
-            Ads = adDataContracts
+            Ads = adDataContracts.ToList()
         };
 
         return reply;

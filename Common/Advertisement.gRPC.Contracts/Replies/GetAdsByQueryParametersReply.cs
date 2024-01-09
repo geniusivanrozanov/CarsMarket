@@ -7,5 +7,5 @@ namespace Advertisement.gRPC.Contracts.Replies;
 public class GetAdsByQueryParametersReply
 {
     [DataMember(Order = 1)]
-    public IEnumerable<AdDataContract> Ads { get; set; }
+    public List<AdDataContract>? Ads { get; set; }
 }

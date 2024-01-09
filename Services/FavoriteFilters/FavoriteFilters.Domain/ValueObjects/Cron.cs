@@ -8,22 +8,27 @@ public class Cron
     public int? Month { get; set; }
     public int? DayOfWeek { get; set; }
 
+    public Cron()
+    {
+    }
+
+    public Cron(int? minute, int? hour, int? dayOfMonth, int? month, int? dayOfWeek)
+    {
+        Minute = minute;
+        Hour = hour;
+        DayOfMonth = dayOfMonth;
+        Month = month;
+        DayOfWeek = dayOfWeek;
+    }
+
     public override string ToString()
     {
-        return $"{Minute ?? '*'} {Hour ?? '*'} {DayOfMonth ?? '*'} {Month ?? '*'} {DayOfWeek ?? '*'}";
-    }
-
-    public bool IsValid()
-    {
-        return IsValid(Minute, Hour, DayOfMonth, Month, DayOfWeek);
-    }
-
-    public static bool IsValid(int? minute, int? hour, int? dayOfMonth, int? month, int? dayOfWeek)
-    {
-        return minute is null or >= 0 and <= 59
-               && hour is null or >= 0 and <= 23
-               && dayOfMonth is null or >= 1 and <= 31
-               && month is null or >= 1 and <= 12
-               && dayOfWeek is null or >= 0 and <= 6;
+        var minute = Minute.HasValue ? Minute.ToString() : "*";
+        var hour = Hour.HasValue ? Hour.ToString() : "*";
+        var dayOfMonth = DayOfMonth.HasValue ? DayOfMonth.ToString() : "*";
+        var month = Month.HasValue ? Month.ToString() : "*";
+        var dayOfWeek = DayOfWeek.HasValue ? DayOfWeek.ToString() : "*";
+        
+        return $"{minute} {hour} {dayOfMonth} {month} {dayOfWeek}";
     }
 }

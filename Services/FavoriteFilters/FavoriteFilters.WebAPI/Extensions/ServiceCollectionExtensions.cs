@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using FavoriteFilters.Application.Interfaces.Services;
 using FavoriteFilters.WebAPI.Middlewares;
 using FavoriteFilters.WebAPI.Services;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -28,6 +29,7 @@ public static class ServiceCollectionExtensions
             .AddCorsDefaultPolicy()
             .AddMiddlewares()
             .AddServices()
+            .AddValidators()
             .AddSwagger();
     }
     
@@ -58,6 +60,13 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddMiddlewares(this IServiceCollection services)
     {
         services.AddSingleton<ExceptionHandlerMiddleware>();
+
+        return services;
+    }
+    
+    private static IServiceCollection AddValidators(this IServiceCollection services)
+    {
+        services.AddFluentValidationAutoValidation();
 
         return services;
     }

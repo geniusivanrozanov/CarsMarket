@@ -46,6 +46,11 @@ public class FiltersNotificationService : IFiltersNotificationService
             await _advertisementService.GetAdsByQueryParametersAsync(getAdsByQueryParametersRequest);
 
         var ads = getAdsByQueryParametersReply.Ads;
+        
+        if (ads is null || ads.Count == 0)
+        {
+            return;
+        }
 
         var message = BuildHtmlPage(ads, filter);
 

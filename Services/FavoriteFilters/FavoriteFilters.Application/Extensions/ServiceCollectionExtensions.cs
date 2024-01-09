@@ -2,6 +2,7 @@
 using Advertisement.gRPC.Contracts;
 using FavoriteFilters.Application.Features.Services;
 using FavoriteFilters.Application.Interfaces.Services;
+using FluentValidation;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,7 @@ public static class ServiceCollectionExtensions
             .AddMediator()
             .AddGrpcClients(configuration)
             .AddHangfire(configuration)
+            .AddValidators()
             .AddServices();
         
         return services;
@@ -30,6 +32,13 @@ public static class ServiceCollectionExtensions
         {
             configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
+
+        return services;
+    }
+    
+    private static IServiceCollection AddValidators(this IServiceCollection services)
+    {
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         return services;
     }
