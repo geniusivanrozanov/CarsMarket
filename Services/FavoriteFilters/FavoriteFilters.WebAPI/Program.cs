@@ -2,6 +2,7 @@ using FavoriteFilters.Application.Extensions;
 using FavoriteFilters.Infrastructure.Extensions;
 using FavoriteFilters.WebAPI.Extensions;
 using FavoriteFilters.WebAPI.Middlewares;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,5 +33,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseHangfireDashboard();
 
 app.Run();

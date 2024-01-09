@@ -2,6 +2,8 @@
 using Advertisement.gRPC.Contracts;
 using FavoriteFilters.Application.Features.Services;
 using FavoriteFilters.Application.Interfaces.Services;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Notification.gRPC.Contracts;
@@ -16,6 +18,7 @@ public static class ServiceCollectionExtensions
         services
             .AddMediator()
             .AddGrpcClients(configuration)
+            .AddHangfire(configuration)
             .AddServices();
         
         return services;
@@ -27,6 +30,25 @@ public static class ServiceCollectionExtensions
         {
             configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
         });
+
+        return services;
+    }
+    
+    private static IServiceCollection AddHangfire(this IServiceCollection services, IConfiguration configuration)
+    {
+        var connectionString = configuration.GetConnectionString("FiltersPostgres");
+        
+        ArgumentException.ThrowIfNullOrEmpty(connectionString);
+        
+        services.AddHangfire(globalConfiguration =>
+        {
+            globalConfiguration.UsePostgreSqlStorage(options =>
+            {
+                options.UseNpgsqlConnection(connectionString);
+            });
+        });
+
+        services.AddHangfireServer();
 
         return services;
     }
