@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.Json.Serialization;
 using FavoriteFilters.Application.Interfaces.Services;
 using FavoriteFilters.WebAPI.Middlewares;
 using FavoriteFilters.WebAPI.Services;
@@ -13,7 +14,9 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddApiLayer(this IServiceCollection services, IConfiguration configuration)
     {
         return services
-            .AddControllers().Services
+            .AddControllers()
+            .AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); })
+            .Services
             .AddRouting(options =>
             {
                 options.LowercaseUrls = true;
