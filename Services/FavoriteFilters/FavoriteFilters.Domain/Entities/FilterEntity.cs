@@ -18,4 +18,6 @@ public class FilterEntity
     
     public Guid UserId { get; set; }
     public string UserEmail { get; set; } = null!;
+    
+    public string Cron { get; set; } = null!;
 }

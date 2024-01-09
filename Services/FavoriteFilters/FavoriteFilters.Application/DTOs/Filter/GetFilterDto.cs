@@ -15,4 +15,6 @@ public class GetFilterDto
     public double? MinPrice { get; set; }
     public double? MaxPrice { get; set; }
     public Currency? Currency { get; set; }
+    
+    public string Cron { get; set; } = null!;
 }
