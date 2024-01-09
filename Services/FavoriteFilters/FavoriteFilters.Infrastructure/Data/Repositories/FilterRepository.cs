@@ -13,6 +13,16 @@ public class FilterRepository : RepositoryBase<FilterEntity>, IFilterRepository
     {
     }
 
+    public async Task<TProjection?> GetFilterByIdAsync<TProjection>(Guid filterId,
+        CancellationToken cancellationToken = default)
+    {
+        var query = Query
+            .Where(entity => entity.Id == filterId)
+            .ProjectToType<TProjection>();
+
+        return await query.SingleOrDefaultAsync(cancellationToken);
+    }
+
     public async Task<TProjection?> GetFilterByIdAndUserIdAsync<TProjection>(Guid filterId, Guid userId,
         CancellationToken cancellationToken = default)
     {
