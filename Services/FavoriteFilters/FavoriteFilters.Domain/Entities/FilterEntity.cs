@@ -1,4 +1,5 @@
 ﻿using FavoriteFilters.Domain.Enums;
+using FavoriteFilters.Domain.ValueObjects;
 
 namespace FavoriteFilters.Domain.Entities;
 
@@ -18,6 +19,6 @@ public class FilterEntity
     
     public Guid UserId { get; set; }
     public string UserEmail { get; set; } = null!;
-    
-    public string Cron { get; set; } = null!;
+
+    public Cron Cron { get; set; } = null!;
 }

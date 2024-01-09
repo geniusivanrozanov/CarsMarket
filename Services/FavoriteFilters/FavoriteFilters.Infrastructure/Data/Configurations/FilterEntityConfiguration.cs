@@ -18,5 +18,8 @@ public class FilterEntityConfiguration : IEntityTypeConfiguration<FilterEntity>
 
         builder
             .HasIndex(x => x.UserId);
+
+        builder
+            .OwnsOne(x => x.Cron);
     }
 }
