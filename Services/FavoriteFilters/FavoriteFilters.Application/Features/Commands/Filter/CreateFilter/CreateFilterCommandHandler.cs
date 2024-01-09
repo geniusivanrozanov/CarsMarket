@@ -17,16 +17,19 @@ public class CreateFilterCommandHandler : IRequestHandler<CreateFilterCommand, G
     private readonly ICurrentUser _currentUser;
     private readonly IFiltersNotificationService _filtersNotification;
     private readonly IRecurringJobManager _recurringJobManager;
+    private readonly TimeProvider _timeProvider;
 
     public CreateFilterCommandHandler(IRepositoryUnitOfWork repositoryUnitOfWork,
         ICurrentUser currentUser,
         IRecurringJobManager recurringJobManager,
-        IFiltersNotificationService filtersNotification)
+        IFiltersNotificationService filtersNotification,
+        TimeProvider timeProvider)
     {
         _repositoryUnitOfWork = repositoryUnitOfWork;
         _currentUser = currentUser;
         _recurringJobManager = recurringJobManager;
         _filtersNotification = filtersNotification;
+        _timeProvider = timeProvider;
         _filterRepository = repositoryUnitOfWork.Filters;
     }
     
@@ -39,6 +42,7 @@ public class CreateFilterCommandHandler : IRequestHandler<CreateFilterCommand, G
         entity.Cron = cron;
         entity.UserId = _currentUser.Id;
         entity.UserEmail = _currentUser.Email;
+        entity.LastExecutedAt = _timeProvider.GetUtcNow();
         
         _filterRepository.Create(entity);
         await _repositoryUnitOfWork.SaveAsync(cancellationToken);

@@ -6,6 +6,7 @@ using FavoriteFilters.Application.Interfaces.Repositories;
 using FavoriteFilters.Application.Interfaces.Services;
 using FavoriteFilters.Domain.Entities;
 using Mapster;
+using MapsterMapper;
 using Microsoft.Extensions.Logging;
 using Notification.gRPC.Contracts;
 using Notification.gRPC.Contracts.Requests;
@@ -15,18 +16,26 @@ namespace FavoriteFilters.Application.Features.Services;
 public class FiltersNotificationService : IFiltersNotificationService
 {
     private readonly IFilterRepository _filterRepository;
+    private readonly IRepositoryUnitOfWork _repositoryUnitOfWork;
     private readonly IAdvertisementService _advertisementService;
     private readonly INotificationService _notificationService;
     private readonly ILogger<FiltersNotificationService> _logger;
+    private readonly TimeProvider _timeProvider;
+    private readonly IMapper _mapper;
 
     public FiltersNotificationService(IRepositoryUnitOfWork repositoryUnitOfWork,
         IAdvertisementService advertisementService,
         INotificationService notificationService,
-        ILogger<FiltersNotificationService> logger)
+        ILogger<FiltersNotificationService> logger,
+        TimeProvider timeProvider,
+        IMapper mapper)
     {
+        _repositoryUnitOfWork = repositoryUnitOfWork;
         _advertisementService = advertisementService;
         _notificationService = notificationService;
         _logger = logger;
+        _timeProvider = timeProvider;
+        _mapper = mapper;
         _filterRepository = repositoryUnitOfWork.Filters;
     }
     
@@ -40,7 +49,7 @@ public class FiltersNotificationService : IFiltersNotificationService
             return;
         }
 
-        var getAdsByQueryParametersRequest = filter.Adapt<GetAdsByQueryParametersRequest>();
+        var getAdsByQueryParametersRequest = _mapper.Map<GetAdsByQueryParametersRequest>(filter);
 
         var getAdsByQueryParametersReply =
             await _advertisementService.GetAdsByQueryParametersAsync(getAdsByQueryParametersRequest);
@@ -60,6 +69,11 @@ public class FiltersNotificationService : IFiltersNotificationService
             Subject = "New ads",
             Body = message
         });
+
+        filter.LastExecutedAt = _timeProvider.GetUtcNow();
+        
+        _filterRepository.Update(filter);
+        await _repositoryUnitOfWork.SaveAsync(default);
     }
 
     private string BuildHtmlPage(IEnumerable<AdDataContract> ads, FilterEntity filter)

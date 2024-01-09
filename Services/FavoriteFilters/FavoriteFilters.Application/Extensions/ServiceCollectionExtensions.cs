@@ -5,6 +5,8 @@ using FavoriteFilters.Application.Interfaces.Services;
 using FluentValidation;
 using Hangfire;
 using Hangfire.PostgreSql;
+using Mapster;
+using MapsterMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Notification.gRPC.Contracts;
@@ -21,10 +23,24 @@ public static class ServiceCollectionExtensions
             .AddGrpcClients(configuration)
             .AddHangfire(configuration)
             .AddValidators()
-            .AddServices();
+            .AddServices()
+            .AddMapper()
+            .AddTimeProvider();
         
         return services;
     }
+
+    private static IServiceCollection AddMapper(this IServiceCollection services)
+    {
+        var config = new TypeAdapterConfig();
+        config.Scan(Assembly.GetExecutingAssembly());
+
+        services.AddSingleton(config);
+        services.AddScoped<IMapper, ServiceMapper>();
+
+        return services;
+    }
+
     
     private static IServiceCollection AddMediator(this IServiceCollection services)
     {
@@ -39,6 +55,13 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddValidators(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+        return services;
+    }
+    
+    private static IServiceCollection AddTimeProvider(this IServiceCollection services)
+    {
+        services.AddSingleton(TimeProvider.System);
 
         return services;
     }

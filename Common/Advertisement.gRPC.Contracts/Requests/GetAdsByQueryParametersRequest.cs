@@ -35,4 +35,10 @@ public class GetAdsByQueryParametersRequest
     
     [DataMember(Order = 10)]
     public Currency? Currency { get; set; }
+    
+    [DataMember(Order = 11)]
+    public DateTime? MinCreatedAt { get; set; }
+    
+    [DataMember(Order = 12)]
+    public DateTime? MaxCreatedAt { get; set; }
 }

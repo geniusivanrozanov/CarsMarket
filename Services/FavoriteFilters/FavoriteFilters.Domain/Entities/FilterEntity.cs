@@ -21,4 +21,5 @@ public class FilterEntity
     public string UserEmail { get; set; } = null!;
 
     public Cron Cron { get; set; } = null!;
+    public DateTimeOffset LastExecutedAt { get; set; }
 }

@@ -3,6 +3,7 @@ using System;
 using FavoriteFilters.Infrastructure.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FavoriteFilters.Infrastructure.Migrations
 {
     [DbContext(typeof(FiltersContext))]
-    partial class FiltersContextModelSnapshot : ModelSnapshot
+    [Migration("20240111153305_Add_LastExecutesAtFieldToFilterEntity")]
+    partial class Add_LastExecutesAtFieldToFilterEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
