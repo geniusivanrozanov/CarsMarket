@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\Common\Common.Logging\Common.Logging.csproj" />
       <ProjectReference Include="..\FavoriteFilters.Application\FavoriteFilters.Application.csproj" />
       <ProjectReference Include="..\FavoriteFilters.Infrastructure\FavoriteFilters.Infrastructure.csproj" />
     </ItemGroup>
