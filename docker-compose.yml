@@ -17,6 +17,10 @@ services:
     build:
       context: .
       dockerfile: Services/Chat/Chat.WebAPI/Dockerfile
+  favorite-filters.api:
+    build:
+      context: .
+      dockerfile: Services/FavoriteFilters/FavoriteFilters.WebAPI/Dockerfile
   notification.grpc:
     build:
       context: .
