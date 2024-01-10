@@ -93,12 +93,15 @@ public class ChatService : IChatService
             _identityService.GetUserFirstNameAsync(getOwnerNameRequest),
             _identityService.GetUserFirstNameAsync(getBuyerRequest));
 
-        foreach (var reply in membersNamesReplies)
-            if (reply.Error is Error.UserNotFound)
-            {
-                _logger.LogInformation("gRPC call failed with message '{Message}'", reply.ErrorMessage);
-                throw new NotExistsException(reply.ErrorMessage!);
-            }
+        var replyWithUserNotFoundError = membersNamesReplies.FirstOrDefault(reply => reply.Error is Error.UserNotFound);
+
+        if (replyWithUserNotFoundError is not null)
+        {
+            _logger.LogInformation("gRPC call failed with message '{Message}'",
+                replyWithUserNotFoundError.ErrorMessage);
+            
+            throw new NotExistsException(replyWithUserNotFoundError.ErrorMessage!);
+        }
 
         var owner = new MemberEntity
         {
