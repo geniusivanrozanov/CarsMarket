@@ -17,7 +17,7 @@ public class MessagesController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> GetMessages(Guid chatId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetMessages([FromRoute] Guid chatId, CancellationToken cancellationToken)
     {
         var dto = await _messageService.GetMessagesByChatIdAsync(chatId, cancellationToken);
 
