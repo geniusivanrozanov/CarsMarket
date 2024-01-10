@@ -1,4 +1,5 @@
 ﻿using Chat.Application.Interfaces.Services;
+using Chat.Application.QueryParameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +18,11 @@ public class MessagesController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> GetMessages([FromRoute] Guid chatId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetMessages([FromRoute] Guid chatId,
+        [FromQuery] MessageQueryParameters queryParameters,
+        CancellationToken cancellationToken)
     {
-        var dto = await _messageService.GetMessagesByChatIdAsync(chatId, cancellationToken);
+        var dto = await _messageService.GetMessagesByChatIdAsync(chatId, queryParameters, cancellationToken);
 
         return Ok(dto);
     }

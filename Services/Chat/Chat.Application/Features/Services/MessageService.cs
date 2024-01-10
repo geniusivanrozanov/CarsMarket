@@ -3,6 +3,7 @@ using Chat.Application.Exceptions;
 using Chat.Application.Interfaces.Repositories;
 using Chat.Application.Interfaces.Services;
 using Chat.Application.Mappers;
+using Chat.Application.QueryParameters;
 using Microsoft.Extensions.Logging;
 
 namespace Chat.Application.Features.Services;
@@ -26,11 +27,14 @@ public class MessageService : IMessageService
     }
 
     public async Task<IEnumerable<GetMessageDto>> GetMessagesByChatIdAsync(Guid chatId,
+        MessageQueryParameters queryParameters,
         CancellationToken cancellationToken = default)
     {
         await CheckChatAndMemberCompatibility(chatId, _currentUser.Id, cancellationToken);
 
-        var messagesDto = await _messageRepository.GetMessagesByChatIdAsync<GetMessageDto>(chatId, cancellationToken);
+        var messagesDto = await _messageRepository.GetMessagesByChatIdAsync<GetMessageDto>(chatId,
+            queryParameters,
+            cancellationToken);
 
         return messagesDto;
     }
