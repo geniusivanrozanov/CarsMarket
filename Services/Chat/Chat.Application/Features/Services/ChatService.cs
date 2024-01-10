@@ -23,8 +23,12 @@ public class ChatService : IChatService
     private readonly IIdentityService _identityService;
     private readonly ILogger<ChatService> _logger;
 
-    public ChatService(IChatRepository chatRepository, ICurrentUser currentUser,
-        IAdvertisementService advertisementService, IIdentityService identityService, ILogger<ChatService> logger)
+    public ChatService(
+        IChatRepository chatRepository,
+        ICurrentUser currentUser,
+        IAdvertisementService advertisementService,
+        IIdentityService identityService,
+        ILogger<ChatService> logger)
     {
         _chatRepository = chatRepository;
         _currentUser = currentUser;
