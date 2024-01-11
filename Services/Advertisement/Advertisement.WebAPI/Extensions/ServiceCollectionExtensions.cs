@@ -7,6 +7,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProtoBuf.Grpc.Server;
 
 namespace Advertisement.WebAPI.Extensions;
 
@@ -29,11 +30,36 @@ public static class ServiceCollectionExtensions
             .ConfigureAuthentication(configuration)
             .AddEndpointsApiExplorer()
             .AddServices()
+            .AddGrpc()
             .AddMiddlewares()
+            .AddCorsDefaultPolicy()
             .AddValidators()
             .AddSwagger();
     }
 
+    private static IServiceCollection AddCorsDefaultPolicy(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin();
+            });
+        });
+
+        return services;
+    }
+    
+    private static IServiceCollection AddGrpc(this IServiceCollection services)
+    {
+        services.AddCodeFirstGrpc();
+
+        return services;
+    }
+    
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IUser, CurrentUser>();

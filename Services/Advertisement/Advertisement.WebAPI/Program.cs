@@ -1,4 +1,5 @@
 using Advertisement.Application.Extensions;
+using Advertisement.Application.Features.Services;
 using Advertisement.Infrastructure.Extensions;
 using Advertisement.WebAPI.Extensions;
 using Advertisement.WebAPI.Middlewares;
@@ -24,6 +25,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors();
+
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseHttpsRedirection();
@@ -33,6 +36,8 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.MapGrpcService<AdvertisementService>();
 
 app.MapControllers();
 
