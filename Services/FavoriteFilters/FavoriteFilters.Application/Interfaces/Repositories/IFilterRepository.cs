@@ -13,5 +13,6 @@ public interface IFilterRepository : IRepositoryBase<FilterEntity>
     
     Task<IEnumerable<TProjection>> GetFiltersByUserIdAsync<TProjection>(Guid userId,
         CancellationToken cancellationToken = default);
+    
     Task<bool> ExistsWithIdAsync(Guid id, CancellationToken cancellationToken = default);
 }

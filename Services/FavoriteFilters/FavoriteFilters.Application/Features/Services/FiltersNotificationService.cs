@@ -46,6 +46,7 @@ public class FiltersNotificationService : IFiltersNotificationService
         if (filter is null)
         {
             _logger.LogWarning("Filter wit id '{FilterId} doesn't exist'", filterId);
+            
             return;
         }
 
