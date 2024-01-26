@@ -3,25 +3,28 @@ using FavoriteFilters.Application.Exceptions;
 
 namespace FavoriteFilters.WebAPI.Middlewares;
 
-public class ExceptionHandlerMiddleware : IMiddleware
+public class ExceptionHandlerMiddleware
 {
     private readonly Dictionary<Type, HttpStatusCode> _statusCodes = new()
     {
         { typeof(NotExistsException), HttpStatusCode.NotFound }
     };
 
+    private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionHandlerMiddleware> _logger;
 
-    public ExceptionHandlerMiddleware(ILogger<ExceptionHandlerMiddleware> logger)
+    public ExceptionHandlerMiddleware(RequestDelegate next,
+        ILogger<ExceptionHandlerMiddleware> logger)
     {
         _logger = logger;
+        _next = next;
     }
 
-    public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+    public async Task InvokeAsync(HttpContext context)
     {
         try
         {
-            await next.Invoke(context);
+            await _next.Invoke(context);
         }
         catch (Exception exception)
         {

@@ -27,7 +27,6 @@ public static class ServiceCollectionExtensions
             .ConfigureAuthentication(configuration)
             .AddEndpointsApiExplorer()
             .AddCorsDefaultPolicy()
-            .AddMiddlewares()
             .AddServices()
             .AddValidators()
             .AddSwagger();
@@ -53,13 +52,6 @@ public static class ServiceCollectionExtensions
     {
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUser, CurrentUser>();
-
-        return services;
-    }
-    
-    private static IServiceCollection AddMiddlewares(this IServiceCollection services)
-    {
-        services.AddSingleton<ExceptionHandlerMiddleware>();
 
         return services;
     }
