@@ -3,6 +3,7 @@ using CarsCatalog.Application.Exceptions;
 using CarsCatalog.Application.Interfaces.Repositories;
 using CarsCatalog.Application.Mappers;
 using CarsCatalog.Domain.Entities;
+using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -14,12 +15,14 @@ public class UpdateBrandCommandHandler :
     private readonly IBrandRepository _brandRepository;
     private readonly IRepositoryUnitOfWork _repositoryUnitOfWork;
     private readonly ILogger<UpdateBrandCommandHandler> _logger;
+    private readonly IPublishEndpoint _publishEndpoint;
 
     public UpdateBrandCommandHandler(IRepositoryUnitOfWork repositoryUnitOfWork,
-        ILogger<UpdateBrandCommandHandler> logger)
+        ILogger<UpdateBrandCommandHandler> logger, IPublishEndpoint publishEndpoint)
     {
         _repositoryUnitOfWork = repositoryUnitOfWork;
         _logger = logger;
+        _publishEndpoint = publishEndpoint;
         _brandRepository = repositoryUnitOfWork.Brands;
     }
 
@@ -45,6 +48,9 @@ public class UpdateBrandCommandHandler :
 
         _brandRepository.Update(entity);
         await _repositoryUnitOfWork.SaveAsync(cancellationToken);
+
+        var message = entity.ToBrandUpdatedMessage();
+        await _publishEndpoint.Publish(message, cancellationToken);
 
         var dto = entity.ToGetBrandDto();
 

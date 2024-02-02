@@ -23,6 +23,16 @@ public class GenerationRepository : RepositoryBase<GenerationEntity, Guid>, IGen
         return await query.SingleOrDefaultAsync(cancellationToken);
     }
 
+    public async Task<TProjection?> GetGenerationByOwnIdAndModelIdAndBrandIdAsync<TProjection>(Guid generationId, Guid modelId, Guid brandId,
+        CancellationToken cancellationToken = default)
+    {
+        var query = Query
+            .Where(x => x.Id == generationId && x.ModelId == modelId && x.Model!.BrandId == brandId)
+            .ProjectTo<TProjection>();
+
+        return await query.SingleOrDefaultAsync(cancellationToken);
+    }
+
     public async Task<IEnumerable<TProjection>> GetGenerationsAsync<TProjection>(
         Guid? brandId = default,
         string? brandName = default,

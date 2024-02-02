@@ -26,9 +26,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors();
+
 app.UseHttpsRedirection();
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
+
+app.MapGrpcService<IdentityService.WebAPI.Services.IdentityService>();
 
 app.MapControllers();
 

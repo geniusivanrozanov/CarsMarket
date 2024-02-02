@@ -5,14 +5,32 @@ services:
     build:
       context: .
       dockerfile: Services/IdentityService/IdentityService.WebAPI/Dockerfile
-      
+  advertisement.api:
+    build:
+      context: .
+      dockerfile: Services/Advertisement/Advertisement.WebAPI/Dockerfile
   cars-catalog.api:
     build:
       context: .
       dockerfile: Services/CarsCatalog/CarsCatalog.WebAPI/Dockerfile
+  chat.api:
+    build:
+      context: .
+      dockerfile: Services/Chat/Chat.WebAPI/Dockerfile
+  favorite-filters.api:
+    build:
+      context: .
+      dockerfile: Services/FavoriteFilters/FavoriteFilters.WebAPI/Dockerfile
+  notification.grpc:
+    build:
+      context: .
+      dockerfile: Services/Notification/Notification.gRPC/Dockerfile
   
   postgres:
     image: postgres:latest
+    
+  mongodb:
+    image: mongo:latest
     
   redis:
     image: redis:latest
@@ -22,3 +40,9 @@ services:
         
   kibana:
     image: kibana:8.10.2
+
+  rabbitmq:
+    image: rabbitmq:management
+
+  maildev:
+    image: maildev/maildev

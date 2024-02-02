@@ -1,12 +1,15 @@
 ﻿using System.Text;
 using FluentValidation.AspNetCore;
+using IdentityService.Application.Interfaces;
 using IdentityService.Application.Options;
 using IdentityService.WebAPI.Middlewares;
 using IdentityService.WebAPI.Options;
+using IdentityService.WebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProtoBuf.Grpc.Server;
 using StackExchange.Redis;
 
 namespace IdentityService.WebAPI.Extensions;
@@ -24,14 +27,48 @@ public static class ServiceExtensions
             })
             .AddAuthorization()
             .ConfigureAuthentication()
+            .AddHttpContextAccessor()
             .AddEndpointsApiExplorer()
             .AddValidators()
             .AddMiddlewares()
             .AddSwagger()
             .AddDistributedCache(configuration)
+            .AddGrpc()
+            .AddServices()
+            .AddCorsDefaultPolicy()
             .ConfigureOptions(configuration);
     }
 
+    private static IServiceCollection AddCorsDefaultPolicy(this IServiceCollection services)
+    {
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin();
+            });
+        });
+
+        return services;
+    }
+    
+    private static IServiceCollection AddGrpc(this IServiceCollection services)
+    {
+        services.AddCodeFirstGrpc();
+
+        return services;
+    }
+
+    private static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<ICurrentUser, CurrentUser>();
+
+        return services;
+    }
+    
     private static IServiceCollection AddValidators(this IServiceCollection services)
     {
         services.AddFluentValidationAutoValidation();

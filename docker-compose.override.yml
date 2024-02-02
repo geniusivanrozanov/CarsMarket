@@ -4,28 +4,99 @@ services:
   identity.api:
     container_name: identity.api
     ports:
-      - "8000:8080"
+      - "8000:8000"
     environment:
       - ElasticConfiguration:Uri=http://elasticsearch:9200
+      - RabbitMQConfiguration:Host=amqp://rabbitmq:5672
       - ConnectionStrings:IdentityPostgres=Server=postgres;Port=5432;Database=Identity;User Id=postgres;Password=postgres;
       - ConnectionStrings:Redis=redis:6379
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      postgres:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+        
+  advertisement.api:
+    container_name: advertisement.api
+    ports:
+      - "8002:8002"
+    environment:
+      - ElasticConfiguration:Uri=http://elasticsearch:9200
+      - IdentityConfiguration:Uri=http://identity.api:7000
+      - CarsCatalogConfiguration:Uri=http://cars-catalog.api:7001
+      - RabbitMQConfiguration:Host=amqp://rabbitmq:5672
+      - ConnectionStrings:MongoDB=mongodb://mongodb:27017
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      mongodb:
+        condition: service_started
+      elasticsearch:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+
+  cars-catalog.api:
+    container_name: cars-catalog.api
+    ports:
+      - "8001:8001"
+    environment:
+      - ElasticConfiguration:Uri=http://elasticsearch:9200
+      - RabbitMQConfiguration:Host=amqp://rabbitmq:5672
+      - ConnectionStrings:CatalogPostgres=Server=postgres;Port=5432;Database=CarsCatalog;User Id=postgres;Password=postgres;
+      - ConnectionStrings:Redis=redis:6379
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      postgres:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+        
+  chat.api:
+    container_name: chat.api
+    ports:
+      - "8003:8003"
+    environment:
+      - ElasticConfiguration:Uri=http://elasticsearch:9200
+      - IdentityConfiguration:Uri=http://identity.api:7000
+      - AdvertisementConfiguration:Uri=http://advertisement.api:7002
+      - ConnectionStrings:MongoDB=mongodb://mongodb:27017
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      mongodb:
+        condition: service_started
+      elasticsearch:
+        condition: service_started
+        
+  favorite-filters.api:
+    container_name: favorite-filters.api
+    ports:
+      - "8005:8005"
+    environment:
+      - ElasticConfiguration:Uri=http://elasticsearch:9200
+      - ConnectionStrings:FiltersPostgres=Server=postgres;Port=5432;Database=FavoriteFilters;User Id=postgres;Password=postgres;
+      - AdvertisementConfiguration:Uri=http://advertisement.api:7002
+      - NotificationConfiguration:Uri=http://notification.grpc:7004
+      - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       postgres:
         condition: service_healthy
       elasticsearch:
         condition: service_started
         
-  cars-catalog.api:
-    container_name: cars-catalog.api
-    ports:
-      - "8001:8080"
+  notification.grpc:
+    container_name: notification.grpc
     environment:
       - ElasticConfiguration:Uri=http://elasticsearch:9200
-      - ConnectionStrings:CatalogPostgres=Server=postgres;Port=5432;Database=CarsCatalog;User Id=postgres;Password=postgres;
-      - ConnectionStrings:Redis=redis:6379
+      - MailConfiguration:Host=maildev
+      - MailConfiguration:Port=1025
+      - MailConfiguration:UserName=admin
+      - MailConfiguration:Password=admin
     depends_on:
-      postgres:
-        condition: service_healthy
       elasticsearch:
         condition: service_started
   
@@ -43,6 +114,13 @@ services:
       retries: 5
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+  
+  mongodb:
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/etc/mongo
   
   redis:
     container_name: redis
@@ -74,9 +152,30 @@ services:
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-
+    
+  rabbitmq:
+    container_name: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    
+  maildev:
+    container_name: maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    environment:
+      - MAILDEV_INCOMING_USER=admin
+      - MAILDEV_INCOMING_PASS=admin
 
 volumes:
   postgres_data:
+  mongo_data:
   elasticsearch_data:
   redis_data:
+  rabbitmq_data:

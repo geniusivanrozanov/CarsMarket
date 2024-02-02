@@ -63,8 +63,7 @@ public static class IdentityDataInitializer
                 
                 if (!result.Succeeded)
                 {
-                    throw new ArgumentException(
-                        $"Failed to create user with errors: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                    throw new ArgumentException(string.Format(ExceptionMessages.FailedToCreateUser, string.Join(", ", result.Errors.Select(e => e.Description))));
                 }
             }
 
@@ -74,8 +73,7 @@ public static class IdentityDataInitializer
                 
                 if (!result.Succeeded)
                 {
-                    throw new ArgumentException(
-                        $"Failed to add user to role with errors: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                    throw new ArgumentException(string.Format(ExceptionMessages.FailedToAddUserToRole, string.Join(", ", result.Errors.Select(e => e.Description))));
                 }
             }
         }
