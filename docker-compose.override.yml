@@ -16,6 +16,8 @@ services:
         condition: service_healthy
       elasticsearch:
         condition: service_started
+      rabbitmq:
+        condition: service_started
         
   advertisement.api:
     container_name: advertisement.api
@@ -30,6 +32,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       mongodb:
+        condition: service_started
+      elasticsearch:
+        condition: service_started
+      rabbitmq:
         condition: service_started
 
   cars-catalog.api:
@@ -47,6 +53,8 @@ services:
         condition: service_healthy
       elasticsearch:
         condition: service_started
+      rabbitmq:
+        condition: service_started
         
   chat.api:
     container_name: chat.api
@@ -60,6 +68,36 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       mongodb:
+        condition: service_started
+      elasticsearch:
+        condition: service_started
+        
+  favorite-filters.api:
+    container_name: favorite-filters.api
+    ports:
+      - "8005:8005"
+    environment:
+      - ElasticConfiguration:Uri=http://elasticsearch:9200
+      - ConnectionStrings:FiltersPostgres=Server=postgres;Port=5432;Database=FavoriteFilters;User Id=postgres;Password=postgres;
+      - AdvertisementConfiguration:Uri=http://advertisement.api:7002
+      - NotificationConfiguration:Uri=http://notification.grpc:7004
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      postgres:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_started
+        
+  notification.grpc:
+    container_name: notification.grpc
+    environment:
+      - ElasticConfiguration:Uri=http://elasticsearch:9200
+      - MailConfiguration:Host=maildev
+      - MailConfiguration:Port=1025
+      - MailConfiguration:UserName=admin
+      - MailConfiguration:Password=admin
+    depends_on:
+      elasticsearch:
         condition: service_started
   
   postgres:
@@ -125,6 +163,15 @@ services:
       - RABBITMQ_DEFAULT_PASS=guest
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
+    
+  maildev:
+    container_name: maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    environment:
+      - MAILDEV_INCOMING_USER=admin
+      - MAILDEV_INCOMING_PASS=admin
 
 volumes:
   postgres_data:

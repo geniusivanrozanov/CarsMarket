@@ -10,4 +10,8 @@ public interface IAdvertisementService
 {
     [OperationContract]
     Task<GetAdInfoByIdReply> GetAdInfoByIdAsync(GetAdInfoByIdRequest request, CallContext context = default);
+
+    [OperationContract]
+    Task<GetAdsByQueryParametersReply> GetAdsByQueryParametersAsync(GetAdsByQueryParametersRequest request,
+        CallContext context = default);
 }

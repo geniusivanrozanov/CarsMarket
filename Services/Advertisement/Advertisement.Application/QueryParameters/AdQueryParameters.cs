@@ -16,4 +16,6 @@ public class AdQueryParameters : QueryParametersBase<AdEntity, Guid>
     public double? MinPrice { get; set; }
     public double? MaxPrice { get; set; }
     public Currency? Currency { get; set; }
+    public DateTimeOffset? MinCreatedAt { get; set; }
+    public DateTimeOffset? MaxCreatedAt { get; set; }
 }

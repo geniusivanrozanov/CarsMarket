@@ -38,4 +38,20 @@ public class AdvertisementService : IAdvertisementService
 
         return entity.ToGetAdInfoByIdReply();
     }
+
+    public async Task<GetAdsByQueryParametersReply> GetAdsByQueryParametersAsync(GetAdsByQueryParametersRequest request, CallContext context = default)
+    {
+        var queryParameters = request.ToAdQueryParameters();
+
+        var entities = await _adRepository.GetAdsAsync(queryParameters, context.CancellationToken);
+
+        var adDataContracts = entities.ToAdDataContract();
+
+        var reply = new GetAdsByQueryParametersReply
+        {
+            Ads = adDataContracts.ToList()
+        };
+
+        return reply;
+    }
 }

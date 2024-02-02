@@ -150,6 +150,10 @@ public class AdRepository : IAdRepository
             if (queryParameters.MaxPrice is not null)
                 filter &= currencyFilter & builder.Lte(x => x.CurrentPrice.Value, queryParameters.MaxPrice);
         }
+        
+        if (queryParameters.MinCreatedAt is not null) filter &= builder.Gte(x => x.CreatedAt, queryParameters.MinCreatedAt);
+        
+        if (queryParameters.MaxCreatedAt is not null) filter &= builder.Lte(x => x.CreatedAt, queryParameters.MaxCreatedAt);
 
         return filter;
     }
